@@ -56,12 +56,12 @@ public class LocationInput extends AppCompatActivity {
         }
         catch (Exception e) {
         }
-
+        System.out.println(finalInt);
         if (finalInt == 3) {
-            return true;
+            return false;
         }
         else {
-            return false;
+            return true;
         }
     }
     public void onSubmitButton(View view) {

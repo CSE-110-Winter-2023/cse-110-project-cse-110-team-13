@@ -58,7 +58,7 @@ public class CompassActivity extends AppCompatActivity {
                 continue;
             }
             //compute angle and update marker and label
-            float angle = compassCalculateAngle("0,0", locationsCoordinates[i]);
+            float angle = AngleUtil.compassCalculateAngle("0,0", locationsCoordinates[i]);
             updatePointer(locationPointerIDs[i], angle);
             updateLabelPointer(i);
         }
@@ -103,21 +103,6 @@ public class CompassActivity extends AppCompatActivity {
         labelPointerIDs[0] = R.id.Label1;
         labelPointerIDs[1] = R.id.Label2;
         labelPointerIDs[2] = R.id.Label3;
-    }
-
-    //compute angle at which marker and TextView must be placed
-    //takes user location and object location as input
-    public float compassCalculateAngle(String userLocation, String objectLocation)
-    {
-        //split user coords into x and y
-        String[] userCoords = userLocation.split(",");
-        //split object coords into x and y
-        String[] objectCoords = objectLocation.split(",");
-        //get differences between both for angle compute
-        float xDiff = Float.parseFloat(objectCoords[0]) - Float.parseFloat(userCoords[0]);
-        float yDiff = Float.parseFloat(objectCoords[1]) - Float.parseFloat(userCoords[1]);
-        //return arctan(y/x), and account for arctan's principal values
-        return -((float) Math.toDegrees((float) Math.atan(yDiff/xDiff) + (float) ((xDiff < 0) ? Math.PI : 0)) - 90);
     }
 
     //updates marker pointer with required angle

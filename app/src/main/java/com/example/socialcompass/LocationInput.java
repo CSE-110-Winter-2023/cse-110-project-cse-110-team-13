@@ -152,8 +152,6 @@ public class LocationInput extends AppCompatActivity {
         return finalCheck;
     }
 
-
-
     public boolean locationLabelPairCheck() {
         this.boolFuture = backgroundThreadExecutor.submit(() -> {
             String myHomeLocationString = myHomeLocation.getText().toString();

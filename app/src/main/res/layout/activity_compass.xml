@@ -97,17 +97,20 @@
 
         <TextView
             android:id="@+id/Label2"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="69dp"
+            android:layout_height="66dp"
             android:text="TextView"
             android:textSize="10sp"
+            app:layout_constraintCircle="@id/compass"
+            app:layout_constraintCircleAngle="50"
+            app:layout_constraintCircleRadius="170dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.896"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="34dp"
-            tools:layout_editor_absoluteY="36dp" />
+            app:layout_constraintVertical_bias="0.409" />
 
         <TextView
             android:id="@+id/Label3"
@@ -115,13 +118,16 @@
             android:layout_height="75dp"
             android:text="TextView"
             android:textSize="10sp"
+            app:layout_constraintCircle="@id/compass"
+            app:layout_constraintCircleAngle="50"
+            app:layout_constraintCircleRadius="170dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.788"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="34dp"
-            tools:layout_editor_absoluteY="36dp" />
+            app:layout_constraintVertical_bias="0.832" />
 
         <TextView
             android:id="@+id/Label1"
@@ -129,13 +135,16 @@
             android:layout_height="75dp"
             android:text="TextView"
             android:textSize="10sp"
+            app:layout_constraintCircle="@id/compass"
+            app:layout_constraintCircleAngle="50"
+            app:layout_constraintCircleRadius="170dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.343"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="34dp"
-            tools:layout_editor_absoluteY="36dp" />
+            app:layout_constraintVertical_bias="0.37" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

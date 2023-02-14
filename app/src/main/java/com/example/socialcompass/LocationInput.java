@@ -218,7 +218,7 @@ public class LocationInput extends AppCompatActivity {
         String friendLocationString = friendLocation.getText().toString();
         String friendLabelString = friendLabel.getText().toString();
 
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("locationLabels",MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         Intent intent = new Intent(this, CompassActivity.class);
 

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -218,12 +219,13 @@ public class LocationInput extends AppCompatActivity {
         String friendLocationString = friendLocation.getText().toString();
         String friendLabelString = friendLabel.getText().toString();
 
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("EnteredLocations",MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         Intent intent = new Intent(this, CompassActivity.class);
 
         if(!myHomeLocationString.equals("")) {
             editor.putString("myHomeLocation", myHomeLocationString);
+            Log.d("In the LocationInput", preferences.getString("myHomeLocation","wtf"));
             editor.putString("myHomeLabel", myHomeLabelString);
             intent.putExtra("myHomeLocation", myHomeLocationString);
             intent.putExtra("myHomeLabel", myHomeLabelString);
@@ -242,6 +244,7 @@ public class LocationInput extends AppCompatActivity {
             intent.putExtra("friendLocation", friendLocationString);
             intent.putExtra("friendLabel", friendLabelString);
         }
+
         editor.apply();
 
 

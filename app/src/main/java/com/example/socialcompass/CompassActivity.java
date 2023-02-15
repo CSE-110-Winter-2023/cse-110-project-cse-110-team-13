@@ -70,11 +70,11 @@ public class CompassActivity extends AppCompatActivity {
 
     //fills location array
     public void loadLocationCoordinates(){
-        Bundle extra = getIntent().getExtras();
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("locationLabels",MODE_PRIVATE);
         String[] locationNames = {"myHomeLocation","familyLocation","friendLocation"};
 
         for(int i = 0; i < locationNames.length; i++){
-            locationsCoordinates[i] = extra.getString(locationNames[i], "default");
+            locationsCoordinates[i] = preferences.getString(locationNames[i], "default");
         }
 
 
@@ -83,12 +83,11 @@ public class CompassActivity extends AppCompatActivity {
     //fill label array
     public void loadLocationLabels(){
 
-        //SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        Bundle extra = getIntent().getExtras();
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("locationLabels",MODE_PRIVATE);
         String[] locationNames = {"myHomeLabel","familyLabel","friendLabel"};
 
         for(int i = 0; i < locationNames.length; i++){
-            locationsLabels[i] = extra.getString(locationNames[i], "default" + locationNames[i]);
+            locationsLabels[i] = preferences.getString(locationNames[i], "default" + locationNames[i]);
         }
 
     }

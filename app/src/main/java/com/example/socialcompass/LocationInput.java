@@ -26,6 +26,8 @@ public class LocationInput extends AppCompatActivity {
     private Future<Void> voidFuture;
     private Future<Boolean> boolFuture;
 
+    private int numOfLocations = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -229,6 +231,7 @@ public class LocationInput extends AppCompatActivity {
             editor.putString("myHomeLabel", myHomeLabelString);
             intent.putExtra("myHomeLocation", myHomeLocationString);
             intent.putExtra("myHomeLabel", myHomeLabelString);
+            numOfLocations++;
         }
 
         if(!familyLocationString.equals("")) {
@@ -236,6 +239,7 @@ public class LocationInput extends AppCompatActivity {
             editor.putString("familyLabel", familyLabelString);
             intent.putExtra("familyLocation", familyLocationString);
             intent.putExtra("familyLabel", familyLabelString);
+            numOfLocations++;
         }
 
         if(!friendLocationString.equals("")) {
@@ -243,12 +247,17 @@ public class LocationInput extends AppCompatActivity {
             editor.putString("friendLabel", friendLabelString);
             intent.putExtra("friendLocation", friendLocationString);
             intent.putExtra("friendLabel", friendLabelString);
+            numOfLocations++;
         }
 
         editor.apply();
 
+        preferences = getApplicationContext().getSharedPreferences("numOfLocations",MODE_PRIVATE);
+        editor = preferences.edit();
+        editor.putInt("numOfLocations",numOfLocations);
+        editor.apply();
 
-
+        Log.e("Do we get to start it", "idk");
         startActivity(intent);
 
     }

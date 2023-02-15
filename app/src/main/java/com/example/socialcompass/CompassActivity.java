@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,6 +34,11 @@ public class CompassActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
+
+        //SharedPreferences preferences = getApplicationContext().getSharedPreferences("numOfLocations",MODE_PRIVATE);
+        //numOfLocations = preferences.getInt("numOfLocations",0);
+
+        Log.d("What is the read numOflocations", String.valueOf(numOfLocations));
 
         //initialize arrays
         locationsCoordinates = new String[numOfLocations];
@@ -73,8 +80,13 @@ public class CompassActivity extends AppCompatActivity {
         Bundle extra = getIntent().getExtras();
         String[] locationNames = {"myHomeLocation","familyLocation","friendLocation"};
 
+<<<<<<< Updated upstream
         for(int i = 0; i < locationNames.length; i++){
             locationsCoordinates[i] = extra.getString(locationNames[i], "default");
+=======
+        for(int i = 0; i < numOfLocations; i++){
+            locationsCoordinates[i] = preferences.getString(locationNames[i], "default");
+>>>>>>> Stashed changes
         }
 
 
@@ -87,8 +99,13 @@ public class CompassActivity extends AppCompatActivity {
         Bundle extra = getIntent().getExtras();
         String[] locationNames = {"myHomeLabel","familyLabel","friendLabel"};
 
+<<<<<<< Updated upstream
         for(int i = 0; i < locationNames.length; i++){
             locationsLabels[i] = extra.getString(locationNames[i], "default" + locationNames[i]);
+=======
+        for(int i = 0; i < numOfLocations; i++){
+            locationsLabels[i] = preferences.getString(locationNames[i], "default" + locationNames[i]);
+>>>>>>> Stashed changes
         }
 
     }
@@ -127,7 +144,9 @@ public class CompassActivity extends AppCompatActivity {
         label.setLayoutParams(layoutParams);
     }
 
-    public void goBackClicked(View view) {
+    public void goHomeClicked(View view) {
         finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

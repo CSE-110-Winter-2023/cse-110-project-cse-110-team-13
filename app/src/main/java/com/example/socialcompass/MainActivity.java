@@ -49,4 +49,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    public void resetButtonClicked(View view) {
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("numOfLocations",MODE_PRIVATE);
+        preferences.edit().clear().commit();
+
+        preferences = getApplicationContext().getSharedPreferences("locationLabels",MODE_PRIVATE);
+        preferences.edit().clear().commit();
+
+        finish();
+
+
+    }
 }

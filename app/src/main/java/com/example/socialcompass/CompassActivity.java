@@ -8,12 +8,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 
 public class CompassActivity extends AppCompatActivity {
@@ -72,11 +74,24 @@ public class CompassActivity extends AppCompatActivity {
     //fills location array
     public void loadLocationCoordinates(){
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("locationLabels",MODE_PRIVATE);
+        Map<String,?> locationLabels = preferences.getAll();
+
+        /*
+        for(var entry : locationLabels.entrySet()){
+
+
+
+        }
+        */
+
+
         String[] locationNames = {"myHomeLocation","familyLocation","friendLocation"};
 
         for(int i = 0; i < locationNames.length; i++){
             locationsCoordinates[i] = preferences.getString(locationNames[i], "default");
         }
+
+
 
 
     }
@@ -122,9 +137,11 @@ public class CompassActivity extends AppCompatActivity {
     {
         TextView label = findViewById(labelPointerIDs[index]);
         ImageView marker = findViewById(locationPointerIDs[index]);
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) marker.getLayoutParams();
-        layoutParams.circleAngle -= 5;
-        label.setLayoutParams(layoutParams);
+        ConstraintLayout.LayoutParams layoutParamsMarker = (ConstraintLayout.LayoutParams) marker.getLayoutParams();
+        ConstraintLayout.LayoutParams layoutParamsLabel = (ConstraintLayout.LayoutParams) label.getLayoutParams();
+        layoutParamsLabel.circleAngle = layoutParamsMarker.circleAngle;
+        layoutParamsLabel.circleRadius = layoutParamsMarker.circleRadius + 100;
+        label.setLayoutParams(layoutParamsLabel);
     }
 
     public void goHomeClicked(View view) {

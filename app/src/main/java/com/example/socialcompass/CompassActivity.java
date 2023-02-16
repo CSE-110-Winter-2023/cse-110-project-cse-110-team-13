@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -126,7 +127,9 @@ public class CompassActivity extends AppCompatActivity {
         label.setLayoutParams(layoutParams);
     }
 
-    public void goBackClicked(View view) {
+    public void goHomeClicked(View view) {
         finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

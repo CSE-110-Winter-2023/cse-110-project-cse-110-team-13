@@ -7,15 +7,15 @@
     tools:context=".CompassActivity">
 
     <Button
-        android:id="@+id/goBackButton"
+        android:id="@+id/goHomeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="156dp"
         android:layout_marginTop="610dp"
         android:layout_marginEnd="78dp"
         android:layout_marginBottom="73dp"
-        android:onClick="goBackClicked"
-        android:text="Go Back"
+        android:onClick="goHomeClicked"
+        android:text="Go Home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

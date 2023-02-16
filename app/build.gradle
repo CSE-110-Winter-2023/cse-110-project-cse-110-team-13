@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'com.example.socialcompass'
-    compileSdk 33
+    compileSdk 32
 
     testOptions {
         unitTests {
@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.socialcompass"
-        minSdk 33
+        minSdk 32
         targetSdk 33
         versionCode 1
         versionName "1.0"

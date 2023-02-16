@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CompassActivity extends AppCompatActivity {
     //arrays holding:
@@ -23,24 +25,27 @@ public class CompassActivity extends AppCompatActivity {
     public String[] locationsCoordinates;
     public String[] locationsLabels;
     public int[] locationPointerIDs;
-
     public int[] labelPointerIDs;
+
     //The number of locations that can be shown on the compass
     public int numOfLocations = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
+
         //initialize arrays
         locationsCoordinates = new String[numOfLocations];
         locationsLabels = new String[numOfLocations];
         locationPointerIDs = new int[numOfLocations];
         labelPointerIDs = new int[numOfLocations];
+
         //fill arrays with data from intents
         loadLocationCoordinates();
         loadLocationLabels();
         loadLocationPointerIDs();
         loadLabelPointerIDs();
+
         //set TextViews to label text
         for (int i = 0; i < numOfLocations; i++)
             ((TextView) findViewById(labelPointerIDs[i])).setText(locationsLabels[i]);
@@ -51,7 +56,7 @@ public class CompassActivity extends AppCompatActivity {
         for (int i = 0; i < numOfLocations; i++)
         {
             //if no coordinates are sent, don't draw the marker or its label
-            if (locationsCoordinates[i] == "default")
+            if (Objects.equals(locationsCoordinates[i], "default"))
             {
                 findViewById(locationPointerIDs[i]).setVisibility(View.INVISIBLE);
                 findViewById(labelPointerIDs[i]).setVisibility(View.INVISIBLE);
@@ -66,11 +71,11 @@ public class CompassActivity extends AppCompatActivity {
 
     //fills location array
     public void loadLocationCoordinates(){
-        Bundle extra = getIntent().getExtras();
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("locationLabels",MODE_PRIVATE);
         String[] locationNames = {"myHomeLocation","familyLocation","friendLocation"};
 
         for(int i = 0; i < locationNames.length; i++){
-            locationsCoordinates[i] = extra.getString(locationNames[i], "default");
+            locationsCoordinates[i] = preferences.getString(locationNames[i], "default");
         }
 
 
@@ -79,12 +84,11 @@ public class CompassActivity extends AppCompatActivity {
     //fill label array
     public void loadLocationLabels(){
 
-        //SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        Bundle extra = getIntent().getExtras();
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("locationLabels",MODE_PRIVATE);
         String[] locationNames = {"myHomeLabel","familyLabel","friendLabel"};
 
         for(int i = 0; i < locationNames.length; i++){
-            locationsLabels[i] = extra.getString(locationNames[i], "default" + locationNames[i]);
+            locationsLabels[i] = preferences.getString(locationNames[i], "default" + locationNames[i]);
         }
 
     }
@@ -123,7 +127,9 @@ public class CompassActivity extends AppCompatActivity {
         label.setLayoutParams(layoutParams);
     }
 
-    public void goBackClicked(View view) {
+    public void goHomeClicked(View view) {
         finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

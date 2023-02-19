@@ -106,13 +106,13 @@ public class LocationInput extends AppCompatActivity {
     public boolean validCoordinateCheck(float latitude, float longitude) {
         //implement api to check if coordinate is a-ok (valid)!!!
         //there's no api yet so we'll use latitude in the range of -90 to 90 and longitude in the range of -180 to 180, (0,0) is probably GMT at the equator.
-        if(latitude <= -90 || latitude >= 90) {
+        if(latitude < -90 || latitude > 90) {
             runOnUiThread(() -> {
                 Utilities.showAlert(this, "One or more of your coordinates input are invalid");
             });
             return false;
         }
-        if(longitude <= -180 || longitude >= 180) {
+        if(longitude < -180 || longitude >= 180) {
             runOnUiThread(() -> {
                 Utilities.showAlert(this, "One or more of your coordinates input are invalid");
             });

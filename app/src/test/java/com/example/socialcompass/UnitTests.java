@@ -16,7 +16,7 @@ public class UnitTests {
     @Test
     public void returnsCorrectAngleForZeroDegrees()
     {
-        float out = AngleUtil.compassCalculateAngle("0,0", "1,0");
+        double out = AngleUtil.compassCalculateAngle("0,0", "1,0");
         assertEquals(90, out, 0.1);
     }
 
@@ -28,7 +28,7 @@ public class UnitTests {
         float xdiff = Math.abs(rng.nextFloat() % 90);
         float ydiff = Math.abs(rng.nextFloat() % 180);
         float expected = (float) -(Math.toDegrees(Math.atan(ydiff/xdiff)) - 90);
-        float actual = AngleUtil.compassCalculateAngle("0,0",
+        double actual = AngleUtil.compassCalculateAngle("0,0",
                 xdiff + "," + ydiff);
         assertEquals(expected, actual, 0.1);
     }
@@ -40,7 +40,7 @@ public class UnitTests {
         float xdiff = -1;
         float ydiff = -1;
         float expected = -((float) Math.toDegrees(Math.atan(ydiff/xdiff) + Math.PI) - 90);
-        float actual = AngleUtil.compassCalculateAngle("0,0",
+        double actual = AngleUtil.compassCalculateAngle("0,0",
                 xdiff + "," + ydiff);
         assertEquals(expected, actual, 0.1);
     }

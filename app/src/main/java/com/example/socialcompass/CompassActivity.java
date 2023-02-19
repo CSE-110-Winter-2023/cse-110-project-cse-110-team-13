@@ -32,8 +32,8 @@ public class CompassActivity extends AppCompatActivity {
     public int[] labelPointerIDs;
     private LocationService locationService;
     private OrientationService orientationService;
-    private String oldLocation;
-    private float oldOrientation;
+
+
     //The number of locations that can be shown on the compass
     public int numOfLocations = 3;
     @Override
@@ -47,24 +47,31 @@ public class CompassActivity extends AppCompatActivity {
         locationPointerIDs = new int[numOfLocations];
         labelPointerIDs = new int[numOfLocations];
 
-        //initialize old location and old orientation
-        oldLocation = "0,0";
-        oldOrientation = 0;
+
         //fill arrays with data from intents
         loadLocationCoordinates();
         loadLocationLabels();
         loadLocationPointerIDs();
         loadLabelPointerIDs();
 
-        //set TextViews to label text for all markers
-        for (int i = 0; i < numOfLocations; i++) {
-            ((TextView) findViewById(labelPointerIDs[i])).setText(locationsLabels[i]);
-        }
 
-        // get locationService and orientationService
+        //set up CurrentState
         locationService = LocationService.singleton(this);
         orientationService = OrientationService.singleton(this);
+        CurrentState currentState = new CurrentState(numOfLocations, locationService, orientationService, this);
 
+        //initiate currentState and set TextViews to label text for all markers
+        for (int i = 0; i < numOfLocations; i++) {
+            currentState.setMarkerInfo(i, locationsCoordinates[i], locationsLabels[i],
+                    locationPointerIDs[i], labelPointerIDs[i]);
+            ((TextView) findViewById(labelPointerIDs[i])).setText(locationsLabels[i]);
+        }
+        //set up listener in currentState
+        currentState.notifyObserver();
+
+        // get locationService and orientationService
+
+        /*
         locationService.getLocation().observe(this, loc -> {
             oldLocation = Double.toString(loc.first) + "," + Double.toString(loc.second);
             for (int i = 0; i < numOfLocations; i++)
@@ -104,6 +111,7 @@ public class CompassActivity extends AppCompatActivity {
                 updateLabelPointer(i);
             }
         });
+        */
 
         //main loop:
         //initializes the locations of the markers and labels
@@ -123,7 +131,6 @@ public class CompassActivity extends AppCompatActivity {
 
         }
         */
-
 
         String[] locationNames = {"myHomeLocation","familyLocation","friendLocation"};
 
@@ -165,6 +172,7 @@ public class CompassActivity extends AppCompatActivity {
     }
 
     //updates marker pointer with required angle
+    /*
     public void updatePointer(int markerId, double angle){
         ImageView marker = findViewById(markerId);
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) marker.getLayoutParams();
@@ -183,7 +191,7 @@ public class CompassActivity extends AppCompatActivity {
         layoutParamsLabel.circleRadius = layoutParamsMarker.circleRadius + 100;
         label.setLayoutParams(layoutParamsLabel);
     }
-
+    */
     public void goHomeClicked(View view) {
         finish();
         Intent intent = new Intent(this, MainActivity.class);

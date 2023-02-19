@@ -36,7 +36,7 @@ public class AngleUtil {
         var userCoord = new LatLng(lat3, lat4);
         //get differences between both for angle compute
         float northRelative = (float) SphericalUtil.computeHeading(userCoord, markerCoord);
-        northRelative = northRelative+orientation;
+        northRelative = northRelative-orientation;
 
         northRelative = northRelative % 360;
         return northRelative;

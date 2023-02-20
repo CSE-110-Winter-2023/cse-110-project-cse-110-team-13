@@ -29,6 +29,8 @@ public class CompassActivity extends AppCompatActivity {
     public int[] locationPointerIDs;
     public int[] labelPointerIDs;
 
+    public float userAngle; // Current user angle, relative to North
+
     //The number of locations that can be shown on the compass
     public int numOfLocations = 3;
     @Override
@@ -41,6 +43,9 @@ public class CompassActivity extends AppCompatActivity {
         locationsLabels = new String[numOfLocations];
         locationPointerIDs = new int[numOfLocations];
         labelPointerIDs = new int[numOfLocations];
+
+        // Initialize userAngle to 0 (North)
+        userAngle = 0;
 
         //fill arrays with data from intents
         loadLocationCoordinates();
@@ -69,6 +74,36 @@ public class CompassActivity extends AppCompatActivity {
             updatePointer(locationPointerIDs[i], angle);
             updateLabelPointer(i);
         }
+    }
+
+    public void redraw(){
+
+        // Redraw Compass face to new userAngle
+        ImageView compassFace = findViewById(R.id.CompassFace);
+        compassFace.setRotation(userAngle);
+
+        // Redraw each location pointer to new userAngle
+        for (int i = 0; i < numOfLocations; i++){
+            float angle = AngleUtil.compassCalculateAngle("0,0", locationsCoordinates[i]);
+            angle = angle + userAngle;
+            updatePointer(locationPointerIDs[i], angle);
+            updateLabelPointer(i);
+        }
+    }
+
+    public void rotate90(View view){
+        userAngle = (userAngle + 90 > 360) ? (userAngle + 90 - 360) : userAngle + 90;
+        redraw();
+    }
+
+    public void rotate60(View view){
+        userAngle = (userAngle + 60 > 360) ? (userAngle + 60 - 360) : userAngle + 60;
+        redraw();
+    }
+
+    public void rotate30(View view){
+        userAngle = (userAngle + 30 > 360) ? (userAngle + 30 - 360) : userAngle + 30;
+        redraw();
     }
 
     //fills location array

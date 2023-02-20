@@ -56,7 +56,6 @@ public class RoboLocationInputTest {
             TextView familyLocation = activity.findViewById(R.id.FamilyLocation);
             TextView familyLabel = activity.findViewById(R.id.FamilyLabel);
 
-//            myHomeLabel.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_H));
             myHomeLabel.setText("Hello");
             submitButton.performClick();
             ShadowLooper.runUiThreadTasks();
@@ -69,10 +68,6 @@ public class RoboLocationInputTest {
             assertFalse(dialog.isShowing());
             myHomeLocation.setText("12.43,12.43");
             familyLabel.setText("Mom and Dad");
-//            familyLabel.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_H));
-//            myHomeLocation.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_0));
-//            myHomeLocation.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_COMMA));
-//            myHomeLocation.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_0));
 
             submitButton.performClick();
             ShadowLooper.runUiThreadTasks();

@@ -12,7 +12,7 @@ import android.view.View;
 import android.Manifest;
 import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
-    //private OrientationService orientationService;
+
     private int numOfLocations;
 
 
@@ -24,19 +24,11 @@ public class MainActivity extends AppCompatActivity {
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200 );
         }
-        /*
-        TextView locationText = findViewById(R.id.mainMenu);
-        orientationService = OrientationService.singleton(this);
-        orientationService.getOrientation().observe(this, ori -> {
-            locationText.setText(Float.toString(ori));
-        });
-        */
+
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("numOfLocations",MODE_PRIVATE);
         numOfLocations = preferences.getInt("numOfLocations",0);
 
-        /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);*/
+
 
     }
 

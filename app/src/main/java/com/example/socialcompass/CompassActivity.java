@@ -32,6 +32,7 @@ public class CompassActivity extends AppCompatActivity {
     public int[] labelPointerIDs;
     private LocationService locationService;
     private OrientationService orientationService;
+    public CurrentState currentState;
 
 
     //The number of locations that can be shown on the compass
@@ -58,7 +59,7 @@ public class CompassActivity extends AppCompatActivity {
         //set up CurrentState
         locationService = LocationService.singleton(this);
         orientationService = OrientationService.singleton(this);
-        CurrentState currentState = new CurrentState(numOfLocations, locationService, orientationService, this);
+        currentState = new CurrentState(numOfLocations, locationService, orientationService, this);
 
         //initiate currentState and set TextViews to label text for all markers
         for (int i = 0; i < numOfLocations; i++) {
@@ -69,54 +70,6 @@ public class CompassActivity extends AppCompatActivity {
         //set up listener in currentState
         currentState.notifyObserver();
 
-        // get locationService and orientationService
-
-        /*
-        locationService.getLocation().observe(this, loc -> {
-            oldLocation = Double.toString(loc.first) + "," + Double.toString(loc.second);
-            for (int i = 0; i < numOfLocations; i++)
-            {
-                //if no coordinates are sent, don't draw the marker or its label
-                if (Objects.equals(locationsCoordinates[i], "default"))
-                {
-                    findViewById(locationPointerIDs[i]).setVisibility(View.INVISIBLE);
-                    findViewById(labelPointerIDs[i]).setVisibility(View.INVISIBLE);
-                    continue;
-                }
-                //compute angle and update marker and label
-                double angle = AngleUtil.compassCalculateAngle(oldLocation,
-                        locationsCoordinates[i], oldOrientation);
-
-                updatePointer(locationPointerIDs[i], angle);
-                updateLabelPointer(i);
-            }
-        });
-
-        orientationService.getOrientation().observe(this, ori -> {
-            oldOrientation = ori;
-            for (int i = 0; i < numOfLocations; i++)
-            {
-                //if no coordinates are sent, don't draw the marker or its label
-                if (Objects.equals(locationsCoordinates[i], "default"))
-                {
-                    findViewById(locationPointerIDs[i]).setVisibility(View.INVISIBLE);
-                    findViewById(labelPointerIDs[i]).setVisibility(View.INVISIBLE);
-                    continue;
-                }
-                //compute angle and update marker and label
-                double angle = AngleUtil.compassCalculateAngle(oldLocation,
-                        locationsCoordinates[i], oldOrientation);
-
-                updatePointer(locationPointerIDs[i], angle);
-                updateLabelPointer(i);
-            }
-        });
-        */
-
-        //main loop:
-        //initializes the locations of the markers and labels
-        //when we add rotation, this will be done continuously
-
     }
 
     //fills location array
@@ -124,22 +77,11 @@ public class CompassActivity extends AppCompatActivity {
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("locationLabels",MODE_PRIVATE);
         Map<String,?> locationLabels = preferences.getAll();
 
-        /*
-        for(var entry : locationLabels.entrySet()){
-
-
-
-        }
-        */
-
         String[] locationNames = {"myHomeLocation","familyLocation","friendLocation"};
 
         for(int i = 0; i < locationNames.length; i++){
             locationsCoordinates[i] = preferences.getString(locationNames[i], "default");
         }
-
-
-
 
     }
 
@@ -171,27 +113,6 @@ public class CompassActivity extends AppCompatActivity {
         labelPointerIDs[2] = R.id.Label3;
     }
 
-    //updates marker pointer with required angle
-    /*
-    public void updatePointer(int markerId, double angle){
-        ImageView marker = findViewById(markerId);
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) marker.getLayoutParams();
-        layoutParams.circleAngle = (float) angle;
-        marker.setLayoutParams(layoutParams);
-    }
-
-    //updates TextView label pointer with required angle
-    public void updateLabelPointer(int index)
-    {
-        TextView label = findViewById(labelPointerIDs[index]);
-        ImageView marker = findViewById(locationPointerIDs[index]);
-        ConstraintLayout.LayoutParams layoutParamsMarker = (ConstraintLayout.LayoutParams) marker.getLayoutParams();
-        ConstraintLayout.LayoutParams layoutParamsLabel = (ConstraintLayout.LayoutParams) label.getLayoutParams();
-        layoutParamsLabel.circleAngle = layoutParamsMarker.circleAngle;
-        layoutParamsLabel.circleRadius = layoutParamsMarker.circleRadius + 100;
-        label.setLayoutParams(layoutParamsLabel);
-    }
-    */
     public void goHomeClicked(View view) {
         finish();
         Intent intent = new Intent(this, MainActivity.class);

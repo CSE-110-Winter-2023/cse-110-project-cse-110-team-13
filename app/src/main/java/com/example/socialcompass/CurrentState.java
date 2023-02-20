@@ -12,8 +12,10 @@ import java.util.Objects;
 interface Subject {
     //register observer
     void addMarker(String coordinate, String label, Integer locationID, Integer labelID);
+
     //remove observer, will be implemented
     //void removeObserver();
+
     // update observer
     void notifyObserver();
 }
@@ -80,7 +82,7 @@ public class CurrentState implements Subject {
         this.locationService.getLocation().observe((LifecycleOwner) activity, loc -> {
             // since there are two listeners, you cannot update 2 changing values at the same time
             //this is why we have oldLocation and oldOrientation
-            // when this listener is detecting a changing location, it will use an unupdated version
+            // when this listener is detecting a changing location, it will use an unupdated but latest version
             // of orientation to pass in this callback. Then it will update the new changing location into oldLocation
             this.oldLocation = Double.toString(loc.first) + "," + Double.toString(loc.second);
             for (int i = 0; i < numOfLocations; i++)

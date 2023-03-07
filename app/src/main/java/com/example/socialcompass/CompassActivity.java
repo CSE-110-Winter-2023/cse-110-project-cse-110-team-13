@@ -3,6 +3,8 @@ package com.example.socialcompass;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,51 +27,27 @@ import java.util.Objects;
 public class CompassActivity extends AppCompatActivity {
 
 
-    public ArrayList<String> friends = new ArrayList<>();
-    public ArrayList<Integer> markerIDs = new ArrayList<>();
+    public ArrayList<Marker> friends = new ArrayList<>();
+    public RecyclerView recyclerView;
 
-
-    //arrays holding:
-    //-coordinates passed from intent
-    //-labels passed from intent
-    //-IDs for the markers
-    //-IDs for the marker label TextViews
-    public String[] locationsCoordinates;
-    public String[] locationsLabels;
-    public int[] locationPointerIDs;
-    public int[] labelPointerIDs;
     private LocationService locationService;
     private OrientationService orientationService;
     public CurrentState currentState;
 
 
     //The number of locations that can be shown on the compass
-    public int numOfLocations = 3;
+    public int numOfLocations = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
 
-        //initialize arrays
-        locationsCoordinates = new String[numOfLocations];
-        locationsLabels = new String[numOfLocations];
-        locationPointerIDs = new int[numOfLocations];
-        labelPointerIDs = new int[numOfLocations];
-
 
         //fill arrays with data from intents
         loadFriends();
-        createMarkers(this);
-
-        findViewById(markerIDs.get(0)).setVisibility(View.VISIBLE);
-
-        loadLocationCoordinates();
-        loadLocationLabels();
-        loadLocationPointerIDs();
-        loadLabelPointerIDs();
 
 
-
+        /*
 
         //set up CurrentState
         locationService = LocationService.singleton(this);
@@ -84,76 +62,52 @@ public class CompassActivity extends AppCompatActivity {
         }
         //set up listener in currentState
         currentState.notifyObserver();
+        */
+
 
 
 
     }
 
+    /*
+    Loads friends UIDs from shared preferences into array
+     */
     public void loadFriends(){
 
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("UIDs",MODE_PRIVATE);
         var UIDs = preferences.getAll();
 
+        //refactor for marker builder class
         for(String s: UIDs.keySet()){
-            friends.add(s);
+            friends.add(new Marker(s));
         }
 
+        Log.d("test1", "size of friends: " + String.valueOf(friends.size()));
+        fillFriends();
     }
 
-    public void createMarkers(Context context){
+    /*
+    Fills out information about the markers
+     */
+    public void fillFriends(){
 
-        for(String s: friends){
-            createMarker(context);
+        for(Marker friend: friends){
+            friend.setLabel(String.valueOf(numOfLocations));
+            friend.setLabelID(numOfLocations++);
+            //getLabel
+            //getLocation
         }
 
-    }
+        MarkerAdapter adapter = new MarkerAdapter();
+        adapter.setHasStableIds(true);
+        adapter.setMarkers(friends);
 
-    public void createMarker(Context context){
-
-
-    }
-
-
-    //fills location array
-    public void loadLocationCoordinates(){
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("locationLabels",MODE_PRIVATE);
-        Map<String,?> locationLabels = preferences.getAll();
-
-        String[] locationNames = {"myHomeLocation","familyLocation","friendLocation"};
-
-        for(int i = 0; i < locationNames.length; i++){
-            locationsCoordinates[i] = preferences.getString(locationNames[i], "default");
-        }
+        recyclerView = findViewById(R.id.markersList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
     }
 
-    //fill label array
-    public void loadLocationLabels(){
-
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("locationLabels",MODE_PRIVATE);
-        String[] locationNames = {"myHomeLabel","familyLabel","friendLabel"};
-
-        for(int i = 0; i < locationNames.length; i++){
-            locationsLabels[i] = preferences.getString(locationNames[i], "default" + locationNames[i]);
-        }
-
-    }
-
-    //fill marker ID array
-    public void loadLocationPointerIDs()
-    {
-        locationPointerIDs[0] = R.id.Marker1;
-        locationPointerIDs[1] = R.id.Marker2;
-        locationPointerIDs[2] = R.id.Marker3;
-    }
-
-    //fill TextView ID array
-    public void loadLabelPointerIDs()
-    {
-        labelPointerIDs[0] = R.id.Label1;
-        labelPointerIDs[1] = R.id.Label2;
-        labelPointerIDs[2] = R.id.Label3;
-    }
 
     public void goHomeClicked(View view) {
         finish();

@@ -2,119 +2,75 @@ package com.example.socialcompass;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class LocationInput extends AppCompatActivity {
-    private TextView myHomeLocation;
-    private TextView myHomeLabel;
-    private TextView familyLocation;
-    private TextView familyLabel;
-    private TextView friendLocation;
-    private TextView friendLabel;
+
+    //List of UIds that will be passed to compassActivity to create markers for each
+
+    private TextView inputView;
+
+    private final int UIDLENGTH = 32;
+
     private ExecutorService backgroundThreadExecutor = Executors.newSingleThreadExecutor();
-    private Future<Integer> future;
-    private Future<Void> voidFuture;
+    private Future<Boolean> future;
     private Future<Boolean> boolFuture;
 
-    private int numOfLocations = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_input);
-        // Get plain text ids for the fields
-        myHomeLocation = findViewById(R.id.MyLocation);
-        myHomeLabel = findViewById(R.id.MyLabel);
-        familyLocation = findViewById(R.id.FamilyLocation);
-        familyLabel = findViewById(R.id.FamilyLabel);
-        friendLocation = findViewById(R.id.FriendLocation);
-        friendLabel = findViewById(R.id.FriendLabel);
 
+        inputView = findViewById(R.id.InputUId);
 
     }
-    private boolean emptyInputCheck() {
-        int finalInt = 0;
+
+    //Checks if empty
+    protected boolean empty(String input) {
+        boolean empty = false;
         //run in background thread or else it will have async issues.
-        this.future = backgroundThreadExecutor.submit(() -> {
-            int numEmpty = 0;
-            //check each field if it is empty
-            if (myHomeLocation.getText().toString().equals("")) {
-                numEmpty++;
-            }
-            if (familyLocation.getText().toString().equals("")) {
-                numEmpty++;
-            }
-            if (friendLocation.getText().toString().equals("")) {
-                numEmpty++;
-            }
-            return numEmpty;
-        });
+        this.future = backgroundThreadExecutor.submit(() -> input.equals(""));
+
         //try catch phrase to get java squiggly lines to stfu
         try {
-            finalInt = future.get();
+            empty = future.get();
         }
         catch (Exception e) {
         }
         //there are 3 empty fields
-        if (finalInt == 3) {
-            Utilities.showAlert(this, "Please input at least one location!");
-            return false;
-        }
-        //u're good
-        return true;
-    }
-    //check if the type is actually float or not and if the user use too many arguments
-    public boolean typeCheck(String inputCoordinateString) {
-        //since the string is empty, the user didn't input anything in for this field
-        // split the string using the delimiter ","
-        String[] coordinateStringArr = inputCoordinateString.split(",");
-        // check if there are exactly 2 arguments.
-        if(coordinateStringArr.length != 2) {
-            runOnUiThread(() -> {
-                Utilities.showAlert(this, "One or more of your coordinates input are invalid");
-            });
-            return false;
+        if (empty) {
+            //Utilities.showAlert(this, "Please input UID");
+            return true;
         }
 
-        float latitude = 0;
-        float longitude = 0;
-        // check if the string is actually a float
-        try {
-            latitude = Float.parseFloat(coordinateStringArr[0]);
-            longitude = Float.parseFloat(coordinateStringArr[1]);
-        }
-        catch(Exception e) {
-            runOnUiThread(() -> {
-                Utilities.showAlert(this, "One or more of your coordinates input are invalid");
-            });
-
-            return false;
-        }
-        //pass it onto validCoordinateCheck to see if the coordinate is an actual existing coordinate.
-        return validCoordinateCheck(latitude, longitude);
+        return false;
     }
 
-    public boolean validCoordinateCheck(float latitude, float longitude) {
-        //implement api to check if coordinate is a-ok (valid)!!!
-        //there's no api yet so we'll use latitude in the range of -90 to 90 and longitude in the range of -180 to 180, (0,0) is probably GMT at the equator.
-        if(latitude < -90 || latitude > 90) {
+    //checks if valid UID
+    public boolean validUId(String input) {
+        //32 characters, 10 digits A-F
+
+        //check that input is made of correct characters
+        if(!input.matches("-?[0-9a-fA-F]+")){
             runOnUiThread(() -> {
-                Utilities.showAlert(this, "One or more of your coordinates input are invalid");
+                Utilities.showAlert(this, "Your UID should be made of characters A-F, 0-9");
             });
             return false;
         }
-        if(longitude < -180 || longitude >= 180) {
+
+        //Check that input correct length
+        if(input.length() != UIDLENGTH ){
             runOnUiThread(() -> {
-                Utilities.showAlert(this, "One or more of your coordinates input are invalid");
+                Utilities.showAlert(this, "Your UID should be of made of 32 charcters");
             });
             return false;
         }
@@ -122,144 +78,54 @@ public class LocationInput extends AppCompatActivity {
         return true;
     }
 
-    public boolean faultyInputCheck() {
+    public boolean inputCheck(String input){
+
+        if(empty(input)) return false;
+
+        return asyncValidUId(input);
+    }
+
+    public boolean asyncValidUId(String input) {
+
         //async--alert issues dealing
         this.boolFuture = backgroundThreadExecutor.submit(() -> {
             //check type and validity for each field
-
-            String myHomeLocationString = myHomeLocation.getText().toString();
-            if(!myHomeLocationString.equals(""))
-                if(!typeCheck(myHomeLocationString)) return false;
-
-            String familyLocationString = familyLocation.getText().toString();
-            if(!familyLocationString.equals(""))
-                if(!typeCheck(familyLocationString)) return false;
-
-            String friendLocationString = friendLocation.getText().toString();
-            if(!friendLocationString.equals(""))
-                if(!typeCheck(friendLocationString)) return false;
+            if(!validUId(input)) return false;
 
             return true;
         });
 
-        boolean finalCheck = false;
+        boolean checkValid = false;
         //again -- try catch phrase to tell java to stfu
         try{
-            finalCheck = this.boolFuture.get();
+            checkValid = this.boolFuture.get();
         }
-        catch(Exception e) {
+        catch(Exception e) {}
 
-        }
-
-        return finalCheck;
-    }
-
-    public boolean locationLabelPairCheck() {
-        this.boolFuture = backgroundThreadExecutor.submit(() -> {
-            String myHomeLocationString = myHomeLocation.getText().toString();
-            String myHomeLabelString = myHomeLabel.getText().toString();
-            String familyLocationString = familyLocation.getText().toString();
-            String familyLabelString = familyLabel.getText().toString();
-            String friendLocationString = friendLocation.getText().toString();
-            String friendLabelString = friendLabel.getText().toString();
-
-            if(myHomeLocationString.equals("") && !myHomeLabelString.equals("")) {
-                runOnUiThread(() -> {
-                    Utilities.showAlert(this, "One of your label doesn't have a location assigned to it!");
-                });
-                return false;
-            }
-            if(familyLocationString.equals("") && !familyLabelString.equals("")) {
-                runOnUiThread(() -> {
-                    Utilities.showAlert(this, "One of your label doesn't have a location assigned to it!");
-                });
-                return false;
-            }
-            if(friendLocationString.equals("") && !friendLabelString.equals("")) {
-                runOnUiThread(() -> {
-                    Utilities.showAlert(this, "One of your label doesn't have a location assigned to it!");
-                });
-                return false;
-            }
-
-            return true;
-        });
-        boolean finalBool = false;
-        try {
-            finalBool = boolFuture.get();
-        }
-        catch(Exception e) {
-
-        }
-        return finalBool;
+        return checkValid;
     }
 
     public void onSubmitButton(View view) {
-        //check if input query is empty
-        if(!emptyInputCheck()) {
-            return;
-        }
-        // check if label is assigned an empty coordinates
-        if(!locationLabelPairCheck()) {
-            return;
-        }
 
-        // check if coordinates is float and if valid
-        // if all is valid, continue to pass it through to the other activity.
-        if(!faultyInputCheck()) {
-            return;
-        }
+        String input = inputView.getText().toString();
 
-        //bad implementation below because we're getting the floats from the fields again, possible refactoring needed in the future
-        //will use the code below as placeholder for now
+        if(!inputCheck(input)) return;
 
-        String myHomeLocationString = myHomeLocation.getText().toString();
-        String myHomeLabelString = myHomeLabel.getText().toString();
-        String familyLocationString = familyLocation.getText().toString();
-        String familyLabelString = familyLabel.getText().toString();
-        String friendLocationString = friendLocation.getText().toString();
-        String friendLabelString = friendLabel.getText().toString();
+        //Temp stores each UID to UID pair
 
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("locationLabels",MODE_PRIVATE);
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("UIDs",MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        Intent intent = new Intent(this, CompassActivity.class);
 
-        if(!myHomeLocationString.equals("")) {
-            editor.putString("myHomeLocation", myHomeLocationString);
-            editor.putString("myHomeLabel", myHomeLabelString);
-            intent.putExtra("myHomeLocation", myHomeLocationString);
-            intent.putExtra("myHomeLabel", myHomeLabelString);
-            numOfLocations++;
-        }
-
-        if(!familyLocationString.equals("")) {
-            editor.putString("familyLocation", familyLocationString);
-            editor.putString("familyLabel", familyLabelString);
-            intent.putExtra("familyLocation", familyLocationString);
-            intent.putExtra("familyLabel", familyLabelString);
-            numOfLocations++;
-        }
-
-        if(!friendLocationString.equals("")) {
-            editor.putString("friendLocation", friendLocationString);
-            editor.putString("friendLabel", friendLabelString);
-            intent.putExtra("friendLocation", friendLocationString);
-            intent.putExtra("friendLabel", friendLabelString);
-            numOfLocations++;
-        }
-
+        editor.putString(input,input);
         editor.apply();
 
-        preferences = getApplicationContext().getSharedPreferences("numOfLocations",MODE_PRIVATE);
-        editor = preferences.edit();
-        editor.putInt("numOfLocations",numOfLocations);
-        editor.apply();
+        inputView.setText("");
 
+    }
 
+    public void onExitClicked(View view) {
 
-
-
-        startActivity(intent);
+        finish();
 
     }
 }

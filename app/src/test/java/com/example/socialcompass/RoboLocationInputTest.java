@@ -30,6 +30,7 @@ import java.util.concurrent.TimeoutException;
 
 @RunWith(RobolectricTestRunner.class)
 public class RoboLocationInputTest {
+    /*
     //test all empty fields
     @Test
     public void testEmptyInput() {
@@ -155,6 +156,8 @@ public class RoboLocationInputTest {
             assertEquals("One or more of your coordinates input are invalid", rootView.getText().toString());
         });
     }
+
+     */
 
     @Test
     public void testServerGet()

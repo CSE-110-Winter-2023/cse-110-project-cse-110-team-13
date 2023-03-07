@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,6 +14,7 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,6 +23,12 @@ import java.util.Map;
 import java.util.Objects;
 
 public class CompassActivity extends AppCompatActivity {
+
+
+    public ArrayList<String> friends = new ArrayList<>();
+    public ArrayList<Integer> markerIDs = new ArrayList<>();
+
+
     //arrays holding:
     //-coordinates passed from intent
     //-labels passed from intent
@@ -50,10 +58,17 @@ public class CompassActivity extends AppCompatActivity {
 
 
         //fill arrays with data from intents
+        loadFriends();
+        createMarkers(this);
+
+        findViewById(markerIDs.get(0)).setVisibility(View.VISIBLE);
+
         loadLocationCoordinates();
         loadLocationLabels();
         loadLocationPointerIDs();
         loadLabelPointerIDs();
+
+
 
 
         //set up CurrentState
@@ -70,7 +85,34 @@ public class CompassActivity extends AppCompatActivity {
         //set up listener in currentState
         currentState.notifyObserver();
 
+
+
     }
+
+    public void loadFriends(){
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("UIDs",MODE_PRIVATE);
+        var UIDs = preferences.getAll();
+
+        for(String s: UIDs.keySet()){
+            friends.add(s);
+        }
+
+    }
+
+    public void createMarkers(Context context){
+
+        for(String s: friends){
+            createMarker(context);
+        }
+
+    }
+
+    public void createMarker(Context context){
+
+
+    }
+
 
     //fills location array
     public void loadLocationCoordinates(){

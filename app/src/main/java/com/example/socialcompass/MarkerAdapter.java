@@ -48,10 +48,6 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.ViewHolder
         return markers.size();
     }
 
-    @Override
-    public long getItemId(int position){
-        return markers.get(position).getLabelID();
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
@@ -79,6 +75,8 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.ViewHolder
             this.labelView.setText(marker.getLabel());
             Log.d("test1", "Setting Marker with label:" + String.valueOf(marker.getLabel()));
 
+
+            //SET MARKER ANGLE HERE
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
             layoutParams.circleAngle = (float) angle;
             angle += 90;

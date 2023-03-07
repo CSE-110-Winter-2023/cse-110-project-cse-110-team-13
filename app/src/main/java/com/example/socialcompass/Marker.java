@@ -15,7 +15,10 @@ public class Marker implements Location, Observer {
     private Integer markerLocationID;
     private Integer markerLabelID;
 
+
     private String UID;
+    public Marker(){
+    }
 
     public Marker(String UID){
         this.UID = UID;
@@ -27,6 +30,13 @@ public class Marker implements Location, Observer {
         this.markerLabel = label;
         this.markerLocationID = locationID;
         this.markerLabelID = labelID;
+    }
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
     }
 
     public String getCoordinate() {

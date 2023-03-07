@@ -77,9 +77,11 @@ public class CompassActivity extends AppCompatActivity {
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("UIDs",MODE_PRIVATE);
         var UIDs = preferences.getAll();
 
+        MarkerFactory factory = new MarkerFactory();
+
         //refactor for marker builder class
-        for(String s: UIDs.keySet()){
-            friends.add(new Marker(s));
+        for(String key: UIDs.keySet()){
+            friends.add(factory.createMarker(key));
         }
 
         Log.d("test1", "size of friends: " + String.valueOf(friends.size()));
@@ -90,13 +92,6 @@ public class CompassActivity extends AppCompatActivity {
     Fills out information about the markers
      */
     public void fillFriends(){
-
-        for(Marker friend: friends){
-            friend.setLabel(String.valueOf(numOfLocations));
-            friend.setLabelID(numOfLocations++);
-            //getLabel
-            //getLocation
-        }
 
         MarkerAdapter adapter = new MarkerAdapter();
         adapter.setHasStableIds(true);

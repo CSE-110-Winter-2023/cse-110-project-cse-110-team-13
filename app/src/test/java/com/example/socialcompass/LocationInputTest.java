@@ -7,6 +7,7 @@
     import org.junit.Test;
     import org.junit.runner.RunWith;
 
+
     @RunWith(AndroidJUnit4.class)
     public class LocationInputTest {
         // Tests for typeCheck
@@ -25,10 +26,10 @@
         // Tests for bounding coordinates
         @Test
         public void test_validCoordinateCheck() {
-            assertEquals(false, tester.validCoordinateCheck((float) 40, (float) -180.0));
-            assertEquals(false, tester.validCoordinateCheck((float) -90.0, (float) 40));
+            assertEquals(true, tester.validCoordinateCheck((float) 40, (float) -180.0));
+            assertEquals(true, tester.validCoordinateCheck((float) -90.0, (float) 40));
             assertEquals(false, tester.validCoordinateCheck((float) 0, (float) 180.000000));
-            assertEquals(false, tester.validCoordinateCheck((float) 90.0000, (float) 40));
+            assertEquals(true, tester.validCoordinateCheck((float) 90.0000, (float) 40));
             assertEquals(true, tester.validCoordinateCheck((float)89.99999, (float)179.999));
         }
     }

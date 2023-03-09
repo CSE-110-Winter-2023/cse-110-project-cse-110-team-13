@@ -45,11 +45,30 @@
          />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/greenDot"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/CompassFace"
         app:srcCompat="@drawable/greendot"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
+        tools:layout_editor_absoluteX="16dp" />
+
+    <ImageView
+        android:id="@+id/redDot"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/CompassFace"
+        app:srcCompat="@drawable/reddot"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
+        android:id="@+id/timeLastOnline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="39dp"
+        android:text="1 hr"
+        app:layout_constraintStart_toStartOf="@+id/redDot"
+        tools:layout_editor_absoluteY="30dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

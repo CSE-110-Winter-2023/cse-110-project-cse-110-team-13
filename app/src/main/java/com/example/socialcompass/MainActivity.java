@@ -28,15 +28,12 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("numOfLocations",MODE_PRIVATE);
         numOfLocations = preferences.getInt("numOfLocations",0);
 
-
-
     }
 
     public void locationInputEnter(View view) {
 
         Intent intent = new Intent(this, LocationInput.class);
         startActivity(intent);
-
 
     }
 
@@ -57,10 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void resetButtonClicked(View view) {
 
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("numOfLocations",MODE_PRIVATE);
-        preferences.edit().clear().commit();
-
-        preferences = getApplicationContext().getSharedPreferences("locationLabels",MODE_PRIVATE);
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("UIDs",MODE_PRIVATE);
         preferences.edit().clear().commit();
 
         finish();

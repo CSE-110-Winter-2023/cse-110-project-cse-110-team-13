@@ -2,38 +2,28 @@ package com.example.socialcompass;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class CompassActivity extends AppCompatActivity {
 
 
     public ArrayList<Marker> friends = new ArrayList<>();
-    public RecyclerView recyclerView;
 
     private LocationService locationService;
     private OrientationService orientationService;
+    private MarkerBuilder builder = new MarkerBuilder();
     public CurrentState currentState;
 
 
@@ -46,7 +36,8 @@ public class CompassActivity extends AppCompatActivity {
 
 
         //fill arrays with data from intents
-        loadFriends();
+        loadFriendsFromUIDs();
+        fillFriends();
 
 
         /*
@@ -74,64 +65,26 @@ public class CompassActivity extends AppCompatActivity {
     /*
     Loads friends UIDs from shared preferences into array
      */
-    public void loadFriends(){
+    public void loadFriendsFromUIDs(){
 
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("UIDs",MODE_PRIVATE);
         var UIDs = preferences.getAll();
 
-        MarkerFactory factory = new MarkerFactory();
-
         //refactor for marker builder class
         for(String key: UIDs.keySet()){
-            friends.add(factory.createMarker(key));
+            friends.add(builder.createMarker(key));
         }
 
-        Log.d("test1", "size of friends: " + String.valueOf(friends.size()));
-        fillFriends();
     }
 
-    /*
-    Creates UI elements for each marker
-     */
+
+
     public void fillFriends(){
-
-        /*
-        MarkerAdapter adapter = new MarkerAdapter();
-        adapter.setHasStableIds(true);
-        adapter.setMarkers(friends);
-
-        recyclerView = findViewById(R.id.markersList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-
-         */
-        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        int index = 0;
         for(var marker:friends){
-
-            View v = vi.inflate(R.layout.marker, null);
-
-            // fill in any details dynamically here
-            TextView textView = (TextView) v.findViewById(R.id.Label);
-            textView.setText(marker.getLabel());
-            marker.setLabelID(R.id.Label);
-            ImageView imageView = (ImageView) v.findViewById(R.id.Marker);
-            marker.setLocationID(R.id.Marker);
-            imageView.setImageResource(R.drawable.compass_face);
-
-            // insert into main view
-            ViewGroup insertPoint = (ViewGroup) findViewById(R.id.compass);
-            insertPoint.addView(v, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-
+            builder.addUIElements(index,marker,this);
+            index++;
         }
-
-
-
-
-
-
-
     }
 
 

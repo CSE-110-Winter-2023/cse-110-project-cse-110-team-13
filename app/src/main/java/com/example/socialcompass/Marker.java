@@ -25,12 +25,12 @@ public class Marker implements Location, Observer {
 
     }
 
-    public Marker(String coordinate, String label, Integer locationID, Integer labelID) {
-        this.markerCoordinate = coordinate;
-        this.markerLabel = label;
-        this.markerLocationID = locationID;
-        this.markerLabelID = labelID;
-    }
+//    public Marker(String coordinate, String label, Integer locationID, Integer labelID) {
+//        this.markerCoordinate = coordinate;
+//        this.markerLabel = label;
+//        this.markerLocationID = locationID;
+//        this.markerLabelID = labelID;
+//    }
     public String getUID() {
         return UID;
     }

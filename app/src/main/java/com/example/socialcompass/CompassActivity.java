@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 public class CompassActivity extends AppCompatActivity {
 
-
     public ArrayList<Marker> friends = new ArrayList<>();
 
     private LocationService locationService;
@@ -38,7 +37,6 @@ public class CompassActivity extends AppCompatActivity {
         //fill arrays with data from intents
         loadFriendsFromUIDs();
         fillFriends();
-
 
         /*
 
@@ -77,8 +75,9 @@ public class CompassActivity extends AppCompatActivity {
 
     }
 
-
-
+    /*
+    Creates the UIElements for markers
+     */
     public void fillFriends(){
         int index = 0;
         for(var marker:friends){
@@ -86,7 +85,6 @@ public class CompassActivity extends AppCompatActivity {
             index++;
         }
     }
-
 
     public void goHomeClicked(View view) {
         finish();

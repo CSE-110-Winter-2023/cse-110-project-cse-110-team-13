@@ -50,19 +50,10 @@ public class MarkerBuilder {
         ViewGroup insertPoint = (ViewGroup) activity.findViewById(R.id.compass);
         insertPoint.addView(v, index, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
+        //go through the ViewGroups displayed on the compass activitv until get to viewgroup holding marker and label
         var markerView = ((ViewGroup)((ViewGroup)insertPoint.getChildAt(index)).getChildAt(0));
-        var locationId = markerView.getChildAt(0);
-        var labelId = markerView.getChildAt(1);
-        ((TextView)markerView.getChildAt(1)).setText(String.valueOf(index));
-
         marker.setLabel ((TextView) markerView.getChildAt(1));
         marker.setLocation ((ImageView) markerView.getChildAt(0));
-
-        Log.d("test3","insert point: " +String.valueOf(insertPoint));
-        Log.d("test3","Child 1 : " +String.valueOf(insertPoint.getChildAt(index)) + " at index " + index);
-        Log.d("test3","child 2: " +String.valueOf(((ViewGroup)insertPoint.getChildAt(index)).getChildAt(0)));
-        Log.d("test3","child 3: " +String.valueOf(markerView.getChildAt(1)));
-        Log.d("test3", "location ID: " + String.valueOf(locationId));
 
         return this;
     }

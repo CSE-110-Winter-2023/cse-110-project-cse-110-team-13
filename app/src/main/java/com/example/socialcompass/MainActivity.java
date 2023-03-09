@@ -40,14 +40,9 @@ public class MainActivity extends AppCompatActivity {
     public void enterCompassActivity(View view) {
 
         //if there are no locations entered then go to location entering screen
-        if(numOfLocations == 0){
 
-          //  Utilities.showAlert(this, "Must enter at least 1 location");
-        }
-        else{
             Intent intent = new Intent(this, CompassActivity.class);
             startActivity(intent);
-        }
 
 
     }

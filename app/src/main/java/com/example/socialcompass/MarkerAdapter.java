@@ -78,10 +78,9 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.ViewHolder
 
             //SET MARKER ANGLE HERE
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
-            layoutParams.circleAngle = (float) angle;
             angle += 90;
+            layoutParams.circleAngle = (float) angle;
             imageView.setLayoutParams(layoutParams);
-
             //hm dont think this works
             this.marker.setLabelID(R.id.Marker);
             this.marker.setLocationID(R.id.Label);

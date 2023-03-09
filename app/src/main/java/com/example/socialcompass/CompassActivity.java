@@ -34,7 +34,8 @@ public class CompassActivity extends AppCompatActivity {
     private OrientationService orientationService;
     public CurrentState currentState;
 
-
+    public String publicCodeUID = "team13testdummy";
+    public String privateCodeUID = "team13testdummy";
     //The number of locations that can be shown on the compass
     public int numOfLocations = 0;
     @Override
@@ -46,7 +47,7 @@ public class CompassActivity extends AppCompatActivity {
         //fill arrays with data from intents
         loadFriends();
 
-
+        CurrentState currentState = new CurrentState(this, friends, )
         /*
 
         //set up CurrentState

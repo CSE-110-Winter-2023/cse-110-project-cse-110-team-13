@@ -13,7 +13,9 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -89,10 +91,11 @@ public class CompassActivity extends AppCompatActivity {
     }
 
     /*
-    Fills out information about the markers
+    Creates UI elements for each marker
      */
     public void fillFriends(){
 
+        /*
         MarkerAdapter adapter = new MarkerAdapter();
         adapter.setHasStableIds(true);
         adapter.setMarkers(friends);
@@ -100,6 +103,33 @@ public class CompassActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.markersList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+         */
+        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        for(var marker:friends){
+
+            View v = vi.inflate(R.layout.marker, null);
+
+            // fill in any details dynamically here
+            TextView textView = (TextView) v.findViewById(R.id.Label);
+            textView.setText(marker.getLabel());
+            marker.setLabelID(R.id.Label);
+            ImageView imageView = (ImageView) v.findViewById(R.id.Marker);
+
+            // insert into main view
+            ViewGroup insertPoint = (ViewGroup) findViewById(R.id.compass);
+            insertPoint.addView(v, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            marker.setLocationID(R.id.Marker);
+            imageView.setImageResource(R.drawable.compass_face);
+
+        }
+
+
+
+
+
+
 
     }
 

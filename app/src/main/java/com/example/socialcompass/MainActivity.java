@@ -13,7 +13,7 @@ import android.Manifest;
 import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
-    private int numOfLocations;
+    private int numOfLocations = 1;
 
 
     @Override
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("numOfLocations",MODE_PRIVATE);
-        numOfLocations = preferences.getInt("numOfLocations",0);
+        numOfLocations = preferences.getInt("numOfLocations",1);
 
     }
 
@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
             Intent intent = new Intent(this, CompassActivity.class);
             startActivity(intent);
+
 
 
     }

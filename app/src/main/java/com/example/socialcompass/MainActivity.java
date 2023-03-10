@@ -13,9 +13,6 @@ import android.Manifest;
 import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
-    private int numOfLocations = 1;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,9 +21,6 @@ public class MainActivity extends AppCompatActivity {
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200 );
         }
-
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("numOfLocations",MODE_PRIVATE);
-        numOfLocations = preferences.getInt("numOfLocations",1);
 
     }
 
@@ -39,13 +33,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void enterCompassActivity(View view) {
 
-        //if there are no locations entered then go to location entering screen
+        //if there are no locations show alert
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("UIDs",MODE_PRIVATE);
 
+        int numOfLocations = preferences.getAll().size();
+
+        if(numOfLocations == 0){
+            runOnUiThread(() -> {
+                Utilities.showAlert(this, "Must have at least 1 location entered");
+            });
+        }
+        else {
             Intent intent = new Intent(this, CompassActivity.class);
             startActivity(intent);
-
-
-
+        }
     }
 
     public void resetButtonClicked(View view) {
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         preferences.edit().clear().commit();
 
         finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
 
 
     }

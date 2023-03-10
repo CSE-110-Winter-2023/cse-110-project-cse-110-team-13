@@ -69,6 +69,39 @@ public class ServerAPI {
         return future;
     }
 
+    //checks if UID is in the server
+    //should only be called asynchronously
+    @Nullable
+    private boolean checkUID(@NonNull String uuid) {
+        // URLs cannot contain spaces, so we replace them with %20.
+        String uuidPath = uuid.replace(" ", "%20");
+
+        Request request = new Request.Builder()
+                .url(SERVERURL + uuidPath)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+            return true;
+        }
+        catch(Exception e){
+            Log.e("Error getting note", e.toString());
+        }
+        return false;
+    }
+
+    //asyncly gets friend
+    public Future<Boolean> checkUIDAsync(String uuid) {
+
+        var executor = Executors.newSingleThreadExecutor();
+        var future = executor.submit(() -> checkUID(uuid));
+
+        return future;
+    }
+
+
+
+
     //defines JSON MediaType for use by other methods
     public static final MediaType JSON
             = MediaType.get("application/json; charset=utf-8");

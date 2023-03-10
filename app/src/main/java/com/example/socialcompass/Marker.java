@@ -1,7 +1,12 @@
 package com.example.socialcompass;
+
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 interface Location {
     String getCoordinate();
-    String getLabel();
+    String getMarkerLabel();
     Integer getLabelID();
     Integer getLocationID();
 }
@@ -14,6 +19,11 @@ public class Marker implements Location, Observer {
     private String markerLabel;
     private Integer markerLocationID;
     private Integer markerLabelID;
+
+
+
+    private TextView label;
+    private ImageView location;
 
 
     private String UID;
@@ -43,7 +53,7 @@ public class Marker implements Location, Observer {
         return this.markerCoordinate;
     }
 
-    public String getLabel() {
+    public String getMarkerLabel() {
         return this.markerLabel;
     }
 
@@ -70,6 +80,23 @@ public class Marker implements Location, Observer {
     public void setLabelID(Integer ID) {
         this.markerLabelID = ID;
     }
+
+    public void setLabel(TextView label) {
+        this.label = label;
+    }
+
+    public TextView getLabel(){
+        return this.label;
+    }
+
+    public ImageView getLocation() {
+        return location;
+    }
+
+    public void setLocation(ImageView location) {
+        this.location = location;
+    }
+
     public void update() {
 
     }

@@ -20,8 +20,6 @@ public class Marker implements Location, Observer {
     private Integer markerLocationID;
     private Integer markerLabelID;
 
-
-
     private TextView label;
     private ImageView location;
 

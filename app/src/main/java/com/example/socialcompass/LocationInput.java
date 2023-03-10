@@ -66,15 +66,6 @@ public class LocationInput extends AppCompatActivity {
             });
             return false;
         }
-
-        //Check that input correct length
-        if(input.length() != UIDLENGTH ){
-            runOnUiThread(() -> {
-                Utilities.showAlert(this, "Your UID should be of made of 32 charcters");
-            });
-            return false;
-        }
-
         return true;
     }
 

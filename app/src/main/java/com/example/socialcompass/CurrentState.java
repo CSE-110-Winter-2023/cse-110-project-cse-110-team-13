@@ -10,12 +10,6 @@ import java.util.List;
 import java.util.Objects;
 
 interface Subject {
-    //register observer
-    void addMarker(String coordinate, String label, Integer locationID, Integer labelID);
-
-    //remove observer, will be implemented
-    //void removeObserver();
-
     // update observer
     void notifyObserver();
 }
@@ -29,18 +23,14 @@ public class CurrentState implements Subject {
     private OrientationService orientationService; //orientation service
     private String oldLocation; //oldLocation so that the listeners can use a placeholder value
     private float oldOrientation; // oldOrientation so that the listeners can use a placeholder value
-    public List<Marker> markerList; // list of observers, in this case, Markers
+    public ArrayList<Marker> markerList; // list of observers, in this case, Markers
     public int numOfLocations; // number of observers
     private Activity activity; // activity
     private DisplayUpdate updater; // UI updater
 
     // constructor
-    public CurrentState(int numberOfLocations, LocationService locationService, OrientationService orientationService, Activity activity) {
-        this.numOfLocations = numberOfLocations;
-        this.markerList = new ArrayList<Marker>();
-        for (int i = 0; i < numberOfLocations; i++) {
-            this.markerList.add(new Marker("","",0,0));
-        }
+    public CurrentState(LocationService locationService, OrientationService orientationService, Activity activity, ArrayList<Marker> list) {
+        this.markerList = list;
         this.locationService = locationService;
         this.orientationService = orientationService;
         this.oldLocation = "0,0";
@@ -48,13 +38,13 @@ public class CurrentState implements Subject {
         this.activity = activity;
         this.updater = new DisplayUpdate(activity);
     }
-    //add a new marker into currentState, aka registering a new observer. This will be needed when
-    // we have an add new location feature in the compass
+    /*
+    // add a new marker into currentState, aka registering a new observer.
     public void addMarker(String coordinate, String label, Integer locationID, Integer labelID) {
         markerList.add(new Marker(coordinate, label, locationID, labelID));
         this.numOfLocations+=1;
     }
-
+    */
     // set the coordinate, label, location id and label id (for textview) for a marker.
     public void setMarkerInfo(int i, String coordinate, String label, Integer locationID, Integer labelID) {
         setMarkerCoordinate(i, coordinate);
@@ -85,15 +75,16 @@ public class CurrentState implements Subject {
             // when this listener is detecting a changing location, it will use an unupdated but latest version
             // of orientation to pass in this callback. Then it will update the new changing location into oldLocation
             this.oldLocation = Double.toString(loc.first) + "," + Double.toString(loc.second);
-            for (int i = 0; i < numOfLocations; i++)
+            for (int i = 0; i < markerList.size(); i++)
             {
                 //if no coordinates are sent, don't draw the marker or its label
+                /*
                 if (Objects.equals(markerList.get(i).getCoordinate(), "default"))
                 {
                     activity.findViewById(markerList.get(i).getLocationID()).setVisibility(View.INVISIBLE);
                     activity.findViewById(markerList.get(i).getLabelID()).setVisibility(View.INVISIBLE);
                     continue;
-                }
+                }*/
                 //compute angle and update marker and label
                 double angle = AngleUtil.compassCalculateAngle(oldLocation,
                         markerList.get(i).getCoordinate(), oldOrientation);
@@ -105,15 +96,16 @@ public class CurrentState implements Subject {
 
         this.orientationService.getOrientation().observe((LifecycleOwner) activity, ori -> {
             this.oldOrientation = ori;
-            for (int i = 0; i < numOfLocations; i++)
+            for (int i = 0; i < markerList.size(); i++)
             {
                 //if no coordinates are sent, don't draw the marker or its label
+                /*
                 if (Objects.equals(markerList.get(i).getCoordinate(), "default"))
                 {
                     activity.findViewById(markerList.get(i).getLocationID()).setVisibility(View.INVISIBLE);
                     activity.findViewById(markerList.get(i).getLabelID()).setVisibility(View.INVISIBLE);
                     continue;
-                }
+                }*/
                 //compute angle and update marker and label
                 double angle = AngleUtil.compassCalculateAngle(oldLocation,
                         markerList.get(i).getCoordinate(), oldOrientation);

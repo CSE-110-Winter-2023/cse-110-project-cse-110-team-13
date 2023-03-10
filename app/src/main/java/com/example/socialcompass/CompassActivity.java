@@ -25,7 +25,6 @@ public class CompassActivity extends AppCompatActivity {
     private MarkerBuilder builder = new MarkerBuilder();
     public CurrentState currentState;
 
-
     //The number of locations that can be shown on the compass
     public int numOfLocations = 0;
     @Override
@@ -34,30 +33,16 @@ public class CompassActivity extends AppCompatActivity {
         setContentView(R.layout.activity_compass);
 
 
-        //fill arrays with data from intents
+        // fill arrays with data from intents
         loadFriendsFromUIDs();
         fillFriends();
 
-        /*
-
-        //set up CurrentState
         locationService = LocationService.singleton(this);
         orientationService = OrientationService.singleton(this);
-        currentState = new CurrentState(numOfLocations, locationService, orientationService, this);
-
-        //initiate currentState and set TextViews to label text for all markers
-        for (int i = 0; i < numOfLocations; i++) {
-            currentState.setMarkerInfo(i, locationsCoordinates[i], locationsLabels[i],
-                    locationPointerIDs[i], labelPointerIDs[i]);
-            ((TextView) findViewById(labelPointerIDs[i])).setText(locationsLabels[i]);
+        for (int i = 0; i < friends.size(); i++) {
+            builder.addUIElements(i, friends.get(i), this);
         }
-        //set up listener in currentState
-        currentState.notifyObserver();
-        */
-
-
-
-
+        //currentState.notifyObserver();
     }
 
     /*
@@ -79,11 +64,8 @@ public class CompassActivity extends AppCompatActivity {
     Creates the UIElements for markers
      */
     public void fillFriends(){
-        int index = 0;
-        for(var marker:friends){
-            builder.addUIElements(index,marker,this);
-            index++;
-        }
+        int numLocations = friends.size();
+        currentState = new CurrentState(locationService, orientationService, this, friends);
     }
 
     public void goHomeClicked(View view) {

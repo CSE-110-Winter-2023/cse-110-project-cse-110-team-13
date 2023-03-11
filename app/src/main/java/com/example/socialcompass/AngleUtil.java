@@ -20,19 +20,45 @@ public class AngleUtil {
     // userLocation: String - the string of the user's current coordinate in the format "<latitude>,<longitude>"
     // objectLocation:  String - the string of the marker's current coordinate in the format "<latitude>,<longitude>"
     // orientation: float - the current orientation of the phone wrt North. In radian.
-    public static float compassCalculateAngle(String userLocation, String objectLocation, float orientation)
-    {
+    public static float compassCalculateAngle(String userLocation, String objectLocation, float orientation) throws Exception {
         //convert radian to angles
         float currOrientation = orientation * 180 / ((float) Math.PI);
         //split object coords into x and y
         String[] objectCoords = objectLocation.split(",");
-        double lat1 = Double.parseDouble(objectCoords[0]);
-        double lat2 = Double.parseDouble(objectCoords[1]);
+        double lat1 = 0;
+        double lat2 = 0;
+        try {
+            lat1 = Double.parseDouble(objectCoords[0]);
+        } catch (Exception e) {
+            throw new Exception(e);
+
+        }
+        try {
+            lat2 = Double.parseDouble(objectCoords[1]);
+
+        } catch (Exception e) {
+            throw new Exception(e);
+
+        }
         var markerCoord = new LatLng(lat1, lat2);
 
         String[] location = userLocation.split(",");
-        double lat3 = Double.parseDouble(location[0]);
-        double lat4 = Double.parseDouble(location[1]);
+        double lat3 = 0;
+        try {
+            lat3 = Double.parseDouble(location[0]);
+
+        } catch (Exception e) {
+            throw new Exception(e);
+
+        }
+        double lat4 = 0;
+        try {
+            lat4 = Double.parseDouble(location[1]);
+        } catch (Exception e) {
+            throw new Exception(e);
+
+        }
+
         var userCoord = new LatLng(lat3, lat4);
         //get differences between both for angle compute
         float northRelative = (float) SphericalUtil.computeHeading(userCoord, markerCoord);

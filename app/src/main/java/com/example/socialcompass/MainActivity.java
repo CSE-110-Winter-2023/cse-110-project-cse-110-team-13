@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
         //if there are no locations entered then go to location entering screen
 
-            Intent intent = new Intent(this, CompassActivity.class);
-            startActivity(intent);
+        Intent intent = new Intent(this, CompassActivity.class);
+        startActivity(intent);
 
 
 

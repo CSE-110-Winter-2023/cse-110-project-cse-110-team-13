@@ -31,7 +31,7 @@ public class MarkerBuilder {
         catch(Exception e){}
 
         currMarker.setLabel(friend.getLabel());
-        currMarker.setCoordinate( String.valueOf(friend.getLatitude()) + String.valueOf(friend.getLongitude()));
+        currMarker.setCoordinate( String.valueOf(friend.getLatitude()) + "," + String.valueOf(friend.getLongitude()));
 
         return currMarker;
     }

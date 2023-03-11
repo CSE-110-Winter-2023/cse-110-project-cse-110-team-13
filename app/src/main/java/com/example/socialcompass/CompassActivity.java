@@ -18,7 +18,10 @@ public class CompassActivity extends AppCompatActivity {
     private LocationService locationService;
     private OrientationService orientationService;
     private MarkerBuilder builder = new MarkerBuilder();
-    private DisplayUpdate display = new DisplayUpdate(this);
+    private Display display;
+    private Device device;
+    private ServerListener serverListener;
+    private String privateUID = "team13testdummy";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +32,34 @@ public class CompassActivity extends AppCompatActivity {
         loadFriendsFromUIDs();
         for (int i = 0; i < friends.size(); i++) {
             var currMarker = friends.get(i);
-            // float angle = AngleUtil.compassCalculateAngle("0,0", currMarker.getCoordinate(), 0);
-
+            AngleUtil util = new AngleUtil();
+            try {
+                float angle = util.compassCalculateAngle("0,0", currMarker.getCoordinate(), 0);
+            }
+            catch(Exception e) {};
             builder = builder.addUIElements(i, currMarker, this);
         }
-    }
 
+
+        LocationService locationService = new LocationService(this);
+        OrientationService orientationService = new OrientationService(this);
+        Display display = new Display(this, this.friends);
+        Device device = new Device(this, locationService, orientationService);
+        ServerListener serverListener = new ServerListener(this, this.privateUID);
+        CurrentState currentState = new CurrentState(this, serverListener, device, display);
+
+        serverListener.registerServerObserver(currentState);
+        device.registerDeviceObserver(currentState);
+
+
+        initialise();
+
+    }
+    //set up listeners in device and serverListener.
+    public void initialise() {
+        device.notifyObserver();
+        serverListener.notifyObserver();
+    }
     /*
     Loads friends UIDs from shared preferences into array
      */

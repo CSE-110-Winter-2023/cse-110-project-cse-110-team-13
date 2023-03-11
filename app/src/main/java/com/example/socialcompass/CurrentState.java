@@ -44,7 +44,7 @@ public class CurrentState implements Subject {
         markerList.add(new Marker(coordinate, label, locationID, labelID));
         this.numOfLocations+=1;
     }
-    */
+
     // set the coordinate, label, location id and label id (for textview) for a marker.
     public void setMarkerInfo(int i, String coordinate, String label, Integer locationID, Integer labelID) {
         setMarkerCoordinate(i, coordinate);
@@ -67,8 +67,11 @@ public class CurrentState implements Subject {
     }
     // notify observer method.
     // this will employ two listeners, one for the location service, the other for the orientation.
-
+*/
     public void notifyObserver() {
+
+    }
+    /*
         this.locationService.getLocation().observe((LifecycleOwner) activity, loc -> {
             // since there are two listeners, you cannot update 2 changing values at the same time
             //this is why we have oldLocation and oldOrientation
@@ -78,13 +81,13 @@ public class CurrentState implements Subject {
             for (int i = 0; i < markerList.size(); i++)
             {
                 //if no coordinates are sent, don't draw the marker or its label
-                /*
+
                 if (Objects.equals(markerList.get(i).getCoordinate(), "default"))
                 {
                     activity.findViewById(markerList.get(i).getLocationID()).setVisibility(View.INVISIBLE);
                     activity.findViewById(markerList.get(i).getLabelID()).setVisibility(View.INVISIBLE);
                     continue;
-                }*/
+                }
                 //compute angle and update marker and label
                 double angle = AngleUtil.compassCalculateAngle(oldLocation,
                         markerList.get(i).getCoordinate(), oldOrientation);
@@ -105,7 +108,7 @@ public class CurrentState implements Subject {
                     activity.findViewById(markerList.get(i).getLocationID()).setVisibility(View.INVISIBLE);
                     activity.findViewById(markerList.get(i).getLabelID()).setVisibility(View.INVISIBLE);
                     continue;
-                }*/
+                }
                 //compute angle and update marker and label
                 double angle = AngleUtil.compassCalculateAngle(oldLocation,
                         markerList.get(i).getCoordinate(), oldOrientation);
@@ -114,5 +117,5 @@ public class CurrentState implements Subject {
                 updater.updateLabelPointer(markerList.get(i).getLabelID(), markerList.get(i).getLocationID());
             }
         });
-    }
+    }*/
 }

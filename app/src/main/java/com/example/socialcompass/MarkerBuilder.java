@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 public class MarkerBuilder {
 
     Marker currMarker;
@@ -52,6 +54,10 @@ public class MarkerBuilder {
 
         //go through the ViewGroups displayed on the compass activity until get to viewgroup holding marker and label
         var markerView = ((ViewGroup)((ViewGroup)insertPoint.getChildAt(index)).getChildAt(0));
+        ConstraintLayout.LayoutParams imageLayout = (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
+        imageLayout.circleAngle = 0;
+        imageLayout.circleRadius = 400;
+        imageView.setLayoutParams(imageLayout);
         marker.setLabel ((TextView) markerView.getChildAt(1));
         marker.setLocation ((ImageView) markerView.getChildAt(0));
         return this;

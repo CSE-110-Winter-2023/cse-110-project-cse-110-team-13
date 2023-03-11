@@ -1,18 +1,13 @@
 package com.example.socialcompass;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.lifecycle.LiveData;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Pair;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -23,26 +18,21 @@ public class CompassActivity extends AppCompatActivity {
     private LocationService locationService;
     private OrientationService orientationService;
     private MarkerBuilder builder = new MarkerBuilder();
-    public CurrentState currentState;
+    private DisplayUpdate display = new DisplayUpdate(this);
 
-    //The number of locations that can be shown on the compass
-    public int numOfLocations = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
 
-
         // fill arrays with data from intents
         loadFriendsFromUIDs();
-        fillFriends();
-
-        locationService = LocationService.singleton(this);
-        orientationService = OrientationService.singleton(this);
         for (int i = 0; i < friends.size(); i++) {
-            builder.addUIElements(i, friends.get(i), this);
+            var currMarker = friends.get(i);
+            // float angle = AngleUtil.compassCalculateAngle("0,0", currMarker.getCoordinate(), 0);
+
+            builder = builder.addUIElements(i, currMarker, this);
         }
-        //currentState.notifyObserver();
     }
 
     /*
@@ -58,14 +48,6 @@ public class CompassActivity extends AppCompatActivity {
             friends.add(builder.createMarker(key));
         }
 
-    }
-
-    /*
-    Creates the UIElements for markers
-     */
-    public void fillFriends(){
-        int numLocations = friends.size();
-        currentState = new CurrentState(locationService, orientationService, this, friends);
     }
 
     public void goHomeClicked(View view) {

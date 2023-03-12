@@ -7,16 +7,16 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
+import java.util.concurrent.Future;
 
 public class Display {
 
     private Activity activity;
-    public ArrayList<Marker> markerList; // list of observers, in this case, Markers
+    private ServerAPI server;
 
-
-    public Display(Activity activity, ArrayList<Marker> markerList) {
+    public Display(Activity activity) {
         this.activity = activity;
-        this.markerList = markerList;
+        this.server = new ServerAPI();
     }
     //this method updates the location of the marker
     public void updateLabelPointer(int labelPointerID, int locationPointerID)
@@ -30,27 +30,11 @@ public class Display {
         label.setLayoutParams(layoutParamsLabel);
     }
 
-    public void updatePointer(int markerId, double angle){
-        ImageView marker = activity.findViewById(markerId);
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) marker.getLayoutParams();
+    public void updatePointer(ImageView markerLocation, double angle){
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) markerLocation.getLayoutParams();
         layoutParams.circleAngle = (float) angle;
-        marker.setLayoutParams(layoutParams);
+        markerLocation.setLayoutParams(layoutParams);
     }
-
-    public void updateMarkerWhenDeviceChange(String location, float orientation) {
-        for(int i = 0; i < markerList.size(); i++) {
-            //TODO: for each marker update the new orientation based on user's new locaiton/orientation
-
-        }
-    }
-
-    public void updateMarkerWhenServerChange() {
-        for(int i = 0; i < markerList.size(); i++) {
-            //TODO: for each marker get new location, then update the marker, then update display
-
-        }
-    }
-
 
 
 }

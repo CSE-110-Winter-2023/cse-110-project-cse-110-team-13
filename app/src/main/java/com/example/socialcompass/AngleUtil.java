@@ -31,7 +31,6 @@ public class AngleUtil {
             lat1 = Double.parseDouble(objectCoords[0]);
         } catch (Exception e) {
             throw new Exception(e);
-
         }
         try {
             lat2 = Double.parseDouble(objectCoords[1]);

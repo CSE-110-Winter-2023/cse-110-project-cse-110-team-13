@@ -131,7 +131,7 @@ import androidx.lifecycle.LifecycleOwner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+import java.util.concurrent.Future;
 
 
 //CurrentState will be a subject class, keeping track of all subscribed values and set their values
@@ -146,16 +146,22 @@ public class CurrentState implements DeviceObserver, ServerObserver {
     private Display display; // UI updater
     private ServerListener serverListener;
     private Device device;
+    public ArrayList<Marker> markerList; // list of observers, in this case, Markers
+    private ServerAPI server;
 
 
     // constructor
-    public CurrentState(Activity activity, ServerListener serverListener, Device device, Display display) {
+    public CurrentState(Activity activity, ServerListener serverListener, Device device,
+                        Display display, ArrayList<Marker> markerList) {
         this.oldLocation = "0,0";
         this.oldOrientation = 0;
         this.activity = activity;
         this.display = display;
         this.serverListener = serverListener;
         this.device = device;
+        this.markerList = markerList;
+        this.server = new ServerAPI();
+
     }
 
     //after Device called notifyObserver(), meaning there is some changes to location or orientation,
@@ -166,7 +172,17 @@ public class CurrentState implements DeviceObserver, ServerObserver {
         this.oldOrientation = orientation;
 
         //make the updates on the UI
-        this.display.updateMarkerWhenDeviceChange(location, orientation);
+
+        for(int i = 0; i < markerList.size(); i++) {
+            try{
+                float angle = AngleUtil.compassCalculateAngle(this.oldLocation, markerList.get(i).getCoordinate(), this.oldOrientation);
+                display.updatePointer(markerList.get(i).getLocation(), angle);
+            }
+            catch(Exception e) {
+                continue;
+            }
+
+        }
 
         //Update user's location on the server AFTER the UI has updated to give a smoother experience.
         this.serverListener.updateLocationOnServer(this.oldLocation);
@@ -177,7 +193,19 @@ public class CurrentState implements DeviceObserver, ServerObserver {
     //server information
     public void serverUpdate() {
         //make the updates on the UI
-        display.updateMarkerWhenServerChange();
+        for(int i = 0; i < markerList.size(); i++) {
+            Future<Friend> friendFuture = this.server.getFriendAsync(markerList.get(i).getUID());
+            try {
+                Friend friend = friendFuture.get();
+                markerList.get(i).setCoordinate(friend.getLatitude()+","+friend.getLongitude());
+                float angle = AngleUtil.compassCalculateAngle(this.oldLocation, markerList.get(i).getCoordinate(), this.oldOrientation);
+
+                display.updatePointer(markerList.get(i).getLocation(), angle);
+            }
+            catch(Exception e) {
+                continue;
+            }
+        }
     }
 
 

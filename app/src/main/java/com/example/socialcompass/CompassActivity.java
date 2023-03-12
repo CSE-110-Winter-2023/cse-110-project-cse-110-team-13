@@ -22,6 +22,7 @@ public class CompassActivity extends AppCompatActivity {
     private Device device;
     private ServerListener serverListener;
     private String privateUID = "team13testdummy";
+    private CurrentState currentState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +42,15 @@ public class CompassActivity extends AppCompatActivity {
         }
 
 
-        LocationService locationService = new LocationService(this);
-        OrientationService orientationService = new OrientationService(this);
-        Display display = new Display(this, this.friends);
-        Device device = new Device(this, locationService, orientationService);
-        ServerListener serverListener = new ServerListener(this, this.privateUID);
-        CurrentState currentState = new CurrentState(this, serverListener, device, display);
+        this.locationService = new LocationService(this);
+        this.orientationService = new OrientationService(this);
+        this.display = new Display(this);
+        this.device = new Device(this, this.locationService, this.orientationService);
+        this.serverListener = new ServerListener(this, this.privateUID);
+        this.currentState = new CurrentState(this, this.serverListener, this.device, this.display, this.friends);
 
-        serverListener.registerServerObserver(currentState);
-        device.registerDeviceObserver(currentState);
+        this.serverListener.registerServerObserver(this.currentState);
+        this.device.registerDeviceObserver(this.currentState);
 
 
         initialise();
@@ -57,8 +58,8 @@ public class CompassActivity extends AppCompatActivity {
     }
     //set up listeners in device and serverListener.
     public void initialise() {
-        device.notifyObserver();
-        serverListener.notifyObserver();
+        this.device.notifyObserver();
+        this.serverListener.notifyObserver();
     }
     /*
     Loads friends UIDs from shared preferences into array
@@ -70,7 +71,7 @@ public class CompassActivity extends AppCompatActivity {
 
         //refactor for marker builder class
         for(String key: UIDs.keySet()){
-            friends.add(builder.createMarker(key));
+            this.friends.add(builder.createMarker(key));
         }
 
     }

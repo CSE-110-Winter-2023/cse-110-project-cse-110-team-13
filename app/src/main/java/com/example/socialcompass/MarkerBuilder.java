@@ -13,12 +13,12 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class MarkerBuilder {
-
+    Context context;
     Marker currMarker;
     ServerAPI server = ServerAPI.provide();
 
-    public MarkerBuilder(){
-
+    public MarkerBuilder(Context context){
+        this.context = context;
     }
 
     public Marker createMarker(String UID){
@@ -56,7 +56,9 @@ public class MarkerBuilder {
         var markerView = ((ViewGroup)((ViewGroup)insertPoint.getChildAt(index)).getChildAt(0));
         ConstraintLayout.LayoutParams imageLayout = (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
         imageLayout.circleAngle = angle;
-        imageLayout.circleRadius = 400;
+        //convert the from dp into pixels
+        float pixels =  140 * this.context.getResources().getDisplayMetrics().density;
+        imageLayout.circleRadius = (int) pixels;
         imageView.setLayoutParams(imageLayout);
         marker.setLabel ((TextView) markerView.getChildAt(1));
         marker.setLocation ((ImageView) markerView.getChildAt(0));

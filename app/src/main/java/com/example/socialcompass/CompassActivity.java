@@ -33,12 +33,13 @@ public class CompassActivity extends AppCompatActivity {
         loadFriendsFromUIDs();
         for (int i = 0; i < friends.size(); i++) {
             var currMarker = friends.get(i);
-            AngleUtil util = new AngleUtil();
+            float angle = 0;
             try {
-                float angle = util.compassCalculateAngle("0,0", currMarker.getCoordinate(), 0);
+                angle = AngleUtil.compassCalculateAngle("0,0", currMarker.getCoordinate(), 0);
             }
             catch(Exception e) {};
-            builder = builder.addUIElements(i, currMarker, this);
+
+            builder = builder.addUIElements(i, currMarker, angle, this);
         }
 
 
@@ -58,8 +59,8 @@ public class CompassActivity extends AppCompatActivity {
     }
     //set up listeners in device and serverListener.
     public void initialise() {
-        this.device.notifyObserver();
         this.serverListener.notifyObserver();
+        this.device.notifyObserver();
     }
     /*
     Loads friends UIDs from shared preferences into array

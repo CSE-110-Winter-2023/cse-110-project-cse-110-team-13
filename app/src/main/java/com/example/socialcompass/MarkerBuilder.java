@@ -36,7 +36,7 @@ public class MarkerBuilder {
         return currMarker;
     }
 
-    public MarkerBuilder addUIElements(int index, Marker marker, Activity activity){
+    public MarkerBuilder addUIElements(int index, Marker marker, float angle, Activity activity){
         LayoutInflater vi = (LayoutInflater) activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = vi.inflate(R.layout.marker, null);
 
@@ -52,10 +52,10 @@ public class MarkerBuilder {
         ViewGroup insertPoint = (ViewGroup) activity.findViewById(R.id.compass);
         insertPoint.addView(v, index, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        //go through the ViewGroups displayed on the compass activity until get to viewgroup holding marker and label
+        //go through the ViewGroups displayed on the compass activity until get to view-group holding marker and label
         var markerView = ((ViewGroup)((ViewGroup)insertPoint.getChildAt(index)).getChildAt(0));
         ConstraintLayout.LayoutParams imageLayout = (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
-        imageLayout.circleAngle = 0;
+        imageLayout.circleAngle = angle;
         imageLayout.circleRadius = 400;
         imageView.setLayoutParams(imageLayout);
         marker.setLabel ((TextView) markerView.getChildAt(1));

@@ -46,7 +46,7 @@ public class Display {
         return (int) pixels;
     }
     // update a marker imageview with a new angle and distance
-    public void updatePointer(ImageView markerLocation, double angle, float distance){
+    public void updatePointer(ImageView markerLocation, TextView markerLabel, double angle, float distance){
 
         //this HAS TO BE RUN ON UI THREAD, this is because the origin of the call for this function
         // is in a listener, which runs in a background thread (originally called in device.notifyObserver())
@@ -58,6 +58,7 @@ public class Display {
             if(distance > 1) {
                 this.activity.runOnUiThread(() -> {
                     markerLocation.setVisibility(View.INVISIBLE);
+                    markerLabel.setVisibility(View.INVISIBLE);
                 });
             }
             else {
@@ -79,11 +80,13 @@ public class Display {
             if(distance > 10) {
                 this.activity.runOnUiThread(() -> {
                     markerLocation.setVisibility(View.INVISIBLE);
+                    markerLabel.setVisibility(View.INVISIBLE);
                 });
             }
             else if (distance <= 10 && distance > 1) {
                 this.activity.runOnUiThread(() -> {
                     markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
                 });
 
                 //interpolation: get dp distance on compass using interpolation
@@ -97,6 +100,7 @@ public class Display {
             else {
                 this.activity.runOnUiThread(() -> {
                     markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
                 });
 
                 //interpolation: get dp distance on compass using interpolation
@@ -110,11 +114,13 @@ public class Display {
             if(distance > 500) {
                 this.activity.runOnUiThread(() -> {
                     markerLocation.setVisibility(View.INVISIBLE);
+                    markerLabel.setVisibility(View.INVISIBLE);
                 });
             }
             else if (distance <= 500 && distance > 10) {
                 this.activity.runOnUiThread(() -> {
                     markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
                 });
 
                 //interpolation: get dp distance on compass using interpolation
@@ -130,6 +136,7 @@ public class Display {
             else if (distance <= 10 && distance > 1) {
                 this.activity.runOnUiThread(() -> {
                     markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
                 });
 
                 //interpolation: get dp distance on compass using interpolation
@@ -140,6 +147,7 @@ public class Display {
             else {
                 this.activity.runOnUiThread(() -> {
                     markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
                 });
 
                 //interpolation: get dp distance on compass using interpolation
@@ -153,12 +161,14 @@ public class Display {
             if(distance > 500) {
                 this.activity.runOnUiThread(() -> {
                     markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
                 });
                 layoutParams.circleRadius = MAX_RADIUS_IN_DP;
             }
             else if (distance <= 500 && distance > 10) {
                 this.activity.runOnUiThread(() -> {
                     markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
                 });
 
                 //interpolation: get dp distance on compass using interpolation
@@ -174,6 +184,7 @@ public class Display {
             else if (distance <= 10 && distance > 1) {
                 this.activity.runOnUiThread(() -> {
                     markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
                 });
 
                 //interpolation: get dp distance on compass using interpolation
@@ -184,6 +195,7 @@ public class Display {
             else {
                 this.activity.runOnUiThread(() -> {
                     markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
                 });
 
                 //interpolation: get dp distance on compass using interpolation

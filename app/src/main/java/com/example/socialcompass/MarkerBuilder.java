@@ -57,7 +57,7 @@ public class MarkerBuilder {
         ConstraintLayout.LayoutParams imageLayout = (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
         imageLayout.circleAngle = angle;
         //convert the from dp into pixels
-        float pixels =  140 * this.context.getResources().getDisplayMetrics().density;
+        float pixels =  160 * this.context.getResources().getDisplayMetrics().density;
         imageLayout.circleRadius = (int) pixels;
         imageView.setLayoutParams(imageLayout);
         marker.setLabel ((TextView) markerView.getChildAt(1));

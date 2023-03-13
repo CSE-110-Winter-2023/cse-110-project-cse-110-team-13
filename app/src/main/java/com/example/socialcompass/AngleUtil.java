@@ -26,44 +26,86 @@ public class AngleUtil {
         //split object coords into x and y
         String[] objectCoords = objectLocation.split(",");
         double lat1 = 0;
-        double lat2 = 0;
+        double lon1 = 0;
         try {
             lat1 = Double.parseDouble(objectCoords[0]);
         } catch (Exception e) {
             throw new Exception(e);
         }
         try {
-            lat2 = Double.parseDouble(objectCoords[1]);
+            lon1 = Double.parseDouble(objectCoords[1]);
 
         } catch (Exception e) {
             throw new Exception(e);
 
         }
-        var markerCoord = new LatLng(lat1, lat2);
+        var markerCoord = new LatLng(lat1, lon1);
 
         String[] location = userLocation.split(",");
-        double lat3 = 0;
+        double lat2 = 0;
         try {
-            lat3 = Double.parseDouble(location[0]);
+            lat2 = Double.parseDouble(location[0]);
 
         } catch (Exception e) {
             throw new Exception(e);
 
         }
-        double lat4 = 0;
+        double lon2 = 0;
         try {
-            lat4 = Double.parseDouble(location[1]);
+            lon2 = Double.parseDouble(location[1]);
         } catch (Exception e) {
             throw new Exception(e);
 
         }
 
-        var userCoord = new LatLng(lat3, lat4);
+        var userCoord = new LatLng(lat2, lon2);
         //get differences between both for angle compute
         float northRelative = (float) SphericalUtil.computeHeading(userCoord, markerCoord);
         northRelative = northRelative - currOrientation;
 
         northRelative = northRelative % 360;
         return northRelative;
+    }
+
+    public static float markerCalculateDistance(String userLocation, String markerLocation) throws Exception {
+        String[] objectCoords = userLocation.split(",");
+        double lat1 = 0;
+        double lon1 = 0;
+        try {
+            lat1 = Double.parseDouble(objectCoords[0]);
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+        try {
+            lon1 = Double.parseDouble(objectCoords[1]);
+
+        } catch (Exception e) {
+            throw new Exception(e);
+
+        }
+        var userCoord = new LatLng(lat1, lon1);
+
+        String[] location = markerLocation.split(",");
+        double lat2 = 0;
+        try {
+            lat2 = Double.parseDouble(location[0]);
+
+        } catch (Exception e) {
+            throw new Exception(e);
+
+        }
+        double lon2 = 0;
+        try {
+            lon2 = Double.parseDouble(location[1]);
+        } catch (Exception e) {
+            throw new Exception(e);
+
+        }
+
+        var markerCoord = new LatLng(lat2, lon2);
+
+        float relativeDistance = (float) SphericalUtil.computeDistanceBetween(userCoord, markerCoord);
+
+        return relativeDistance;
     }
 }

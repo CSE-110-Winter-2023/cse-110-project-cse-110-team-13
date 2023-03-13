@@ -17,6 +17,8 @@ public class MarkerBuilder {
     Marker currMarker;
     ServerAPI server = ServerAPI.provide();
 
+    int MAX_RADIUS_IN_DP = 160;
+
     public MarkerBuilder(Context context){
         this.context = context;
     }
@@ -57,7 +59,7 @@ public class MarkerBuilder {
         ConstraintLayout.LayoutParams imageLayout = (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
         imageLayout.circleAngle = angle;
         //convert the from dp into pixels
-        float pixels =  160 * this.context.getResources().getDisplayMetrics().density;
+        float pixels =  MAX_RADIUS_IN_DP * this.context.getResources().getDisplayMetrics().density;
         imageLayout.circleRadius = (int) pixels;
         imageView.setLayoutParams(imageLayout);
         marker.setLabel ((TextView) markerView.getChildAt(1));

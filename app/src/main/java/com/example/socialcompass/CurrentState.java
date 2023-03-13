@@ -176,7 +176,8 @@ public class CurrentState implements DeviceObserver, ServerObserver {
         for(int i = 0; i < markerList.size(); i++) {
             try{
                 float angle = AngleUtil.compassCalculateAngle(this.oldLocation, markerList.get(i).getCoordinate(), this.oldOrientation);
-                display.updatePointer(markerList.get(i).getLocation(), angle);
+                float distance = AngleUtil.markerCalculateDistance(this.oldLocation, markerList.get(i).getCoordinate());
+                display.updatePointer(markerList.get(i).getLocation(), angle, distance);
             }
             catch(Exception e) {
                 continue;
@@ -199,8 +200,8 @@ public class CurrentState implements DeviceObserver, ServerObserver {
                 Friend friend = friendFuture.get();
                 markerList.get(i).setCoordinate(friend.getLatitude()+","+friend.getLongitude());
                 float angle = AngleUtil.compassCalculateAngle(this.oldLocation, markerList.get(i).getCoordinate(), this.oldOrientation);
-
-                display.updatePointer(markerList.get(i).getLocation(), angle);
+                float distance = AngleUtil.markerCalculateDistance(this.oldLocation, markerList.get(i).getCoordinate());
+                display.updatePointer(markerList.get(i).getLocation(), angle, distance);
             }
             catch(Exception e) {
                 continue;

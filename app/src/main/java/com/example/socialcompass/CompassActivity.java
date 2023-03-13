@@ -45,7 +45,7 @@ public class CompassActivity extends AppCompatActivity {
 
         this.locationService = new LocationService(this);
         this.orientationService = new OrientationService(this);
-        this.display = new Display(this);
+        this.display = new Display(this, getApplicationContext());
         this.device = new Device(this, this.locationService, this.orientationService);
         this.serverListener = new ServerListener(this, this.privateUID);
         this.currentState = new CurrentState(this, this.serverListener, this.device, this.display, this.friends);

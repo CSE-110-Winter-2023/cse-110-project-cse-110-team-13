@@ -74,7 +74,6 @@ public class CompassActivity extends AppCompatActivity {
         for(String key: UIDs.keySet()){
             this.friends.add(builder.createMarker(key));
         }
-
     }
 
     public void goHomeClicked(View view) {

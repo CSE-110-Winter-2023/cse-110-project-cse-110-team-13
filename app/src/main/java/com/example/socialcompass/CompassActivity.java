@@ -1,18 +1,13 @@
 package com.example.socialcompass;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.lifecycle.LiveData;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Pair;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -22,44 +17,51 @@ public class CompassActivity extends AppCompatActivity {
 
     private LocationService locationService;
     private OrientationService orientationService;
-    private MarkerBuilder builder = new MarkerBuilder();
-    public CurrentState currentState;
+    private MarkerBuilder builder;
+    private Display display;
+    private Device device;
+    private ServerListener serverListener;
+    private String privateUID = "team13testdummy";
+    private CurrentState currentState;
 
-
-    //The number of locations that can be shown on the compass
-    public int numOfLocations = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
-
-
-        //fill arrays with data from intents
+        this.builder = new MarkerBuilder(getApplicationContext());
+        // fill arrays with data from intents
         loadFriendsFromUIDs();
-        fillFriends();
+        for (int i = 0; i < friends.size(); i++) {
+            var currMarker = friends.get(i);
+            float angle = 0;
+            try {
+                angle = AngleUtil.compassCalculateAngle("0,0", currMarker.getCoordinate(), 0);
+            }
+            catch(Exception e) {};
 
-        /*
-
-        //set up CurrentState
-        locationService = LocationService.singleton(this);
-        orientationService = OrientationService.singleton(this);
-        currentState = new CurrentState(numOfLocations, locationService, orientationService, this);
-
-        //initiate currentState and set TextViews to label text for all markers
-        for (int i = 0; i < numOfLocations; i++) {
-            currentState.setMarkerInfo(i, locationsCoordinates[i], locationsLabels[i],
-                    locationPointerIDs[i], labelPointerIDs[i]);
-            ((TextView) findViewById(labelPointerIDs[i])).setText(locationsLabels[i]);
+            builder = builder.addUIElements(i, currMarker, angle, this);
         }
-        //set up listener in currentState
-        currentState.notifyObserver();
-        */
 
 
+        this.locationService = new LocationService(this);
+        this.orientationService = new OrientationService(this);
+        this.display = new Display(this);
+        this.device = new Device(this, this.locationService, this.orientationService);
+        this.serverListener = new ServerListener(this, this.privateUID);
+        this.currentState = new CurrentState(this, this.serverListener, this.device, this.display, this.friends);
 
+        this.serverListener.registerServerObserver(this.currentState);
+        this.device.registerDeviceObserver(this.currentState);
+
+
+        initialise();
 
     }
-
+    //set up listeners in device and serverListener.
+    public void initialise() {
+        this.serverListener.notifyObserver();
+        this.device.notifyObserver();
+    }
     /*
     Loads friends UIDs from shared preferences into array
      */
@@ -70,20 +72,9 @@ public class CompassActivity extends AppCompatActivity {
 
         //refactor for marker builder class
         for(String key: UIDs.keySet()){
-            friends.add(builder.createMarker(key));
+            this.friends.add(builder.createMarker(key));
         }
 
-    }
-
-    /*
-    Creates the UIElements for markers
-     */
-    public void fillFriends(){
-        int index = 0;
-        for(var marker:friends){
-            builder.addUIElements(index,marker,this);
-            index++;
-        }
     }
 
     public void goHomeClicked(View view) {

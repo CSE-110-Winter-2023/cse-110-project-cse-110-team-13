@@ -10,13 +10,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MarkerBuilder {
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+public class MarkerBuilder {
+    Context context;
     Marker currMarker;
     ServerAPI server = ServerAPI.provide();
 
-    public MarkerBuilder(){
-
+    public MarkerBuilder(Context context){
+        this.context = context;
     }
 
     public Marker createMarker(String UID){
@@ -29,12 +31,12 @@ public class MarkerBuilder {
         catch(Exception e){}
 
         currMarker.setLabel(friend.getLabel());
-        currMarker.setCoordinate( String.valueOf(friend.getLatitude()) + String.valueOf(friend.getLongitude()));
+        currMarker.setCoordinate( String.valueOf(friend.getLatitude()) + "," + String.valueOf(friend.getLongitude()));
 
         return currMarker;
     }
 
-    public MarkerBuilder addUIElements(int index, Marker marker, Activity activity){
+    public MarkerBuilder addUIElements(int index, Marker marker, float angle, Activity activity){
         LayoutInflater vi = (LayoutInflater) activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = vi.inflate(R.layout.marker, null);
 
@@ -50,11 +52,16 @@ public class MarkerBuilder {
         ViewGroup insertPoint = (ViewGroup) activity.findViewById(R.id.compass);
         insertPoint.addView(v, index, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        //go through the ViewGroups displayed on the compass activitv until get to viewgroup holding marker and label
+        //go through the ViewGroups displayed on the compass activity until get to view-group holding marker and label
         var markerView = ((ViewGroup)((ViewGroup)insertPoint.getChildAt(index)).getChildAt(0));
+        ConstraintLayout.LayoutParams imageLayout = (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
+        imageLayout.circleAngle = angle;
+        //convert the from dp into pixels
+        float pixels =  160 * this.context.getResources().getDisplayMetrics().density;
+        imageLayout.circleRadius = (int) pixels;
+        imageView.setLayoutParams(imageLayout);
         marker.setLabel ((TextView) markerView.getChildAt(1));
         marker.setLocation ((ImageView) markerView.getChildAt(0));
-
         return this;
     }
 

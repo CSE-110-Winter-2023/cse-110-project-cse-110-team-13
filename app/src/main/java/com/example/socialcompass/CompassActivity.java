@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 
@@ -21,7 +22,7 @@ public class CompassActivity extends AppCompatActivity {
     private Display display;
     private Device device;
     private ServerListener serverListener;
-    private String privateUID = "team13testdummy";
+    private String privateUID = "team13testdummy2";
     private CurrentState currentState;
 
     @Override
@@ -29,6 +30,7 @@ public class CompassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
         this.builder = new MarkerBuilder(getApplicationContext());
+
         // fill arrays with data from intents
         loadFriendsFromUIDs();
         for (int i = 0; i < friends.size(); i++) {
@@ -52,6 +54,8 @@ public class CompassActivity extends AppCompatActivity {
 
         this.serverListener.registerServerObserver(this.currentState);
         this.device.registerDeviceObserver(this.currentState);
+
+
 
 
         initialise();

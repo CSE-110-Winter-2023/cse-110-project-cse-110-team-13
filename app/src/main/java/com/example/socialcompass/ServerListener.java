@@ -62,6 +62,23 @@ public class ServerListener implements ServerSubject {
         float lat = Float.parseFloat(latlon[0]);
         float lon = Float.parseFloat(latlon[1]);
         api.patchFriendAsync(this.privateUID, lat , lon);
+
+//        class OneShotTask implements Runnable {
+//            String privateUID;
+//            float lat;
+//            float lon;
+//            OneShotTask(String privateUID, float lat, float lon) {
+//                this.privateUID = privateUID;
+//                this.lat = lat;
+//                this.lon = lon;
+//            }
+//            public void run() {
+//
+//            }
+//        }
+//        friendFuture =  scheduler.scheduleWithFixedDelay(new OneShotTask(this.privateUID, lat, lon),
+//                3000,
+//                3000, TimeUnit.MILLISECONDS);
     }
 
 }

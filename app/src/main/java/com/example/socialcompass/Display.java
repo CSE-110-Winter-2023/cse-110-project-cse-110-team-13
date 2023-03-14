@@ -22,7 +22,7 @@ public class Display {
     // zoomSetting == 3: 3 circle, the third one from 10 - 500 mile
     // zoomSetting == 4 : 4 circle, fourth one is just a perimeter with anything outside of the 500 mile
     // range will lie on the perimeter
-    private int zoomSetting = 2;
+    private int zoomSetting = 4;
     private int MAX_RADIUS_IN_DP = 480;
     public Display(Activity activity, Context context) {
         this.activity = activity;

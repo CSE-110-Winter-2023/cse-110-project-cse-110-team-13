@@ -134,6 +134,7 @@ public class ServerAPI {
     //should only be called asynchronously
     private int patchFriend(@NonNull String privateCode, float lat, float lon)
     {
+
         RequestBody body = RequestBody.create("{\n\"private_code\": " + privateCode + ",\n"
                 + "\"latitude\": " + lat + ",\n"
                 + "\"longitude\": " + lon + "\n}", JSON);
@@ -154,6 +155,7 @@ public class ServerAPI {
     //asyncly patches updated friend coordinates to server
     public Future<Integer> patchFriendAsync(String privateCode, float lat, float lon)
     {
+        System.out.println("herererere");
         var executor = Executors.newSingleThreadExecutor();
         var future = executor.submit(() -> patchFriend(privateCode, lat, lon));
 

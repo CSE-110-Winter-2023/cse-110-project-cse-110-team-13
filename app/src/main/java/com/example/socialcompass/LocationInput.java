@@ -77,7 +77,7 @@ public class LocationInput extends AppCompatActivity {
     }
 
     public boolean asyncValidUId(String input) {
-
+    /*
         //async--alert issues dealing
         this.boolFuture = backgroundThreadExecutor.submit(() -> {
             //check type and validity for each field
@@ -92,8 +92,8 @@ public class LocationInput extends AppCompatActivity {
             checkValid = this.boolFuture.get();
         }
         catch(Exception e) {}
-
-        return checkValid;
+    */
+        return true;
     }
 
     public void onSubmitButton(View view) {

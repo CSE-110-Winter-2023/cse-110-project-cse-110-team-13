@@ -1,6 +1,5 @@
-package com.example.socialcompass;
+package com.example.socialcompass.UI;
 
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 

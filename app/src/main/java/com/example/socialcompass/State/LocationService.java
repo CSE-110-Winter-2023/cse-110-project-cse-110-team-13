@@ -1,4 +1,4 @@
-package com.example.socialcompass;
+package com.example.socialcompass.State;
 
 import android.app.Activity;
 import android.content.Context;
@@ -31,7 +31,7 @@ public class LocationService implements LocationListener {
 
     }
 
-    protected LocationService(Activity activity) {
+    public LocationService(Activity activity) {
         this.locationValue = new MutableLiveData<>();
         this.activity = activity;
         this.locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);

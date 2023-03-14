@@ -1,4 +1,4 @@
-package com.example.socialcompass;
+package com.example.socialcompass.Utilities;
 
 import android.app.Activity;
 import android.app.AlertDialog;

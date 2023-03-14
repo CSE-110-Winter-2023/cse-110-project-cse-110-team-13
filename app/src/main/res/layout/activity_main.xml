@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Activities.MainActivity">
 
     <TextView
         android:id="@+id/mainMenu"
@@ -23,8 +23,8 @@
         android:id="@+id/locationInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter Locations"
         android:onClick="locationInputEnter"
+        android:text="Enter UIDs"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="resetButtonClicked"
-        android:text="Reset Stored Locations"
+        android:text="Reset Stored UIDs"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

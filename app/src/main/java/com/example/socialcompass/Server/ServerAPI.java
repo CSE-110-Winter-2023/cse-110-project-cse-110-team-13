@@ -1,4 +1,4 @@
-package com.example.socialcompass;
+package com.example.socialcompass.Server;
 
 import android.util.Log;
 

@@ -1,7 +1,4 @@
-package com.example.socialcompass;
-
-import android.widget.ImageView;
-import android.widget.TextView;
+package com.example.socialcompass.Server;
 
 import androidx.annotation.NonNull;
 

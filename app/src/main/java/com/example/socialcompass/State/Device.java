@@ -1,11 +1,8 @@
-package com.example.socialcompass;
+package com.example.socialcompass.State;
 
 import android.app.Activity;
-import android.view.View;
 
 import androidx.lifecycle.LifecycleOwner;
-
-import java.util.Objects;
 
 interface DeviceSubject {
     public void notifyObserver();
@@ -23,7 +20,7 @@ public class Device implements  DeviceSubject {
     private float oldOrientation = 0.0F;
     private DeviceObserver obs;
 
-    Device(Activity activity, LocationService locationService, OrientationService orientationService) {
+    public Device(Activity activity, LocationService locationService, OrientationService orientationService) {
         this.activity = activity;
         this.locationService = locationService;
         this.orientationService = orientationService;

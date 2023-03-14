@@ -1,4 +1,4 @@
-package com.example.socialcompass;
+package com.example.socialcompass.Utilities;
 
 import static android.content.Context.MODE_PRIVATE;
 

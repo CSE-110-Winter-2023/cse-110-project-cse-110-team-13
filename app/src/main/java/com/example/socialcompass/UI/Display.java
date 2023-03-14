@@ -1,13 +1,11 @@
-package com.example.socialcompass;
+package com.example.socialcompass.UI;
 
 import android.app.Activity;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import java.util.ArrayList;
-import java.util.concurrent.Future;
+import com.example.socialcompass.Server.ServerAPI;
 
 public class Display {
 

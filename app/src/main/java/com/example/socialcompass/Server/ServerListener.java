@@ -1,12 +1,8 @@
-package com.example.socialcompass;
+package com.example.socialcompass.Server;
 
 import android.app.Activity;
 
-import java.util.ArrayList;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -14,10 +10,6 @@ import java.util.concurrent.TimeUnit;
 interface ServerSubject {
     void updateLocationOnServer(String location);
     void registerServerObserver(ServerObserver obs);
-}
-
-interface ServerObserver {
-    void serverUpdate();
 }
 
 public class ServerListener implements ServerSubject {
@@ -30,7 +22,7 @@ public class ServerListener implements ServerSubject {
     private final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
 
-    ServerListener(Activity activity, String privateUID) {
+    public ServerListener(Activity activity, String privateUID) {
         this.activity = activity;
         this.api = new ServerAPI();
         this.oldLocation = "0,0";

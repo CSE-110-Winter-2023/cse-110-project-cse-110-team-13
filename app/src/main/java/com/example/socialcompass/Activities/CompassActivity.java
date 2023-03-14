@@ -1,13 +1,22 @@
-package com.example.socialcompass;
+package com.example.socialcompass.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.View;
+
+import com.example.socialcompass.State.CurrentState;
+import com.example.socialcompass.State.Device;
+import com.example.socialcompass.UI.Display;
+import com.example.socialcompass.State.LocationService;
+import com.example.socialcompass.UI.Marker;
+import com.example.socialcompass.UI.MarkerBuilder;
+import com.example.socialcompass.State.OrientationService;
+import com.example.socialcompass.R;
+import com.example.socialcompass.Server.ServerListener;
+import com.example.socialcompass.Utilities.AngleUtil;
 
 import java.util.ArrayList;
 

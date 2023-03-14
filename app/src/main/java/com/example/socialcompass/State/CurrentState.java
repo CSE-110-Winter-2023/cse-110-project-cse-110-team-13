@@ -121,16 +121,20 @@
 //}
 
 
-package com.example.socialcompass;
+package com.example.socialcompass.State;
 
 import android.app.Activity;
-import android.view.View;
 
-import androidx.lifecycle.LifecycleOwner;
+import com.example.socialcompass.State.DeviceObserver;
+import com.example.socialcompass.Server.Friend;
+import com.example.socialcompass.UI.Marker;
+import com.example.socialcompass.Server.ServerAPI;
+import com.example.socialcompass.Server.ServerListener;
+import com.example.socialcompass.Server.ServerObserver;
+import com.example.socialcompass.UI.Display;
+import com.example.socialcompass.Utilities.AngleUtil;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.Future;
 
 

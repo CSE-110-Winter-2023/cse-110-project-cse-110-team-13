@@ -1,6 +1,7 @@
-package com.example.socialcompass;
+package com.example.socialcompass.Server;
 
 import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 

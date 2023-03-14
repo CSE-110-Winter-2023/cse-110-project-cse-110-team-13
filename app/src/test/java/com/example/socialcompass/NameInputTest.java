@@ -8,27 +8,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import android.app.Dialog;
-import android.location.Location;
-import android.view.KeyEvent;
-import android.widget.Button;
-import android.widget.TextView;
-
-import androidx.lifecycle.Lifecycle;
-import androidx.test.core.app.ActivityScenario;
+import com.example.socialcompass.Activities.NameInput;
+import com.example.socialcompass.Server.Friend;
+import com.example.socialcompass.Server.ServerAPI;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.shadows.ShadowAlertDialog;
-import org.robolectric.shadows.ShadowDialog;
-import org.robolectric.shadows.ShadowLooper;
 
-import java.time.Instant;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 @RunWith(RobolectricTestRunner.class)
 public class NameInputTest

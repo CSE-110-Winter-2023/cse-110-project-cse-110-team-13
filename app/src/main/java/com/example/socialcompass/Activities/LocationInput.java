@@ -1,14 +1,16 @@
-package com.example.socialcompass;
+package com.example.socialcompass.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.example.socialcompass.R;
+import com.example.socialcompass.Server.ServerAPI;
+import com.example.socialcompass.Utilities.Utilities;
+
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -39,7 +41,7 @@ public class LocationInput extends AppCompatActivity {
     }
 
     //Checks if empty
-    protected boolean empty(String input) {
+    public boolean empty(String input) {
         boolean empty = false;
         //run in background thread or else it will have async issues.
         this.future = backgroundThreadExecutor.submit(() -> input.equals(""));

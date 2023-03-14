@@ -1,18 +1,20 @@
-package com.example.socialcompass;
+package com.example.socialcompass.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.socialcompass.Server.Friend;
+import com.example.socialcompass.R;
+import com.example.socialcompass.Server.ServerAPI;
+import com.example.socialcompass.Utilities.Utilities;
+
 import java.time.Instant;
 import java.util.UUID;
-import java.util.concurrent.AbstractExecutorService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;

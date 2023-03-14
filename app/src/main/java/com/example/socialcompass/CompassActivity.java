@@ -1,147 +1,81 @@
 package com.example.socialcompass;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.LiveData;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.Pair;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
 
 public class CompassActivity extends AppCompatActivity {
-    //arrays holding:
-    //-coordinates passed from intent
-    //-labels passed from intent
-    //-IDs for the markers
-    //-IDs for the marker label TextViews
-    public String[] locationsCoordinates;
-    public String[] locationsLabels;
-    public int[] locationPointerIDs;
-    public int[] labelPointerIDs;
 
-    //The number of locations that can be shown on the compass
-    public int numOfLocations = 3;
+    public ArrayList<Marker> friends = new ArrayList<>();
+
+    private LocationService locationService;
+    private OrientationService orientationService;
+    private MarkerBuilder builder;
+    private Display display;
+    private Device device;
+    private ServerListener serverListener;
+    private String privateUID;
+    private CurrentState currentState;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
-
-        //initialize arrays
-        locationsCoordinates = new String[numOfLocations];
-        locationsLabels = new String[numOfLocations];
-        locationPointerIDs = new int[numOfLocations];
-        labelPointerIDs = new int[numOfLocations];
-
-        //fill arrays with data from intents
-        loadLocationCoordinates();
-        loadLocationLabels();
-        loadLocationPointerIDs();
-        loadLabelPointerIDs();
-
-        //set TextViews to label text
-        for (int i = 0; i < numOfLocations; i++)
-            ((TextView) findViewById(labelPointerIDs[i])).setText(locationsLabels[i]);
-
-        //main loop:
-        //initializes the locations of the markers and labels
-        //when we add rotation, this will be done continuously
-        for (int i = 0; i < numOfLocations; i++)
-        {
-            //if no coordinates are sent, don't draw the marker or its label
-            if (Objects.equals(locationsCoordinates[i], "default"))
-            {
-                findViewById(locationPointerIDs[i]).setVisibility(View.INVISIBLE);
-                findViewById(labelPointerIDs[i]).setVisibility(View.INVISIBLE);
-                continue;
+        this.builder = new MarkerBuilder();
+        // fill arrays with data from intents
+        loadFriendsFromUIDs();
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences("thisUserID", MODE_PRIVATE);
+        privateUID = prefs.getString("UUID", "qwerty");
+        for (int i = 0; i < friends.size(); i++) {
+            var currMarker = friends.get(i);
+            float angle = 0;
+            try {
+                angle = AngleUtil.compassCalculateAngle("0,0", currMarker.getCoordinate(), 0);
             }
-            //compute angle and update marker and label
-            float angle = AngleUtil.compassCalculateAngle("0,0", locationsCoordinates[i]);
-            updatePointer(locationPointerIDs[i], angle);
-            updateLabelPointer(i);
-        }
-    }
+            catch(Exception e) {};
 
-    //fills location array
-    public void loadLocationCoordinates(){
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("locationLabels",MODE_PRIVATE);
-        Map<String,?> locationLabels = preferences.getAll();
-
-        /*
-        for(var entry : locationLabels.entrySet()){
-
-
-
-        }
-        */
-
-
-        String[] locationNames = {"myHomeLocation","familyLocation","friendLocation"};
-
-        for(int i = 0; i < locationNames.length; i++){
-            locationsCoordinates[i] = preferences.getString(locationNames[i], "default");
+            builder = builder.addUIElements(i, currMarker, angle, this);
         }
 
 
+        this.locationService = new LocationService(this);
+        this.orientationService = new OrientationService(this);
+        this.display = new Display(this);
+        this.device = new Device(this, this.locationService, this.orientationService);
+        this.serverListener = new ServerListener(this, this.privateUID);
+        this.currentState = new CurrentState(this, this.serverListener, this.device, this.display, this.friends);
 
+        this.serverListener.registerServerObserver(this.currentState);
+        this.device.registerDeviceObserver(this.currentState);
+
+
+        initialise();
 
     }
+    //set up listeners in device and serverListener.
+    public void initialise() {
+        this.serverListener.notifyObserver();
+        this.device.notifyObserver();
+    }
+    /*
+    Loads friends UIDs from shared preferences into array
+     */
+    public void loadFriendsFromUIDs(){
 
-    //fill label array
-    public void loadLocationLabels(){
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("UIDs",MODE_PRIVATE);
+        var UIDs = preferences.getAll();
 
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("locationLabels",MODE_PRIVATE);
-        String[] locationNames = {"myHomeLabel","familyLabel","friendLabel"};
-
-        for(int i = 0; i < locationNames.length; i++){
-            locationsLabels[i] = preferences.getString(locationNames[i], "default" + locationNames[i]);
+        //refactor for marker builder class
+        for(String key: UIDs.keySet()){
+            this.friends.add(builder.createMarker(key));
         }
-
-    }
-
-    //fill marker ID array
-    public void loadLocationPointerIDs()
-    {
-        locationPointerIDs[0] = R.id.Marker1;
-        locationPointerIDs[1] = R.id.Marker2;
-        locationPointerIDs[2] = R.id.Marker3;
-    }
-
-    //fill TextView ID array
-    public void loadLabelPointerIDs()
-    {
-        labelPointerIDs[0] = R.id.Label1;
-        labelPointerIDs[1] = R.id.Label2;
-        labelPointerIDs[2] = R.id.Label3;
-    }
-
-    //updates marker pointer with required angle
-    public void updatePointer(int markerId, float angle){
-        ImageView marker = findViewById(markerId);
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) marker.getLayoutParams();
-        layoutParams.circleAngle = angle;
-        marker.setLayoutParams(layoutParams);
-    }
-
-    //updates TextView label pointer with required angle
-    public void updateLabelPointer(int index)
-    {
-        TextView label = findViewById(labelPointerIDs[index]);
-        ImageView marker = findViewById(locationPointerIDs[index]);
-        ConstraintLayout.LayoutParams layoutParamsMarker = (ConstraintLayout.LayoutParams) marker.getLayoutParams();
-        ConstraintLayout.LayoutParams layoutParamsLabel = (ConstraintLayout.LayoutParams) label.getLayoutParams();
-        layoutParamsLabel.circleAngle = layoutParamsMarker.circleAngle;
-        layoutParamsLabel.circleRadius = layoutParamsMarker.circleRadius + 100;
-        label.setLayoutParams(layoutParamsLabel);
     }
 
     public void goHomeClicked(View view) {
@@ -150,3 +84,4 @@ public class CompassActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
+

@@ -1,6 +1,7 @@
 package com.example.socialcompass;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 
 import androidx.lifecycle.LifecycleOwner;

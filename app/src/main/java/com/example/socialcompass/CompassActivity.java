@@ -78,6 +78,20 @@ public class CompassActivity extends AppCompatActivity {
         }
     }
 
+    public void onZoomInClicked(View view)
+    {
+        int setting = display.getZoomSetting();
+        if (setting > 1)
+            display.setZoomSetting(setting - 1);
+    }
+
+    public void onZoomOutClicked(View view)
+    {
+        int setting = display.getZoomSetting();
+        if (setting < 4)
+            display.setZoomSetting(setting + 1);
+    }
+
     public void goHomeClicked(View view) {
         finish();
         Intent intent = new Intent(this, MainActivity.class);

@@ -19,7 +19,7 @@ public class LocationInput extends AppCompatActivity {
 
     private TextView inputView;
 
-    private final int UIDLENGTH = 32;
+    //private final int UIDLENGTH = 32;
     private ServerAPI serverAPI = ServerAPI.provide();
 
     private ExecutorService backgroundThreadExecutor = Executors.newSingleThreadExecutor();

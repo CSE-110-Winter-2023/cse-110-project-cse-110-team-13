@@ -30,6 +30,16 @@ public class Display {
         this.context = context;
     }
 
+    public int getZoomSetting()
+    {
+        return zoomSetting;
+    }
+
+    public void setZoomSetting(int setting)
+    {
+        zoomSetting = setting;
+    }
+
     //deprecated method, no reason to change the ID of textviews and imageviews
 //    public void updateLabelPointer(int labelPointerID, int locationPointerID)
 //    {
@@ -57,8 +67,9 @@ public class Display {
         if(zoomSetting == 1) {
             if(distance > 1) {
                 this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.INVISIBLE);
+                    //markerLocation.setVisibility(View.INVISIBLE);
                     markerLabel.setVisibility(View.INVISIBLE);
+                    layoutParams.circleRadius = MAX_RADIUS_IN_DP;
                 });
             }
             else {
@@ -79,8 +90,9 @@ public class Display {
         else if (zoomSetting == 2) {
             if(distance > 10) {
                 this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.INVISIBLE);
+                    //markerLocation.setVisibility(View.INVISIBLE);
                     markerLabel.setVisibility(View.INVISIBLE);
+                    layoutParams.circleRadius = MAX_RADIUS_IN_DP;
                 });
             }
             else if (distance <= 10 && distance > 1) {
@@ -113,8 +125,9 @@ public class Display {
         else if (zoomSetting == 3) {
             if(distance > 500) {
                 this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.INVISIBLE);
+                    //markerLocation.setVisibility(View.INVISIBLE);
                     markerLabel.setVisibility(View.INVISIBLE);
+                    layoutParams.circleRadius = MAX_RADIUS_IN_DP;
                 });
             }
             else if (distance <= 500 && distance > 10) {

@@ -124,6 +124,7 @@
 package com.example.socialcompass;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 
 import androidx.lifecycle.LifecycleOwner;
@@ -160,7 +161,7 @@ public class CurrentState implements DeviceObserver, ServerObserver {
         this.serverListener = serverListener;
         this.device = device;
         this.markerList = markerList;
-        this.server = new ServerAPI();
+        this.server = ServerAPI.provide();
 
     }
 
@@ -168,6 +169,7 @@ public class CurrentState implements DeviceObserver, ServerObserver {
     // it will run this function to update the location and orientation for
     // display and serverlistener.
     public void deviceUpdate(String location, float orientation) {
+        Log.d("Currently located at", location);
         this.oldLocation = location;
         this.oldOrientation = orientation;
 

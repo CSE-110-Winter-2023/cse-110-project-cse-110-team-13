@@ -28,7 +28,7 @@ public class CompassActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
-        this.builder = new MarkerBuilder(getApplicationContext());
+        this.builder = new MarkerBuilder();
         // fill arrays with data from intents
         loadFriendsFromUIDs();
         for (int i = 0; i < friends.size(); i++) {

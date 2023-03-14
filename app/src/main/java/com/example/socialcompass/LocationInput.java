@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -19,6 +20,7 @@ public class LocationInput extends AppCompatActivity {
     private TextView inputView;
 
     private final int UIDLENGTH = 32;
+    private ServerAPI serverAPI = ServerAPI.provide();
 
     private ExecutorService backgroundThreadExecutor = Executors.newSingleThreadExecutor();
     private Future<Boolean> future;
@@ -59,13 +61,23 @@ public class LocationInput extends AppCompatActivity {
     public boolean validUId(String input) {
         //32 characters, 10 digits A-F
 
-        //check that input is made of correct characters
-        if(!input.matches("-?[0-9a-fA-F]+")){
+        Future<Boolean> good =  serverAPI.checkUIDAsync(input);
+
+        var valid = false;
+
+        try {
+            valid = good.get();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        if(!valid){
             runOnUiThread(() -> {
-                Utilities.showAlert(this, "Your UID should be made of characters A-F, 0-9");
+                Utilities.showAlert(this, "UID does not exist");
             });
             return false;
         }
+
         return true;
     }
 

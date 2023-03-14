@@ -55,12 +55,7 @@ public class Friend {
 
     //String to UUID converter
     public UUID getUUID() {
-        //get midpoint of UUID string
-        final int midpt = uuid.length() / 2;
-        //split UUID in half
-        String[] uuidParts = {uuid.substring(0, midpt), uuid.substring(midpt)};
-        //generate UUID
-        return new UUID(Long.parseLong(uuidParts[0]), Long.parseLong(uuidParts[1]));
+        return UUID.fromString(uuid);
     }
 
     //returns UUID
@@ -73,7 +68,7 @@ public class Friend {
     //UUID to String converter
     public void setUUID(UUID uuid)
     {
-        this.uuid = String.valueOf(uuid.getMostSignificantBits()) + String.valueOf(uuid.getLeastSignificantBits());
+        this.uuid = uuid.toString();
     }
 
     //sets UUID to an input String

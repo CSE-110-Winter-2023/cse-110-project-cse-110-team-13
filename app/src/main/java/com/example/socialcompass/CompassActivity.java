@@ -21,7 +21,7 @@ public class CompassActivity extends AppCompatActivity {
     private Display display;
     private Device device;
     private ServerListener serverListener;
-    private String privateUID = "team13testdummy";
+    private String privateUID;
     private CurrentState currentState;
 
     @Override
@@ -31,6 +31,8 @@ public class CompassActivity extends AppCompatActivity {
         this.builder = new MarkerBuilder(getApplicationContext());
         // fill arrays with data from intents
         loadFriendsFromUIDs();
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences("thisUserID", MODE_PRIVATE);
+        privateUID = prefs.getString("UUID", "qwerty");
         for (int i = 0; i < friends.size(); i++) {
             var currMarker = friends.get(i);
             float angle = 0;

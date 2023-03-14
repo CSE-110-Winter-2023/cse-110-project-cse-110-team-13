@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -81,11 +83,29 @@ public class LocationInput extends AppCompatActivity {
         return true;
     }
 
+    public boolean alreadyEntered(String input){
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("UIDs",MODE_PRIVATE);
+        Map<String,?> UIDs = preferences.getAll();
+        for(String key: UIDs.keySet()){
+            if (input.equals(key)) {
+                runOnUiThread(() -> {
+                    Utilities.showAlert(this, "UID already being tracked");
+                });
+
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean inputCheck(String input){
 
         if(empty(input)) return false;
 
-        return asyncValidUId(input);
+        if (!asyncValidUId(input)) return false;
+
+        return !alreadyEntered(input);
     }
 
     public boolean asyncValidUId(String input) {

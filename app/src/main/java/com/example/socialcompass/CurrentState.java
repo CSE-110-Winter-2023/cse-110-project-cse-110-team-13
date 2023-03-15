@@ -124,6 +124,7 @@
 package com.example.socialcompass;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 
 import androidx.lifecycle.LifecycleOwner;
@@ -172,7 +173,7 @@ public class CurrentState implements DeviceObserver, ServerObserver {
         this.oldOrientation = orientation;
 
         //make the updates on the UI
-
+        Log.d("test6","updating UI");
         for(int i = 0; i < markerList.size(); i++) {
             try{
                 float angle = AngleUtil.compassCalculateAngle(this.oldLocation, markerList.get(i).getCoordinate(), this.oldOrientation);

@@ -22,7 +22,7 @@ public class CompassActivity extends AppCompatActivity {
     private Display display;
     private Device device;
     private ServerListener serverListener;
-    private String privateUID = "team13testdummy2";
+    private String privateUID = "testTheory";
     private CurrentState currentState;
 
     @Override

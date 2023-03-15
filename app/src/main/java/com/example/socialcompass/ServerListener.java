@@ -1,6 +1,7 @@
 package com.example.socialcompass;
 
 import android.app.Activity;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
@@ -32,7 +33,7 @@ public class ServerListener implements ServerSubject {
 
     ServerListener(Activity activity, String privateUID) {
         this.activity = activity;
-        this.api = new ServerAPI();
+        this.api = ServerAPI.provide();
         this.oldLocation = "0,0";
         this.privateUID = privateUID;
     }
@@ -61,7 +62,22 @@ public class ServerListener implements ServerSubject {
         String[] latlon = this.oldLocation.split(",");
         float lat = Float.parseFloat(latlon[0]);
         float lon = Float.parseFloat(latlon[1]);
-        api.patchFriendAsync(this.privateUID, lat , lon);
+
+        Log.d("test6","patching location");
+
+        Future<Integer> patch = api.patchFriendAsync(this.privateUID, lat , lon);
+
+        while(!patch.isDone());
+
+        try {
+            Log.d("test6",String.valueOf(patch.get()));
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        Log.d("test6", "done patching location");
 
 //        class OneShotTask implements Runnable {
 //            String privateUID;

@@ -1,6 +1,7 @@
 package com.example.socialcompass;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 
 import androidx.lifecycle.LifecycleOwner;
@@ -41,6 +42,7 @@ public class Device implements  DeviceSubject {
     }
 
     public void notifyObserver() {
+        Log.d("test6","notifying change");
         this.locationService.getLocation().observe((LifecycleOwner) activity, loc -> {
             // since there are two listeners, you cannot update 2 changing values at the same time
             //this is why we have oldLocation and oldOrientation

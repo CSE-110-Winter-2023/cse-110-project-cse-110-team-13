@@ -71,11 +71,13 @@ public class Display {
 
     public void updateGPSEnabledButton(Boolean oldGPSEnabled) {
         Button GPSButton = (Button) activity.findViewById(R.id.GPSEnabledButton);
-        if (oldGPSEnabled){
-            GPSButton.setBackgroundResource(R.drawable.green_circle);
-        }
-        else{
-            GPSButton.setBackgroundResource(R.drawable.red_circle);
-        }
+        this.activity.runOnUiThread(() -> {
+            if (oldGPSEnabled){
+                GPSButton.setBackgroundResource(R.drawable.green_circle);
+            }
+            else{
+                GPSButton.setBackgroundResource(R.drawable.red_circle);
+            }
+        });
     }
 }

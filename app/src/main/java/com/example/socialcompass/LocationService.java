@@ -63,7 +63,6 @@ public class LocationService implements LocationListener {
 
     @Override
     public void onProviderEnabled(String provider) {
-
         this.GPSEnabled.postValue(true);
     }
 

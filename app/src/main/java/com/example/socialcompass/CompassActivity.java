@@ -5,10 +5,13 @@ import androidx.lifecycle.LiveData;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -30,6 +33,8 @@ public class CompassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
         this.builder = new MarkerBuilder(getApplicationContext());
+        ImageView redDot = findViewById(R.id.redDot);
+        redDot.setVisibility(View.INVISIBLE);
 
         // fill arrays with data from intents
         loadFriendsFromUIDs();
@@ -55,6 +60,10 @@ public class CompassActivity extends AppCompatActivity {
         this.serverListener.registerServerObserver(this.currentState);
         this.device.registerDeviceObserver(this.currentState);
 
+        if (locationService.isGPSDisabled()) {
+            redDot.setVisibility(View.VISIBLE);
+            TextView timeSinceLastUpdate = R.
+        }
 
 
 

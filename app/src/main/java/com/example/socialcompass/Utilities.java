@@ -17,8 +17,21 @@ public class Utilities {
         alertDialog.show();
     }
 
-    static String formatTime(long time) {
-        return String.format(Locale.US, "%tT %tZ", time, time);
+    public static String formatTime(long time) {
+       long seconds = (time /1000) % 60;
+       long minutes = (time / (1000 * 60)) % 60;
+       long hours = (time / (1000 * 60 * 6)) % 24;
+
+        if (hours > 0) {
+            return String.format("%d hr", hours);
+        }
+        if (minutes > 0) {
+            return String.format("%d m", minutes);
+        }
+        if (seconds > 0) {
+            return String.format("%d s", seconds);
+        }
+        return "0";
 
     }
 }

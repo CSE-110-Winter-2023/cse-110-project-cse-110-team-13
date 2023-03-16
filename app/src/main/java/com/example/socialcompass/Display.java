@@ -11,6 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import java.util.ArrayList;
 import java.util.concurrent.Future;
 
+import okhttp3.internal.Util;
+
 public class Display {
 
     private Activity activity;
@@ -100,7 +102,7 @@ public class Display {
             greenDot.setVisibility(View.INVISIBLE);
             redDot.setVisibility(View.VISIBLE);
             timeSinceLastUpdate.setVisibility(View.VISIBLE);
-            timeSinceLastUpdate.setText(Long.toString(time/1000));
+            timeSinceLastUpdate.setText(Utilities.formatTime(time));
         });
 
     }

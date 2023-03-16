@@ -371,14 +371,18 @@ public class Display {
 
 
             if(distance > 500) {
-                radiusToBe = MAX_RADIUS_IN_DP;
+                int radius = 8 * MAX_RADIUS_IN_DP / 10;
+                if(radius > MAX_RADIUS_IN_DP) {
+                    radius = MAX_RADIUS_IN_DP;
+                }
+                radiusToBe = radius;
             }
             else if (distance <= 500 && distance > 10) {
 
 
                 //interpolation: get dp distance on compass using interpolation
                 float radiusOnCompass = ((distance - 10)/490) * (MAX_RADIUS_IN_DP/4);
-                int radius = convertDpToPixel(radiusOnCompass) + (int) (3*MAX_RADIUS_IN_DP/4);
+                int radius = convertDpToPixel(radiusOnCompass) + (int) (2*MAX_RADIUS_IN_DP/4);
 
                 if(radius > MAX_RADIUS_IN_DP) {
                     radius = MAX_RADIUS_IN_DP;
@@ -390,7 +394,7 @@ public class Display {
 
                 //interpolation: get dp distance on compass using interpolation
                 float radiusOnCompass = ((distance - 1)/9) * (MAX_RADIUS_IN_DP/4);
-                int radius = convertDpToPixel(radiusOnCompass) + (int) 2*MAX_RADIUS_IN_DP/4;
+                int radius = convertDpToPixel(radiusOnCompass) + (int) MAX_RADIUS_IN_DP/4;
                 radiusToBe = radius;
             }
             else {

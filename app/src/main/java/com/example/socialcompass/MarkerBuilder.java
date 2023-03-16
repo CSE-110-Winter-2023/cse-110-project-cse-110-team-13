@@ -56,6 +56,12 @@ public class MarkerBuilder {
 
         ImageView imageView = (ImageView) v.findViewById(R.id.Marker);
 
+        //change size of marker
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
+        params.width = 32;
+        params.height = 32;
+        imageView.setLayoutParams(params);
+
         imageView.setImageResource(R.drawable.darkbluedot);
 
         // insert into main view

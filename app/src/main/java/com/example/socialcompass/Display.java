@@ -79,17 +79,6 @@ public class Display {
         zoomSetting = setting;
     }
 
-    //deprecated method, no reason to change the ID of textviews and imageviews
-//    public void updateLabelPointer(int labelPointerID, int locationPointerID)
-//    {
-//        TextView label = activity.findViewById(labelPointerID);
-//        ImageView marker = activity.findViewById(locationPointerID);
-//        ConstraintLayout.LayoutParams layoutParamsMarker = (ConstraintLayout.LayoutParams) marker.getLayoutParams();
-//        ConstraintLayout.LayoutParams layoutParamsLabel = (ConstraintLayout.LayoutParams) label.getLayoutParams();
-//        layoutParamsLabel.circleAngle = layoutParamsMarker.circleAngle;
-//        layoutParamsLabel.circleRadius = layoutParamsMarker.circleRadius + 100;
-//        label.setLayoutParams(layoutParamsLabel);
-//    }
     public int convertDpToPixel(float dp) {
         float pixels =  dp * this.context.getResources().getDisplayMetrics().density;
         return (int) pixels;
@@ -102,7 +91,7 @@ public class Display {
         // so if we want the update to be in real time, it has to run on ui thread.
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) markerLocation.getLayoutParams();
         layoutParams.circleAngle = (float) angle;
-//            layoutParams.circleRadius = MAX_RADIUS_IN_DP;
+
         if(zoomSetting == 1) {
             compassViewO.setVisibility(View.VISIBLE);
             compassView43.setVisibility(View.INVISIBLE);

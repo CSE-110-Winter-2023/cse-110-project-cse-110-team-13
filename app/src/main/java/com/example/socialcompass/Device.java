@@ -12,7 +12,7 @@ interface DeviceSubject {
 }
 
 interface DeviceObserver {
-    void deviceUpdate(String location, float orientation);
+    void deviceUpdate(String location, float orientation, Boolean GPSEnabled);
 }
 
 public class Device implements  DeviceSubject {
@@ -21,6 +21,7 @@ public class Device implements  DeviceSubject {
     private OrientationService orientationService;
     private String oldLocation = "0,0";
     private float oldOrientation = 0.0F;
+    private Boolean oldGPSEnabled = false;
     private DeviceObserver obs;
 
     Device(Activity activity, LocationService locationService, OrientationService orientationService) {
@@ -39,13 +40,19 @@ public class Device implements  DeviceSubject {
             // of orientation to pass in this callback. Then it will update the new changing location into oldLocation
 
             this.oldLocation = Double.toString(loc.first) + "," + Double.toString(loc.second);
-            obs.deviceUpdate(this.oldLocation, this.oldOrientation);
+            obs.deviceUpdate(this.oldLocation, this.oldOrientation, this.oldGPSEnabled);
 
+        });
+
+        this.locationService.getGPSEnabled().observe((LifecycleOwner) activity, loc -> {
+            this.oldGPSEnabled = loc;
+            obs.deviceUpdate(this.oldLocation, this.oldOrientation, this.oldGPSEnabled);
         });
 
         this.orientationService.getOrientation().observe((LifecycleOwner) activity, ori -> {
             this.oldOrientation = ori;
-            obs.deviceUpdate(this.oldLocation, this.oldOrientation);
+            obs.deviceUpdate(this.oldLocation, this.oldOrientation, this.oldGPSEnabled);
         });
+
     }
 }

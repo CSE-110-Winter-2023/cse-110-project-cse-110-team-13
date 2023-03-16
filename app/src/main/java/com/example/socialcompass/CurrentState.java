@@ -142,6 +142,7 @@ public class CurrentState implements DeviceObserver, ServerObserver {
 
     private String oldLocation; //oldLocation so that the listeners can use a placeholder value
     private float oldOrientation; // oldOrientation so that the listeners can use a placeholder value
+    private Boolean oldGPSEnabled;
     private Activity activity; // activity
     private Display display; // UI updater
     private ServerListener serverListener;
@@ -155,6 +156,7 @@ public class CurrentState implements DeviceObserver, ServerObserver {
                         Display display, ArrayList<Marker> markerList) {
         this.oldLocation = "0,0";
         this.oldOrientation = 0;
+        this.oldGPSEnabled = false;
         this.activity = activity;
         this.display = display;
         this.serverListener = serverListener;
@@ -167,11 +169,14 @@ public class CurrentState implements DeviceObserver, ServerObserver {
     //after Device called notifyObserver(), meaning there is some changes to location or orientation,
     // it will run this function to update the location and orientation for
     // display and serverlistener.
-    public void deviceUpdate(String location, float orientation) {
+    public void deviceUpdate(String location, float orientation, Boolean GPSEnabled) {
         this.oldLocation = location;
         this.oldOrientation = orientation;
+        this.oldGPSEnabled = GPSEnabled;
 
         //make the updates on the UI
+
+        display.updateGPSEnabledButton(this.oldGPSEnabled);
 
         for(int i = 0; i < markerList.size(); i++) {
             try{
@@ -181,12 +186,9 @@ public class CurrentState implements DeviceObserver, ServerObserver {
             catch(Exception e) {
                 continue;
             }
-
         }
-
         //Update user's location on the server AFTER the UI has updated to give a smoother experience.
         this.serverListener.updateLocationOnServer(this.oldLocation);
-
     }
 
     //there is something new from the server-side, hence we're updating the UI based on the

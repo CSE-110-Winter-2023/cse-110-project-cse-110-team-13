@@ -1,7 +1,9 @@
 package com.example.socialcompass;
 
 import android.app.Activity;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -42,7 +44,6 @@ public class Display {
         int oldIndex = (int)((oldAngle + 360)%360 /10);
         spots[oldIndex] = false;
 
-
         int index = (int)((angle + 360)%360 /10);
 
         if(spots[index]){
@@ -68,4 +69,13 @@ public class Display {
     }
 
 
+    public void updateGPSEnabledButton(Boolean oldGPSEnabled) {
+        Button GPSButton = (Button) activity.findViewById(R.id.GPSEnabledButton);
+        if (oldGPSEnabled){
+            GPSButton.setBackgroundResource(R.drawable.green_circle);
+        }
+        else{
+            GPSButton.setBackgroundResource(R.drawable.red_circle);
+        }
+    }
 }

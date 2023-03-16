@@ -19,6 +19,7 @@ public class LocationService implements LocationListener {
     private Activity activity;
 
     private MutableLiveData<Pair<Double,Double>> locationValue;
+    private MutableLiveData<Boolean> GPSEnabled;
 
     private final LocationManager locationManager;
 
@@ -53,9 +54,21 @@ public class LocationService implements LocationListener {
         this.locationValue.postValue(new Pair<Double,Double>(location.getLatitude(), location.getLongitude()));
     }
 
+    @Override
+    public void onProviderDisabled(String provider) {
+        this.GPSEnabled.postValue(false);
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        this.GPSEnabled.postValue(true);
+    }
+
     private void unregisterLocationListener() {locationManager.removeUpdates(this);}
 
     public LiveData<Pair<Double, Double>> getLocation() {return this.locationValue;}
+
+    public LiveData<Boolean> getGPSEnabled() {return this.GPSEnabled;}
 
     public void setMockOrientationSource(MutableLiveData<Pair<Double, Double>> mockDataSource) {
         unregisterLocationListener();

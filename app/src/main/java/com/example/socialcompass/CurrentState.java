@@ -169,7 +169,6 @@ public class CurrentState implements DeviceObserver, ServerObserver {
     // it will run this function to update the location and orientation for
     // display and serverlistener.
     public void deviceUpdate(String location, float orientation) {
-        Log.d("Currently located at", location);
         this.oldLocation = location;
         this.oldOrientation = orientation;
 

@@ -14,7 +14,6 @@ import java.util.concurrent.Future;
 public class Display {
 
     private Activity activity;
-    private ServerAPI server;
     private Context context;
 
     private ImageView compassViewO;
@@ -42,8 +41,8 @@ public class Display {
     private int zoomSetting = 2;
     private int MAX_RADIUS_IN_DP = 480;
     public Display(Activity activity, Context context) {
+
         this.activity = activity;
-        this.server = new ServerAPI();
         this.context = context;
         compassViewO = activity.findViewById(R.id.CompassFaceO);
         compassView43 = activity.findViewById(R.id.CompassFace4_3);
@@ -80,17 +79,6 @@ public class Display {
         zoomSetting = setting;
     }
 
-    //deprecated method, no reason to change the ID of textviews and imageviews
-//    public void updateLabelPointer(int labelPointerID, int locationPointerID)
-//    {
-//        TextView label = activity.findViewById(labelPointerID);
-//        ImageView marker = activity.findViewById(locationPointerID);
-//        ConstraintLayout.LayoutParams layoutParamsMarker = (ConstraintLayout.LayoutParams) marker.getLayoutParams();
-//        ConstraintLayout.LayoutParams layoutParamsLabel = (ConstraintLayout.LayoutParams) label.getLayoutParams();
-//        layoutParamsLabel.circleAngle = layoutParamsMarker.circleAngle;
-//        layoutParamsLabel.circleRadius = layoutParamsMarker.circleRadius + 100;
-//        label.setLayoutParams(layoutParamsLabel);
-//    }
     public int convertDpToPixel(float dp) {
         float pixels =  dp * this.context.getResources().getDisplayMetrics().density;
         return (int) pixels;
@@ -103,7 +91,7 @@ public class Display {
         // so if we want the update to be in real time, it has to run on ui thread.
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) markerLocation.getLayoutParams();
         layoutParams.circleAngle = (float) angle;
-//            layoutParams.circleRadius = MAX_RADIUS_IN_DP;
+
         if(zoomSetting == 1) {
             compassViewO.setVisibility(View.VISIBLE);
             compassView43.setVisibility(View.INVISIBLE);

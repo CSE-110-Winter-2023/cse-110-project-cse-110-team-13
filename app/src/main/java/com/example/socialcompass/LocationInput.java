@@ -20,10 +20,7 @@ public class LocationInput extends AppCompatActivity {
     //List of UIds that will be passed to compassActivity to create markers for each
 
     private TextView inputView;
-
-    //private final int UIDLENGTH = 32;
     private ServerAPI serverAPI = ServerAPI.provide();
-
     private ExecutorService backgroundThreadExecutor = Executors.newSingleThreadExecutor();
     private Future<Boolean> future;
     private Future<Boolean> boolFuture;
@@ -134,8 +131,7 @@ public class LocationInput extends AppCompatActivity {
 
         if(!inputCheck(input)) return;
 
-        //Temp stores each UID to UID pair
-
+        //stores each UID to UID pair
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("UIDs",MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 

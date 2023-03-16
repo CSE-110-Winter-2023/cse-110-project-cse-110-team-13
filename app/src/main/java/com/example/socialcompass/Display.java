@@ -3,6 +3,7 @@ package com.example.socialcompass;
 import android.app.Activity;
 import android.content.Context;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class Display {
     public Display(Activity activity, Context context) {
 
         //the spaces that a marker can be in
-        spots = new boolean[36][10];
+        spots = new boolean[36][11];
 
         this.activity = activity;
         this.context = context;
@@ -94,19 +95,17 @@ public class Display {
 
         markerLabel.setText(ogLabel);
 
-        int radiusToBe = calculateRadius(distance);
-        updateCompass(markerLocation,markerLabel,distance);
-
-        /*//Mark its spot as free
         ConstraintLayout.LayoutParams layoutParamsOld = (ConstraintLayout.LayoutParams) markerLocation.getLayoutParams();
         float oldAngle = layoutParamsOld.circleAngle;
         float oldRadius = layoutParamsOld.circleRadius;
         int oldIndexAngle = (int)((oldAngle + 360)%360 /10);
         int oldIndexRadius = (int)((oldRadius ) /48);
 
+        Log.d("test10",oldIndexAngle + " " + oldIndexRadius);
+
         spots[oldIndexAngle][oldIndexRadius] = false;
 
-
+        int radiusToBe = calculateRadius(distance);
         //check its new spot to see if it overlapps
         int indexAngle = (int)((angle + 360)%360 /10);
         int indexRadius = (int)((radiusToBe) /48);
@@ -114,24 +113,26 @@ public class Display {
         //check if next to anyone and should truncate label
         int truncateCheck;
         if(indexAngle < 35)  truncateCheck = indexAngle + 1;
-        else { truncateCheck = 0;}
+        else  truncateCheck = 0;
 
         if (spots[truncateCheck][indexRadius]){
-
             String label = (String) markerLabel.getText();
-
             if(label.length() > 10){
                 label = label.substring(0,5) + "...";
             }
             markerLabel.setText(label);
         }
 
-        if(spots[indexAngle][indexRadius]){
-            updatePointer(markerLocation,markerLabel,angle + 11,distance,ogLabel);
-        }
-        else{*/
 
-            //spots[indexAngle][indexRadius] = true;
+
+
+        if(spots[indexAngle][indexRadius]){
+            updatePointer(markerLocation,markerLabel,angle,(float)(distance * 0.5),ogLabel);
+        }
+        else{
+
+            spots[indexAngle][indexRadius] = true;
+            updateCompass(markerLocation,markerLabel,distance);
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) markerLocation.getLayoutParams();
             layoutParams.circleAngle = (float) angle;
             layoutParams.circleRadius = radiusToBe;
@@ -143,7 +144,9 @@ public class Display {
                 markerLocation.setLayoutParams(layoutParams);
             });
 
-        //}
+            }
+
+
 
     }
 
@@ -300,6 +303,8 @@ public class Display {
 
             if(distance > 1) {
                 radiusToBe = MAX_RADIUS_IN_DP;
+                Log.d("test8","At zoom level 1 the radis to be is " + radiusToBe);
+
 
             }
             else {
@@ -311,6 +316,7 @@ public class Display {
                     radius = MAX_RADIUS_IN_DP;
                 }
                 radiusToBe = radius;
+                Log.d("test8","At zoom level 1 the radis to be is BAD " + radiusToBe);
             }
         }
 
@@ -407,6 +413,8 @@ public class Display {
             }
         }
 
+
+        Log.d("test8","The returned radius to be is "+ radiusToBe);
         return radiusToBe;
     }
 

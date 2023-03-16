@@ -33,12 +33,12 @@
             android:id="@+id/Label"
             android:layout_width="76dp"
             android:layout_height="36dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="345dp"
             android:text="TextView"
             android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="@+id/Marker"
-            app:layout_constraintHorizontal_bias="0.029"
+            app:layout_constraintHorizontal_bias="0.019"
             app:layout_constraintStart_toStartOf="@+id/Marker"
             app:layout_constraintTop_toTopOf="@+id/Marker" />
 

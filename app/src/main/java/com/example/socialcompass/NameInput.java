@@ -3,6 +3,7 @@ package com.example.socialcompass;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -74,6 +75,8 @@ public class NameInput extends AppCompatActivity {
         ServerAPI api = ServerAPI.provide();
         api.putFriendAsync(friend);
         finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     protected boolean empty(String input) {

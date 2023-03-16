@@ -14,7 +14,6 @@ import java.util.concurrent.Future;
 public class Display {
 
     private Activity activity;
-    private ServerAPI server;
     private Context context;
 
     private ImageView compassView;
@@ -34,8 +33,8 @@ public class Display {
     private int zoomSetting = 2;
     private int MAX_RADIUS_IN_DP = 480;
     public Display(Activity activity, Context context) {
+
         this.activity = activity;
-        this.server = new ServerAPI();
         this.context = context;
         compassView = activity.findViewById(R.id.CompassFace);
         compassView2 = activity.findViewById(R.id.CompassFace2);

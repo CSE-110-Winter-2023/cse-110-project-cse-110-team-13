@@ -3,6 +3,7 @@ package com.example.socialcompass;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -42,11 +43,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void changeServerUrl(View view){
+        ServerAPI  serverAPI = ServerAPI.provide();
+        TextView inputView = findViewById(R.id.severUrl);
+
+        String input = inputView.getText().toString();
+
+        inputView.setText("");
+        ServerAPI.mockServerUrl(input);
+
+
+    }
+
     public void enterCompassActivity(View view) {
 
         //if there are no locations show alert
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("UIDs",MODE_PRIVATE);
-
         int numOfLocations = preferences.getAll().size();
 
         if(numOfLocations == 0){

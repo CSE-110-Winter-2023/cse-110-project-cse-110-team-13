@@ -16,7 +16,10 @@ import androidx.lifecycle.MutableLiveData;
 
 public class LocationService implements LocationListener {
     private static LocationService instance;
+    private static final int MAX_TIME_SINCE_UPDATE = 1000;
     private Activity activity;
+    private long lastLocationUpdateTime = 0;
+
 
     private MutableLiveData<Pair<Double,Double>> locationValue;
 
@@ -51,6 +54,12 @@ public class LocationService implements LocationListener {
     @Override
     public void onLocationChanged(@NonNull Location location) {
         this.locationValue.postValue(new Pair<Double,Double>(location.getLatitude(), location.getLongitude()));
+        lastLocationUpdateTime = System.currentTimeMillis();
+    }
+
+    public boolean isGPSDisabled() {
+        long timeSinceUpdate = System.currentTimeMillis() - lastLocationUpdateTime;
+        return timeSinceUpdate > MAX_TIME_SINCE_UPDATE;
     }
 
     private void unregisterLocationListener() {locationManager.removeUpdates(this);}

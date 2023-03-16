@@ -64,4 +64,5 @@
         app:layout_constraintBottom_toTopOf="@+id/CompassFace"
         app:layout_constraintStart_toStartOf="@+id/redDot" />
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>

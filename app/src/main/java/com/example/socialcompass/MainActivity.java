@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
                     && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200 );
             }
+            TextView uidText = findViewById(R.id.uidDisplay);
+            String uid = preferences.getString("UUID", "Error: UID not generated yet!");
+            uidText.setText("Your UID is: " + uid);
         }
     }
 

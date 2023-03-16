@@ -24,10 +24,13 @@ public class MarkerBuilder {
         currMarker = new Marker(UID);
         var futureFriend = server.getFriendAsync(UID);
         Friend friend = null;
+        while(!futureFriend.isDone());
         try{
             friend  = futureFriend.get();
         }
         catch(Exception e){}
+
+
 
         addLabel(currMarker, friend.getLabel());
         currMarker.setCoordinate( String.valueOf(friend.getLatitude()) + "," + String.valueOf(friend.getLongitude()));

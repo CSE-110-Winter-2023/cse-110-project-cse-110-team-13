@@ -2,6 +2,7 @@ package com.example.socialcompass;
 
 import android.app.Activity;
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,22 +17,9 @@ public class Display {
     private Activity activity;
     private Context context;
 
-    private ImageView compassViewO;
-    private ImageView compassView43;
-    private ImageView compassView42;
-    private ImageView compassView41;
-    private ImageView compassView32;
-    private ImageView compassView31;
-    private TextView dist44;
-    private TextView dist43;
-    private TextView dist42;
-    private TextView dist41;
-    private TextView dist33;
-    private TextView dist32;
-    private TextView dist31;
-    private TextView dist22;
-    private TextView dist21;
-    private TextView dist1;
+    private ImageView[] compassViews;
+    private TextView[] textViews;
+
     //the zoom setting for the display
     // zoomSetting == 1: only 1 circle from 0 - 1 mile
     // zoomSetting == 2: 2 circle, first one from 0 - 1 mile, the other from 1 - 10 mile
@@ -49,29 +37,44 @@ public class Display {
 
         this.activity = activity;
         this.context = context;
-        compassViewO = activity.findViewById(R.id.CompassFaceO);
-        compassView43 = activity.findViewById(R.id.CompassFace4_3);
-        compassView42 = activity.findViewById(R.id.CompassFace4_2);
-        compassView41 = activity.findViewById(R.id.CompassFace4_1);
-        compassView32 = activity.findViewById(R.id.CompassFace3_2);
-        compassView31 = activity.findViewById(R.id.CompassFace3_1);
-        dist44 = activity.findViewById(R.id.dist44);
-        dist43 = activity.findViewById(R.id.dist43);
-        dist42 = activity.findViewById(R.id.dist42);
-        dist41 = activity.findViewById(R.id.dist41);
-        dist33 = activity.findViewById(R.id.dist33);
-        dist32 = activity.findViewById(R.id.dist32);
-        dist31 = activity.findViewById(R.id.dist31);
-        dist22 = activity.findViewById(R.id.dist22);
-        dist21 = activity.findViewById(R.id.dist21);
-        dist1 = activity.findViewById(R.id.dist1);
+
+        loadUIElements();
+
+
+
     }
 
-    public float clamp(float value, float min, float max)
-    {
-        if (value < min)
-            return min;
-        return Math.min(value, max);
+
+    public void loadUIElements(){
+
+        compassViews = new ImageView[]{
+                activity.findViewById(R.id.CompassFaceO),
+                activity.findViewById(R.id.CompassFace4_3),
+                activity.findViewById(R.id.CompassFace4_2),
+                activity.findViewById(R.id.CompassFace4_1),
+                activity.findViewById(R.id.CompassFace3_2),
+                activity.findViewById(R.id.CompassFace3_1)
+        };
+
+        textViews = new TextView[]{
+                activity.findViewById(R.id.dist44),
+                activity.findViewById(R.id.dist43),
+                activity.findViewById(R.id.dist42),
+                activity.findViewById(R.id.dist41),
+                activity.findViewById(R.id.dist33),
+                activity.findViewById(R.id.dist32),
+                activity.findViewById(R.id.dist31),
+                activity.findViewById(R.id.dist22),
+                activity.findViewById(R.id.dist21),
+                activity.findViewById(R.id.dist1)
+        };
+    }
+
+    public void allViewInvis(){
+        for(ImageView i: compassViews){ i.setVisibility(View.INVISIBLE);
+        }
+        for(TextView t: textViews){ t.setVisibility(View.INVISIBLE);
+        }
     }
 
     public int getZoomSetting()
@@ -92,8 +95,10 @@ public class Display {
     // update a marker imageview with a new angle and distance
     public void updatePointer(ImageView markerLocation, TextView markerLabel, double angle, float distance){
 
-        int radiusToBe = 0;
+        int radiusToBe = calculateRadius(distance);
+        updateCompass(markerLocation,markerLabel,distance);
 
+        //Mark its spot as free
         ConstraintLayout.LayoutParams layoutParamsOld = (ConstraintLayout.LayoutParams) markerLocation.getLayoutParams();
         float oldAngle = layoutParamsOld.circleAngle;
         float oldRadius = layoutParamsOld.circleRadius;
@@ -103,213 +108,14 @@ public class Display {
         spots[oldIndexAngle][oldIndexRadius] = false;
 
 
-
-
-        if(zoomSetting == 1) {
-            compassViewO.setVisibility(View.VISIBLE);
-            compassView43.setVisibility(View.INVISIBLE);
-            compassView42.setVisibility(View.INVISIBLE);
-            compassView41.setVisibility(View.INVISIBLE);
-            compassView32.setVisibility(View.INVISIBLE);
-            compassView31.setVisibility(View.INVISIBLE);
-            dist44.setVisibility(View.INVISIBLE);
-            dist43.setVisibility(View.INVISIBLE);
-            dist42.setVisibility(View.INVISIBLE);
-            dist41.setVisibility(View.INVISIBLE);
-            dist33.setVisibility(View.INVISIBLE);
-            dist32.setVisibility(View.INVISIBLE);
-            dist31.setVisibility(View.INVISIBLE);
-            dist22.setVisibility(View.INVISIBLE);
-            dist21.setVisibility(View.INVISIBLE);
-            dist1.setVisibility(View.VISIBLE);
-            if(distance > 1) {
-                this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.VISIBLE);
-                    markerLabel.setVisibility(View.INVISIBLE);
-                });
-            }
-            else {
-                this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.VISIBLE);
-                });
-
-                //interpolation: get dp distance on compass using interpolation
-                float radiusOnCompass = distance*MAX_RADIUS_IN_DP;
-                int radius = convertDpToPixel(radiusOnCompass);
-                if(radius > MAX_RADIUS_IN_DP) {
-                    radius = MAX_RADIUS_IN_DP;
-                }
-                radiusToBe = radius;
-            }
-        }
-
-        else if (zoomSetting == 2) {
-            compassViewO.setVisibility(View.VISIBLE);
-            compassView43.setVisibility(View.INVISIBLE);
-            compassView42.setVisibility(View.VISIBLE);
-            compassView41.setVisibility(View.INVISIBLE);
-            compassView32.setVisibility(View.INVISIBLE);
-            compassView31.setVisibility(View.INVISIBLE);
-            dist44.setVisibility(View.INVISIBLE);
-            dist43.setVisibility(View.INVISIBLE);
-            dist42.setVisibility(View.INVISIBLE);
-            dist41.setVisibility(View.INVISIBLE);
-            dist33.setVisibility(View.INVISIBLE);
-            dist32.setVisibility(View.INVISIBLE);
-            dist31.setVisibility(View.INVISIBLE);
-            dist22.setVisibility(View.VISIBLE);
-            dist21.setVisibility(View.VISIBLE);
-            dist1.setVisibility(View.INVISIBLE);
-            if(distance > 10) {
-                this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.VISIBLE);
-                    markerLabel.setVisibility(View.INVISIBLE);
-                });
-            }
-            else if (distance <= 10 && distance > 1) {
-                this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.VISIBLE);
-                    markerLabel.setVisibility(View.VISIBLE);
-                });
-
-                //interpolation: get dp distance on compass using interpolation
-                radiusToBe = MAX_RADIUS_IN_DP;
-            }
-            else {
-                this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.VISIBLE);
-                    markerLabel.setVisibility(View.VISIBLE);
-                });
-
-                //interpolation: get dp distance on compass using interpolation
-                float radiusOnCompass = distance*(MAX_RADIUS_IN_DP/2);
-                int radius = convertDpToPixel(radiusOnCompass);
-                radiusToBe = radius;
-            }
-        }
-
-        else if (zoomSetting == 3) {
-            compassViewO.setVisibility(View.VISIBLE);
-            compassView43.setVisibility(View.INVISIBLE);
-            compassView42.setVisibility(View.INVISIBLE);
-            compassView41.setVisibility(View.INVISIBLE);
-            compassView32.setVisibility(View.VISIBLE);
-            compassView31.setVisibility(View.VISIBLE);
-            dist44.setVisibility(View.INVISIBLE);
-            dist43.setVisibility(View.INVISIBLE);
-            dist42.setVisibility(View.INVISIBLE);
-            dist41.setVisibility(View.INVISIBLE);
-            dist33.setVisibility(View.VISIBLE);
-            dist32.setVisibility(View.VISIBLE);
-            dist31.setVisibility(View.VISIBLE);
-            dist22.setVisibility(View.INVISIBLE);
-            dist21.setVisibility(View.INVISIBLE);
-            dist1.setVisibility(View.INVISIBLE);
-            if(distance > 500) {
-                this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.VISIBLE);
-                    markerLabel.setVisibility(View.INVISIBLE);
-                });
-            }
-            else if (distance <= 500 && distance > 10) {
-                this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.VISIBLE);
-                    markerLabel.setVisibility(View.VISIBLE);
-                });
-
-                //interpolation: get dp distance on compass using interpolation
-                radiusToBe = MAX_RADIUS_IN_DP;
-            }
-            else if (distance <= 10 && distance > 1) {
-                this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.VISIBLE);
-                    markerLabel.setVisibility(View.VISIBLE);
-                });
-
-                //interpolation: get dp distance on compass using interpolation
-                float radiusOnCompass = ((distance - 1)/9) * (MAX_RADIUS_IN_DP/3);
-                int radius = convertDpToPixel(radiusOnCompass) + (int) 2 * MAX_RADIUS_IN_DP/3;
-                radiusToBe = radius;
-            }
-            else {
-                this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.VISIBLE);
-                    markerLabel.setVisibility(View.VISIBLE);
-                });
-
-                //interpolation: get dp distance on compass using interpolation
-                float radiusOnCompass = distance*MAX_RADIUS_IN_DP/3;
-                int radius = convertDpToPixel(radiusOnCompass);
-                radiusToBe = radius;
-            }
-        }
-
-        else {
-            compassViewO.setVisibility(View.VISIBLE);
-            compassView43.setVisibility(View.VISIBLE);
-            compassView42.setVisibility(View.VISIBLE);
-            compassView41.setVisibility(View.VISIBLE);
-            compassView32.setVisibility(View.INVISIBLE);
-            compassView31.setVisibility(View.INVISIBLE);
-            dist44.setVisibility(View.VISIBLE);
-            dist43.setVisibility(View.VISIBLE);
-            dist42.setVisibility(View.VISIBLE);
-            dist41.setVisibility(View.VISIBLE);
-            dist33.setVisibility(View.INVISIBLE);
-            dist32.setVisibility(View.INVISIBLE);
-            dist31.setVisibility(View.INVISIBLE);
-            dist22.setVisibility(View.INVISIBLE);
-            dist21.setVisibility(View.INVISIBLE);
-            dist1.setVisibility(View.INVISIBLE);
-            if(distance > 500) {
-                this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.VISIBLE);
-                    markerLabel.setVisibility(View.VISIBLE);
-                });
-                radiusToBe = MAX_RADIUS_IN_DP;
-            }
-            else if (distance <= 500 && distance > 10) {
-                this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.VISIBLE);
-                    markerLabel.setVisibility(View.VISIBLE);
-                });
-
-                //interpolation: get dp distance on compass using interpolation
-                float radiusOnCompass = ((distance - 10)/490) * (MAX_RADIUS_IN_DP/4);
-                int radius = convertDpToPixel(radiusOnCompass) + (int) (3*MAX_RADIUS_IN_DP/4);
-
-                if(radius > MAX_RADIUS_IN_DP) {
-                    radius = MAX_RADIUS_IN_DP;
-                }
-
-                radiusToBe = radius;
-            }
-            else if (distance <= 10 && distance > 1) {
-                this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.VISIBLE);
-                    markerLabel.setVisibility(View.VISIBLE);
-                });
-
-                //interpolation: get dp distance on compass using interpolation
-                float radiusOnCompass = ((distance - 1)/9) * (MAX_RADIUS_IN_DP/4);
-                int radius = convertDpToPixel(radiusOnCompass) + (int) 2*MAX_RADIUS_IN_DP/4;
-                radiusToBe = radius;
-            }
-            else {
-                this.activity.runOnUiThread(() -> {
-                    markerLocation.setVisibility(View.VISIBLE);
-                    markerLabel.setVisibility(View.VISIBLE);
-                });
-
-                //interpolation: get dp distance on compass using interpolation
-                float radiusOnCompass = distance * (MAX_RADIUS_IN_DP/4);
-                int radius = convertDpToPixel(radiusOnCompass);
-                radiusToBe = radius;
-            }
-        }
-
+        //check its new spot to see if it overlapps
         int indexAngle = (int)((angle + 360)%360 /10);
         int indexRadius = (int)((radiusToBe) /48);
+
+        //check if next to anyone and should truncate label
+        if (spots[indexAngle-1][indexRadius]){
+
+        }
 
         if(spots[indexAngle][indexRadius]){
             updatePointer(markerLocation,markerLabel,angle + 11,distance);
@@ -317,7 +123,6 @@ public class Display {
         else{
 
             spots[indexAngle][indexRadius] = true;
-
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) markerLocation.getLayoutParams();
             layoutParams.circleAngle = (float) angle;
             layoutParams.circleRadius = radiusToBe;
@@ -331,6 +136,265 @@ public class Display {
 
         }
 
+    }
+
+    public void updateCompass(ImageView markerLocation, TextView markerLabel, float distance){
+
+        if(zoomSetting == 1) {
+            this.activity.runOnUiThread(() -> {
+                allViewInvis();
+                compassViews[0].setVisibility(View.VISIBLE);
+                textViews[9].setVisibility(View.VISIBLE);
+            });
+
+            if(distance > 1) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.INVISIBLE); });
+            }
+            else {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                });
+            }
+        }
+
+        else if (zoomSetting == 2) {
+            this.activity.runOnUiThread(() -> {
+                allViewInvis();
+                compassViews[0].setVisibility(View.VISIBLE);
+                compassViews[2].setVisibility(View.VISIBLE);
+                textViews[7].setVisibility(View.VISIBLE);
+                textViews[8].setVisibility(View.VISIBLE);
+            });
+
+            if(distance > 10) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.INVISIBLE);
+                });
+            }
+            else if (distance <= 10 && distance > 1) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+
+            }
+            else {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+            }
+        }
+
+        else if (zoomSetting == 3) {
+
+            this.activity.runOnUiThread(() -> {
+                allViewInvis();
+                compassViews[0].setVisibility(View.VISIBLE);
+                compassViews[4].setVisibility(View.VISIBLE);
+                compassViews[5].setVisibility(View.VISIBLE);
+                textViews[4].setVisibility(View.VISIBLE);
+                textViews[5].setVisibility(View.VISIBLE);
+                textViews[6].setVisibility(View.VISIBLE);
+            });
+
+
+            if(distance > 500) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.INVISIBLE);
+                });
+            }
+            else if (distance <= 500 && distance > 10) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+
+            }
+            else if (distance <= 10 && distance > 1) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+            }
+            else {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+            }
+        }
+
+        else {
+
+            this.activity.runOnUiThread(() -> {
+                allViewInvis();
+                compassViews[0].setVisibility(View.VISIBLE);
+                compassViews[1].setVisibility(View.VISIBLE);
+                compassViews[2].setVisibility(View.VISIBLE);
+                compassViews[3].setVisibility(View.VISIBLE);
+                textViews[0].setVisibility(View.VISIBLE);
+                textViews[1].setVisibility(View.VISIBLE);
+                textViews[2].setVisibility(View.VISIBLE);
+                textViews[3].setVisibility(View.VISIBLE);
+            });
+
+            if(distance > 500) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+            }
+            else if (distance <= 500 && distance > 10) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+            }
+            else if (distance <= 10 && distance > 1) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+            }
+            else {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+            }
+        }
+
+
+
+
+    }
+
+    public int calculateRadius(float distance){
+
+        int radiusToBe = 0;
+
+        if(zoomSetting == 1) {
+
+            if(distance > 1) {
+                radiusToBe = MAX_RADIUS_IN_DP;
+
+            }
+            else {
+
+                //interpolation: get dp distance on compass using interpolation
+                float radiusOnCompass = distance*MAX_RADIUS_IN_DP;
+                int radius = convertDpToPixel(radiusOnCompass);
+                if(radius > MAX_RADIUS_IN_DP) {
+                    radius = MAX_RADIUS_IN_DP;
+                }
+                radiusToBe = radius;
+            }
+        }
+
+        else if (zoomSetting == 2) {
+
+            if(distance > 10) {
+
+                radiusToBe = MAX_RADIUS_IN_DP;
+
+            }
+            else if (distance <= 10 && distance > 1) {
+
+                //interpolation: get dp distance on compass using interpolation
+                float radiusOnCompass = ((distance - 1)/9) * (MAX_RADIUS_IN_DP/2);
+                int radius = convertDpToPixel(radiusOnCompass) + (int) MAX_RADIUS_IN_DP/2;
+                radiusToBe = radius;
+            }
+            else {
+
+                //interpolation: get dp distance on compass using interpolation
+                float radiusOnCompass = distance*(MAX_RADIUS_IN_DP/2);
+                int radius = convertDpToPixel(radiusOnCompass);
+                radiusToBe = radius;
+            }
+        }
+
+        else if (zoomSetting == 3) {
+
+            if(distance > 500) {
+                radiusToBe = MAX_RADIUS_IN_DP;
+
+            }
+            else if (distance <= 500 && distance > 10) {
+
+                //interpolation: get dp distance on compass using interpolation
+                float radiusOnCompass = ((distance - 10)/490) * (MAX_RADIUS_IN_DP/3);
+                int radius = convertDpToPixel(radiusOnCompass) + (int) 2 * MAX_RADIUS_IN_DP/3;
+                radiusToBe = radius;
+
+            }
+            else if (distance <= 10 && distance > 1) {
+
+                //interpolation: get dp distance on compass using interpolation
+                float radiusOnCompass = ((distance - 1)/9) * (MAX_RADIUS_IN_DP/3);
+                int radius = convertDpToPixel(radiusOnCompass) + (int) MAX_RADIUS_IN_DP/3;
+                radiusToBe = radius;
+            }
+            else {
+
+                //interpolation: get dp distance on compass using interpolation
+                float radiusOnCompass = distance*MAX_RADIUS_IN_DP/3;
+                int radius = convertDpToPixel(radiusOnCompass);
+                radiusToBe = radius;
+            }
+        }
+
+        else {
+
+
+            if(distance > 500) {
+                radiusToBe = MAX_RADIUS_IN_DP;
+            }
+            else if (distance <= 500 && distance > 10) {
+
+
+                //interpolation: get dp distance on compass using interpolation
+                float radiusOnCompass = ((distance - 10)/490) * (MAX_RADIUS_IN_DP/4);
+                int radius = convertDpToPixel(radiusOnCompass) + (int) (3*MAX_RADIUS_IN_DP/4);
+
+                if(radius > MAX_RADIUS_IN_DP) {
+                    radius = MAX_RADIUS_IN_DP;
+                }
+
+                radiusToBe = radius;
+            }
+            else if (distance <= 10 && distance > 1) {
+
+                //interpolation: get dp distance on compass using interpolation
+                float radiusOnCompass = ((distance - 1)/9) * (MAX_RADIUS_IN_DP/4);
+                int radius = convertDpToPixel(radiusOnCompass) + (int) 2*MAX_RADIUS_IN_DP/4;
+                radiusToBe = radius;
+            }
+            else {
+
+
+                //interpolation: get dp distance on compass using interpolation
+                float radiusOnCompass = distance * (MAX_RADIUS_IN_DP/4);
+                int radius = convertDpToPixel(radiusOnCompass);
+                radiusToBe = radius;
+            }
+        }
+
+        return radiusToBe;
     }
 
 

@@ -97,7 +97,7 @@ public class Display {
         int radiusToBe = calculateRadius(distance);
         updateCompass(markerLocation,markerLabel,distance);
 
-        //Mark its spot as free
+        /*//Mark its spot as free
         ConstraintLayout.LayoutParams layoutParamsOld = (ConstraintLayout.LayoutParams) markerLocation.getLayoutParams();
         float oldAngle = layoutParamsOld.circleAngle;
         float oldRadius = layoutParamsOld.circleRadius;
@@ -129,9 +129,9 @@ public class Display {
         if(spots[indexAngle][indexRadius]){
             updatePointer(markerLocation,markerLabel,angle + 11,distance,ogLabel);
         }
-        else{
+        else{*/
 
-            spots[indexAngle][indexRadius] = true;
+            //spots[indexAngle][indexRadius] = true;
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) markerLocation.getLayoutParams();
             layoutParams.circleAngle = (float) angle;
             layoutParams.circleRadius = radiusToBe;
@@ -143,7 +143,7 @@ public class Display {
                 markerLocation.setLayoutParams(layoutParams);
             });
 
-        }
+        //}
 
     }
 
@@ -305,7 +305,7 @@ public class Display {
             else {
 
                 //interpolation: get dp distance on compass using interpolation
-                float radiusOnCompass = distance*MAX_RADIUS_IN_DP;
+                float radiusOnCompass = distance*(MAX_RADIUS_IN_DP/2.0f);
                 int radius = convertDpToPixel(radiusOnCompass);
                 if(radius > MAX_RADIUS_IN_DP) {
                     radius = MAX_RADIUS_IN_DP;
@@ -331,7 +331,7 @@ public class Display {
             else {
 
                 //interpolation: get dp distance on compass using interpolation
-                float radiusOnCompass = distance*(MAX_RADIUS_IN_DP/2);
+                float radiusOnCompass = distance*(MAX_RADIUS_IN_DP/4.0f);
                 int radius = convertDpToPixel(radiusOnCompass);
                 radiusToBe = radius;
             }
@@ -361,7 +361,7 @@ public class Display {
             else {
 
                 //interpolation: get dp distance on compass using interpolation
-                float radiusOnCompass = distance*MAX_RADIUS_IN_DP/3;
+                float radiusOnCompass = distance*MAX_RADIUS_IN_DP/6.0f;
                 int radius = convertDpToPixel(radiusOnCompass);
                 radiusToBe = radius;
             }
@@ -397,7 +397,7 @@ public class Display {
 
 
                 //interpolation: get dp distance on compass using interpolation
-                float radiusOnCompass = distance * (MAX_RADIUS_IN_DP/4);
+                float radiusOnCompass = distance * (MAX_RADIUS_IN_DP/10.0f);
                 int radius = convertDpToPixel(radiusOnCompass);
                 radiusToBe = radius;
             }

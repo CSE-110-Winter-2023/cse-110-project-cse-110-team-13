@@ -149,7 +149,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.42"/>
+        app:layout_constraintVertical_bias="0.46"/>
 
     <TextView
         android:id="@+id/dist42"
@@ -160,7 +160,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.37"/>
+        app:layout_constraintVertical_bias="0.4"/>
 
     <TextView
         android:id="@+id/dist43"
@@ -188,12 +188,12 @@
         android:id="@+id/dist33"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="10+"
+        android:text="10-500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25"/>
+        app:layout_constraintVertical_bias="0.32"/>
 
     <TextView
         android:id="@+id/dist32"
@@ -204,7 +204,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.33"/>
+        app:layout_constraintVertical_bias="0.37"/>
 
     <TextView
         android:id="@+id/dist31"
@@ -215,18 +215,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.41"/>
+        app:layout_constraintVertical_bias="0.44"/>
 
     <TextView
         android:id="@+id/dist22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1+"
+        android:text="1-10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25"/>
+        app:layout_constraintVertical_bias="0.32"/>
 
     <TextView
         android:id="@+id/dist21"
@@ -237,7 +237,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.37"/>
+        app:layout_constraintVertical_bias="0.4"/>
 
     <TextView
         android:id="@+id/dist1"
@@ -248,6 +248,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25"/>
+        app:layout_constraintVertical_bias="0.32"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

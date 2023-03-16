@@ -62,7 +62,6 @@ public class CompassActivity extends AppCompatActivity {
 
         if (locationService.isGPSDisabled()) {
             redDot.setVisibility(View.VISIBLE);
-            TextView timeSinceLastUpdate = R.
         }
 
 

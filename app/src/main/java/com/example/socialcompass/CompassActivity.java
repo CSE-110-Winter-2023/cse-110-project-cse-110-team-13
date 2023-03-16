@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -28,7 +30,7 @@ public class CompassActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
-        this.builder = new MarkerBuilder(getApplicationContext());
+        this.builder = new MarkerBuilder();
         // fill arrays with data from intents
         loadFriendsFromUIDs();
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("thisUserID", MODE_PRIVATE);
@@ -47,7 +49,7 @@ public class CompassActivity extends AppCompatActivity {
 
         this.locationService = new LocationService(this);
         this.orientationService = new OrientationService(this);
-        this.display = new Display(this);
+        this.display = new Display(this, getApplicationContext());
         this.device = new Device(this, this.locationService, this.orientationService);
         this.serverListener = new ServerListener(this, this.privateUID);
         this.currentState = new CurrentState(this, this.serverListener, this.device, this.display, this.friends);
@@ -76,6 +78,36 @@ public class CompassActivity extends AppCompatActivity {
         for(String key: UIDs.keySet()){
             this.friends.add(builder.createMarker(key));
         }
+    }
+
+    public void onZoomInClicked(View view)
+    {
+        Button btn = findViewById(R.id.zoomIn);
+        Button zo = findViewById(R.id.zoomOut);
+        int setting = display.getZoomSetting();
+        if (setting > 1)
+        {
+            display.setZoomSetting(setting - 1);
+            btn.setBackgroundColor(0xFF6200EE);
+            zo.setBackgroundColor(0xFF6200EE);
+        }
+        else
+            btn.setBackgroundColor(0xFF7F7F7F);
+    }
+
+    public void onZoomOutClicked(View view)
+    {
+        Button btn = findViewById(R.id.zoomOut);
+        Button zi = findViewById(R.id.zoomIn);
+        int setting = display.getZoomSetting();
+        if (setting < 4)
+        {
+            display.setZoomSetting(setting + 1);
+            btn.setBackgroundColor(0xFF6200EE);
+            zi.setBackgroundColor(0xFF6200EE);
+        }
+        else
+            btn.setBackgroundColor(0xFF7F7F7F);
     }
 
     public void goHomeClicked(View view) {

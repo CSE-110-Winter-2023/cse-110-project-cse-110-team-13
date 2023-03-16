@@ -67,6 +67,8 @@ public class AngleUtil {
         return northRelative;
     }
 
+    //Calculate the distance between the user's location and a marker's location, return
+    // the distance in miles
     public static float markerCalculateDistance(String userLocation, String markerLocation) throws Exception {
         String[] objectCoords = userLocation.split(",");
         double lat1 = 0;
@@ -105,7 +107,8 @@ public class AngleUtil {
         var markerCoord = new LatLng(lat2, lon2);
 
         float relativeDistance = (float) SphericalUtil.computeDistanceBetween(userCoord, markerCoord);
-
+        // convert meters to miles because #America #landoftheFree
+        relativeDistance = relativeDistance * 0.000621f;
         return relativeDistance;
     }
 }

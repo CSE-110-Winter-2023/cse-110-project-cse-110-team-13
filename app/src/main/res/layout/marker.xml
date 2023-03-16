@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/Marker"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:contentDescription="Pointer1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintCircle="@id/compass"

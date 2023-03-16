@@ -44,7 +44,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/the_real_clock_face" />
+        app:srcCompat="@drawable/circle" />
     <ImageView
         android:id="@+id/CompassFace4_2"
         android:layout_width="161.5dp"
@@ -54,7 +54,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/the_real_clock_face" />
+        app:srcCompat="@drawable/circle" />
     <ImageView
         android:id="@+id/CompassFace4_1"
         android:layout_width="81dp"
@@ -64,7 +64,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/the_real_clock_face" />
+        app:srcCompat="@drawable/circle" />
     <ImageView
         android:id="@+id/CompassFace3_2"
         android:layout_width="215dp"
@@ -74,7 +74,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/the_real_clock_face" />
+        app:srcCompat="@drawable/circle" />
     <ImageView
         android:id="@+id/CompassFace3_1"
         android:layout_width="108dp"
@@ -84,7 +84,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/the_real_clock_face" />
+        app:srcCompat="@drawable/circle" />
 
 
     <ImageView
@@ -243,7 +243,7 @@
         android:id="@+id/dist1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0.1 mi."
+        android:text="0-1 mi."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

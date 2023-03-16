@@ -21,6 +21,7 @@ public class CompassActivity extends AppCompatActivity {
 
     private LocationService locationService;
     private OrientationService orientationService;
+    private TimeService timeService;
     private MarkerBuilder builder;
     private Display display;
     private Device device;
@@ -52,17 +53,20 @@ public class CompassActivity extends AppCompatActivity {
 
         this.locationService = new LocationService(this);
         this.orientationService = new OrientationService(this);
+        this.timeService = new TimeService();
         this.display = new Display(this, getApplicationContext());
-        this.device = new Device(this, this.locationService, this.orientationService);
+        this.device = new Device(this, this.locationService, this.orientationService, this.timeService);
         this.serverListener = new ServerListener(this, this.privateUID);
         this.currentState = new CurrentState(this, this.serverListener, this.device, this.display, this.friends);
 
         this.serverListener.registerServerObserver(this.currentState);
         this.device.registerDeviceObserver(this.currentState);
 
-        if (locationService.isGPSDisabled()) {
-            redDot.setVisibility(View.VISIBLE);
-        }
+        TextView timeText = findViewById(R.id.timeLastOnline);
+
+        timeService.getTime().observe(this, time -> {
+            timeText.setText(Long.toString(time));
+        });
 
 
 

@@ -3,6 +3,8 @@ package com.example.socialcompass;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.lifecycle.LifecycleOwner;
 
@@ -18,27 +20,36 @@ interface DeviceSubject {
 
 interface DeviceObserver {
     void deviceUpdate(String location, float orientation);
+    void signalUpdate(long time);
 }
 
 public class Device implements  DeviceSubject {
     private Activity activity;
     private LocationService locationService;
     private OrientationService orientationService;
+    private TimeService timeService;
     private String oldLocation = "0,0";
     private float oldOrientation = 0.0F;
+    private long oldTime = 0;
+    private long lastKnownTime;
     private DeviceObserver obs;
     private ScheduledFuture<?> Future;
     private final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
 
-    Device(Activity activity, LocationService locationService, OrientationService orientationService) {
+    Device(Activity activity, LocationService locationService, OrientationService orientationService, TimeService timeService) {
         this.activity = activity;
         this.locationService = locationService;
         this.orientationService = orientationService;
+        this.timeService = timeService;
     }
 
     public void registerDeviceObserver(DeviceObserver obs) {
         this.obs = obs;
+    }
+
+    public long getOldTime() {
+        return this.oldTime;
     }
 
     public void notifyObserver() {
@@ -49,6 +60,7 @@ public class Device implements  DeviceSubject {
             // when this listener is detecting a changing location, it will use an unupdated but latest version
             // of orientation to pass in this callback. Then it will update the new changing location into oldLocation
             String newLocation = Double.toString(loc.first) + "," + Double.toString(loc.second);
+            lastKnownTime = oldTime;
             try {
                 if (AngleUtil.markerCalculateDistance(this.oldLocation, newLocation) > 0.0024) {
                     this.oldLocation = newLocation;
@@ -65,6 +77,14 @@ public class Device implements  DeviceSubject {
                 obs.deviceUpdate(this.oldLocation, this.oldOrientation);
             }
             });
+
+        this.timeService.getTime().observe((LifecycleOwner) activity, time -> {
+            this.oldTime = time;
+            if((time - lastKnownTime) > 10000) {
+                obs.signalUpdate(time);
+            }
+            obs.deviceUpdate(this.oldLocation, this.oldOrientation);
+        });
 
     }
 }

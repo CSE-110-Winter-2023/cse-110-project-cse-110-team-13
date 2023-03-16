@@ -45,6 +45,12 @@ public class Display {
         float pixels =  dp * this.context.getResources().getDisplayMetrics().density;
         return (int) pixels;
     }
+
+    public void updateSignal(ImageView redDot, TextView timeSinceLastUpdate, long time) {
+        redDot.setVisibility(View.INVISIBLE);
+        timeSinceLastUpdate.setText(Long.toString(time/1000));
+
+    }
     // update a marker imageview with a new angle and distance
     public void updatePointer(ImageView markerLocation, TextView markerLabel, double angle, float distance){
 

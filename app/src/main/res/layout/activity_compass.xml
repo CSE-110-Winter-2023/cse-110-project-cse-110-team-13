@@ -46,10 +46,9 @@
 
     <Button
         android:id="@+id/GPSEnabledButton"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:background="@drawable/red_circle"
-        android:text=""
         tools:layout_editor_absoluteX="10dp"
         tools:layout_editor_absoluteY="10dp" />
 

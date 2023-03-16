@@ -44,8 +44,8 @@ public class Device implements  DeviceSubject {
 
         });
 
-        this.locationService.getGPSEnabled().observe((LifecycleOwner) activity, loc -> {
-            this.oldGPSEnabled = loc;
+        this.locationService.getGPSEnabled().observe((LifecycleOwner) activity, gps -> {
+            this.oldGPSEnabled = gps;
             obs.deviceUpdate(this.oldLocation, this.oldOrientation, this.oldGPSEnabled);
         });
 

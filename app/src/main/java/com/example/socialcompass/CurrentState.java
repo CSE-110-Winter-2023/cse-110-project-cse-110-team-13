@@ -124,6 +124,7 @@
 package com.example.socialcompass;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 
 import androidx.lifecycle.LifecycleOwner;
@@ -160,7 +161,7 @@ public class CurrentState implements DeviceObserver, ServerObserver {
         this.serverListener = serverListener;
         this.device = device;
         this.markerList = markerList;
-        this.server = new ServerAPI();
+        this.server = ServerAPI.provide();
 
     }
 
@@ -176,7 +177,8 @@ public class CurrentState implements DeviceObserver, ServerObserver {
         for(int i = 0; i < markerList.size(); i++) {
             try{
                 float angle = AngleUtil.compassCalculateAngle(this.oldLocation, markerList.get(i).getCoordinate(), this.oldOrientation);
-                display.updatePointer(markerList.get(i).getLocation(), angle);
+                float distance = AngleUtil.markerCalculateDistance(this.oldLocation, markerList.get(i).getCoordinate());
+                display.updatePointer(markerList.get(i).getLocation(), markerList.get(i).getLabel(), angle, distance);
             }
             catch(Exception e) {
                 continue;
@@ -199,8 +201,8 @@ public class CurrentState implements DeviceObserver, ServerObserver {
                 Friend friend = friendFuture.get();
                 markerList.get(i).setCoordinate(friend.getLatitude()+","+friend.getLongitude());
                 float angle = AngleUtil.compassCalculateAngle(this.oldLocation, markerList.get(i).getCoordinate(), this.oldOrientation);
-
-                display.updatePointer(markerList.get(i).getLocation(), angle);
+                float distance = AngleUtil.markerCalculateDistance(this.oldLocation, markerList.get(i).getCoordinate());
+                display.updatePointer(markerList.get(i).getLocation(), markerList.get(i).getLabel(), angle, distance);
             }
             catch(Exception e) {
                 continue;

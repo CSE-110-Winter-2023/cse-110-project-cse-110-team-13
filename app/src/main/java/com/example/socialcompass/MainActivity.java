@@ -3,6 +3,7 @@ package com.example.socialcompass;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -17,11 +18,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200 );
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("thisUserID", MODE_PRIVATE);
+        String nameSelected = preferences.getString("Name", "Name not found");
+        if (nameSelected.equals("Name not found"))
+        {
+            Intent intent = new Intent(this, NameInput.class);
+            startActivity(intent);
         }
-
+        else {
+            if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200 );
+            }
+            TextView uidText = findViewById(R.id.uidDisplay);
+            String uid = preferences.getString("UUID", "Error: UID not generated yet!");
+            uidText.setText("Your UID is: " + uid);
+        }
     }
 
     public void locationInputEnter(View view) {
@@ -31,11 +43,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void changeServerUrl(View view){
+        ServerAPI  serverAPI = ServerAPI.provide();
+        TextView inputView = findViewById(R.id.severUrl);
+
+        String input = inputView.getText().toString();
+
+        inputView.setText("");
+        ServerAPI.mockServerUrl(input);
+
+
+    }
+
     public void enterCompassActivity(View view) {
 
         //if there are no locations show alert
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("UIDs",MODE_PRIVATE);
-
         int numOfLocations = preferences.getAll().size();
 
         if(numOfLocations == 0){

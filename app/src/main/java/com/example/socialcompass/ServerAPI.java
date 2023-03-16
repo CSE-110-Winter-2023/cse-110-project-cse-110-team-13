@@ -1,5 +1,7 @@
 package com.example.socialcompass;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -23,21 +25,33 @@ public class ServerAPI {
     //API client which does all the heavy lifing
     private final OkHttpClient client;
 
+    private String SERVERURL;
+
     //constructor
     public ServerAPI() {
+        SERVERURL = "https://socialcompass.goto.ucsd.edu/location/";
         this.client = new OkHttpClient();
     }
 
     //singleton provide method
     public static ServerAPI provide()
     {
+
         if (instance == null)
             instance = new ServerAPI();
+
         return instance;
     }
 
+    public static void mockServerUrl(String serverUrl){
+        instance.SERVERURL = serverUrl;
+    }
+    public String getSERVERURL() {
+        return SERVERURL;
+    }
+
     //URL at which locations are stored
-    final String SERVERURL = "https://socialcompass.goto.ucsd.edu/location/";
+
 
     //gets friend from server
     //should only be called asynchronously
@@ -197,7 +211,7 @@ public class ServerAPI {
     //should only be called asynchronously
     private int patchFriend(@NonNull String privateCode, String label)
     {
-        RequestBody body = RequestBody.create("{\n\"private_code\": " + privateCode + ",\n"
+        RequestBody body = RequestBody.create("{\n\"private_code\": \"" + privateCode + "\",\n"
                 + "\"label\": \"" + label + "\"\n}", JSON);
         Request request = new Request.Builder()
                 .url(SERVERURL + (privateCode.replace(" ", "%20")))

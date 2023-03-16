@@ -1,6 +1,7 @@
 package com.example.socialcompass;
 
 import android.app.Activity;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;

@@ -40,7 +40,12 @@ public class Display {
     // range will lie on the perimeter
     private int zoomSetting = 2;
     private int MAX_RADIUS_IN_DP = 480;
+    private boolean[][] spots;
+
     public Display(Activity activity, Context context) {
+
+        //the spaces that a marker can be in
+        spots = new boolean[36][10];
 
         this.activity = activity;
         this.context = context;
@@ -79,17 +84,7 @@ public class Display {
         zoomSetting = setting;
     }
 
-    //deprecated method, no reason to change the ID of textviews and imageviews
-//    public void updateLabelPointer(int labelPointerID, int locationPointerID)
-//    {
-//        TextView label = activity.findViewById(labelPointerID);
-//        ImageView marker = activity.findViewById(locationPointerID);
-//        ConstraintLayout.LayoutParams layoutParamsMarker = (ConstraintLayout.LayoutParams) marker.getLayoutParams();
-//        ConstraintLayout.LayoutParams layoutParamsLabel = (ConstraintLayout.LayoutParams) label.getLayoutParams();
-//        layoutParamsLabel.circleAngle = layoutParamsMarker.circleAngle;
-//        layoutParamsLabel.circleRadius = layoutParamsMarker.circleRadius + 100;
-//        label.setLayoutParams(layoutParamsLabel);
-//    }
+
     public int convertDpToPixel(float dp) {
         float pixels =  dp * this.context.getResources().getDisplayMetrics().density;
         return (int) pixels;
@@ -97,12 +92,19 @@ public class Display {
     // update a marker imageview with a new angle and distance
     public void updatePointer(ImageView markerLocation, TextView markerLabel, double angle, float distance){
 
-        //this HAS TO BE RUN ON UI THREAD, this is because the origin of the call for this function
-        // is in a listener, which runs in a background thread (originally called in device.notifyObserver())
-        // so if we want the update to be in real time, it has to run on ui thread.
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) markerLocation.getLayoutParams();
-        layoutParams.circleAngle = (float) angle;
-//            layoutParams.circleRadius = MAX_RADIUS_IN_DP;
+        int radiusToBe = 0;
+
+        ConstraintLayout.LayoutParams layoutParamsOld = (ConstraintLayout.LayoutParams) markerLocation.getLayoutParams();
+        float oldAngle = layoutParamsOld.circleAngle;
+        float oldRadius = layoutParamsOld.circleRadius;
+        int oldIndexAngle = (int)((oldAngle + 360)%360 /10);
+        int oldIndexRadius = (int)((oldRadius ) /48);
+
+        spots[oldIndexAngle][oldIndexRadius] = false;
+
+
+
+
         if(zoomSetting == 1) {
             compassViewO.setVisibility(View.VISIBLE);
             compassView43.setVisibility(View.INVISIBLE);
@@ -137,7 +139,7 @@ public class Display {
                 if(radius > MAX_RADIUS_IN_DP) {
                     radius = MAX_RADIUS_IN_DP;
                 }
-                layoutParams.circleRadius = radius;
+                radiusToBe = radius;
             }
         }
 
@@ -171,7 +173,7 @@ public class Display {
                 });
 
                 //interpolation: get dp distance on compass using interpolation
-                layoutParams.circleRadius = MAX_RADIUS_IN_DP;
+                radiusToBe = MAX_RADIUS_IN_DP;
             }
             else {
                 this.activity.runOnUiThread(() -> {
@@ -182,7 +184,7 @@ public class Display {
                 //interpolation: get dp distance on compass using interpolation
                 float radiusOnCompass = distance*(MAX_RADIUS_IN_DP/2);
                 int radius = convertDpToPixel(radiusOnCompass);
-                layoutParams.circleRadius = radius;
+                radiusToBe = radius;
             }
         }
 
@@ -216,7 +218,7 @@ public class Display {
                 });
 
                 //interpolation: get dp distance on compass using interpolation
-                layoutParams.circleRadius = MAX_RADIUS_IN_DP;
+                radiusToBe = MAX_RADIUS_IN_DP;
             }
             else if (distance <= 10 && distance > 1) {
                 this.activity.runOnUiThread(() -> {
@@ -227,7 +229,7 @@ public class Display {
                 //interpolation: get dp distance on compass using interpolation
                 float radiusOnCompass = ((distance - 1)/9) * (MAX_RADIUS_IN_DP/3);
                 int radius = convertDpToPixel(radiusOnCompass) + (int) 2 * MAX_RADIUS_IN_DP/3;
-                layoutParams.circleRadius = radius;
+                radiusToBe = radius;
             }
             else {
                 this.activity.runOnUiThread(() -> {
@@ -238,7 +240,7 @@ public class Display {
                 //interpolation: get dp distance on compass using interpolation
                 float radiusOnCompass = distance*MAX_RADIUS_IN_DP/3;
                 int radius = convertDpToPixel(radiusOnCompass);
-                layoutParams.circleRadius = radius;
+                radiusToBe = radius;
             }
         }
 
@@ -264,7 +266,7 @@ public class Display {
                     markerLocation.setVisibility(View.VISIBLE);
                     markerLabel.setVisibility(View.VISIBLE);
                 });
-                layoutParams.circleRadius = MAX_RADIUS_IN_DP;
+                radiusToBe = MAX_RADIUS_IN_DP;
             }
             else if (distance <= 500 && distance > 10) {
                 this.activity.runOnUiThread(() -> {
@@ -280,7 +282,7 @@ public class Display {
                     radius = MAX_RADIUS_IN_DP;
                 }
 
-                layoutParams.circleRadius = radius;
+                radiusToBe = radius;
             }
             else if (distance <= 10 && distance > 1) {
                 this.activity.runOnUiThread(() -> {
@@ -291,7 +293,7 @@ public class Display {
                 //interpolation: get dp distance on compass using interpolation
                 float radiusOnCompass = ((distance - 1)/9) * (MAX_RADIUS_IN_DP/4);
                 int radius = convertDpToPixel(radiusOnCompass) + (int) 2*MAX_RADIUS_IN_DP/4;
-                layoutParams.circleRadius = radius;
+                radiusToBe = radius;
             }
             else {
                 this.activity.runOnUiThread(() -> {
@@ -302,14 +304,33 @@ public class Display {
                 //interpolation: get dp distance on compass using interpolation
                 float radiusOnCompass = distance * (MAX_RADIUS_IN_DP/4);
                 int radius = convertDpToPixel(radiusOnCompass);
-                layoutParams.circleRadius = radius;
+                radiusToBe = radius;
             }
         }
 
-        this.activity.runOnUiThread(() -> {
+        int indexAngle = (int)((angle + 360)%360 /10);
+        int indexRadius = (int)((radiusToBe) /48);
 
-            markerLocation.setLayoutParams(layoutParams);
-        });
+        if(spots[indexAngle][indexRadius]){
+            updatePointer(markerLocation,markerLabel,angle + 11,distance);
+        }
+        else{
+
+            spots[indexAngle][indexRadius] = true;
+
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) markerLocation.getLayoutParams();
+            layoutParams.circleAngle = (float) angle;
+            layoutParams.circleRadius = radiusToBe;
+
+            //this HAS TO BE RUN ON UI THREAD, this is because the origin of the call for this function
+            // is in a listener, which runs in a background thread (originally called in device.notifyObserver())
+            // so if we want the update to be in real time, it has to run on ui thread.
+            this.activity.runOnUiThread(() -> {
+                markerLocation.setLayoutParams(layoutParams);
+            });
+
+        }
+
     }
 
 

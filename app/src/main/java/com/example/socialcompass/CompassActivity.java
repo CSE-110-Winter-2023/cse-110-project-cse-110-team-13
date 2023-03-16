@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -80,16 +82,32 @@ public class CompassActivity extends AppCompatActivity {
 
     public void onZoomInClicked(View view)
     {
+        Button btn = findViewById(R.id.zoomIn);
+        Button zo = findViewById(R.id.zoomOut);
         int setting = display.getZoomSetting();
         if (setting > 1)
+        {
             display.setZoomSetting(setting - 1);
+            btn.setBackgroundColor(0xFF6200EE);
+            zo.setBackgroundColor(0xFF6200EE);
+        }
+        else
+            btn.setBackgroundColor(0xFF7F7F7F);
     }
 
     public void onZoomOutClicked(View view)
     {
+        Button btn = findViewById(R.id.zoomOut);
+        Button zi = findViewById(R.id.zoomIn);
         int setting = display.getZoomSetting();
         if (setting < 4)
+        {
             display.setZoomSetting(setting + 1);
+            btn.setBackgroundColor(0xFF6200EE);
+            zi.setBackgroundColor(0xFF6200EE);
+        }
+        else
+            btn.setBackgroundColor(0xFF7F7F7F);
     }
 
     public void goHomeClicked(View view) {

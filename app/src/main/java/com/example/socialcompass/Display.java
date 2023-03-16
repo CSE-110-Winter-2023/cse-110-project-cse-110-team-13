@@ -39,9 +39,6 @@ public class Display {
         this.context = context;
 
         loadUIElements();
-
-
-
     }
 
 
@@ -93,7 +90,9 @@ public class Display {
         return (int) pixels;
     }
     // update a marker imageview with a new angle and distance
-    public void updatePointer(ImageView markerLocation, TextView markerLabel, double angle, float distance){
+    public void updatePointer(ImageView markerLocation, TextView markerLabel, double angle, float distance, String ogLabel){
+
+        markerLabel.setText(ogLabel);
 
         int radiusToBe = calculateRadius(distance);
         updateCompass(markerLocation,markerLabel,distance);
@@ -113,12 +112,22 @@ public class Display {
         int indexRadius = (int)((radiusToBe) /48);
 
         //check if next to anyone and should truncate label
-        if (spots[indexAngle-1][indexRadius]){
+        int truncateCheck;
+        if(indexAngle < 35)  truncateCheck = indexAngle + 1;
+        else { truncateCheck = 0;}
 
+        if (spots[truncateCheck][indexRadius]){
+
+            String label = (String) markerLabel.getText();
+
+            if(label.length() > 10){
+                label = label.substring(0,5) + "...";
+            }
+            markerLabel.setText(label);
         }
 
         if(spots[indexAngle][indexRadius]){
-            updatePointer(markerLocation,markerLabel,angle + 11,distance);
+            updatePointer(markerLocation,markerLabel,angle + 11,distance,ogLabel);
         }
         else{
 

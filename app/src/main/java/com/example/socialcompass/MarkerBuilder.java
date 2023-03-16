@@ -40,10 +40,6 @@ public class MarkerBuilder {
 
     public MarkerBuilder addLabel(Marker marker, String label){
 
-        if(label.length() > 10){
-            label = label.substring(0,7) + "...";
-        }
-
         marker.setLabel(label);
 
         return this;

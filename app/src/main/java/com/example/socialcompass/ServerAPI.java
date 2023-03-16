@@ -197,7 +197,7 @@ public class ServerAPI {
     //should only be called asynchronously
     private int patchFriend(@NonNull String privateCode, String label)
     {
-        RequestBody body = RequestBody.create("{\n\"private_code\": " + privateCode + ",\n"
+        RequestBody body = RequestBody.create("{\n\"private_code\": \"" + privateCode + "\",\n"
                 + "\"label\": \"" + label + "\"\n}", JSON);
         Request request = new Request.Builder()
                 .url(SERVERURL + (privateCode.replace(" ", "%20")))

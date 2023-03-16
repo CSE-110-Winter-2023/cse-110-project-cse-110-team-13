@@ -56,7 +56,7 @@ public class MarkerBuilder {
 
         ImageView imageView = (ImageView) v.findViewById(R.id.Marker);
 
-        imageView.setImageResource(R.drawable.compass_face);
+        imageView.setImageResource(R.drawable.darkbluedot);
 
         // insert into main view
         ViewGroup insertPoint = (ViewGroup) activity.findViewById(R.id.compass);

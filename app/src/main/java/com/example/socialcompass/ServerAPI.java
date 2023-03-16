@@ -1,5 +1,7 @@
 package com.example.socialcompass;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -23,21 +25,33 @@ public class ServerAPI {
     //API client which does all the heavy lifing
     private final OkHttpClient client;
 
+    private String SERVERURL;
+
     //constructor
     public ServerAPI() {
+        SERVERURL = "https://socialcompass.goto.ucsd.edu/location/";
         this.client = new OkHttpClient();
     }
 
     //singleton provide method
     public static ServerAPI provide()
     {
+
         if (instance == null)
             instance = new ServerAPI();
+
         return instance;
     }
 
+    public static void mockServerUrl(String serverUrl){
+        instance.SERVERURL = serverUrl;
+    }
+    public String getSERVERURL() {
+        return SERVERURL;
+    }
+
     //URL at which locations are stored
-    final String SERVERURL = "https://socialcompass.goto.ucsd.edu/location/";
+
 
     //gets friend from server
     //should only be called asynchronously
@@ -68,6 +82,38 @@ public class ServerAPI {
 
         return future;
     }
+
+    //checks if UID is in the server
+    //should only be called asynchronously
+    @Nullable
+    private boolean checkUID(@NonNull String uuid) {
+        // URLs cannot contain spaces, so we replace them with %20.
+        String uuidPath = uuid.replace(" ", "%20");
+
+        Request request = new Request.Builder()
+                .url(SERVERURL + uuidPath)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+            return true;
+        }
+        catch(Exception e){
+            Log.e("Error getting note", e.toString());
+        }
+        return false;
+    }
+
+    //asyncly gets friend
+    public Future<Boolean> checkUIDAsync(String uuid) {
+
+        var executor = Executors.newSingleThreadExecutor();
+        var future = executor.submit(() -> checkUID(uuid));
+
+        return future;
+    }
+
+
 
 
     //defines JSON MediaType for use by other methods
@@ -134,8 +180,6 @@ public class ServerAPI {
     //should only be called asynchronously
     public int patchFriend(@NonNull String privateCode, float lat, float lon)
     {
-        Log.d("test6","In Patch Freinds");
-
         RequestBody body = RequestBody.create("{\n\"private_code\": \"" + privateCode + "\",\n"
                 + "\"latitude\": " + lat + ",\n"
                 + "\"longitude\": " + lon + "\n}", JSON);
@@ -164,6 +208,35 @@ public class ServerAPI {
     }
 
 
+
+    //patches updated friend label to server
+    //should only be called asynchronously
+    private int patchFriend(@NonNull String privateCode, String label)
+    {
+        RequestBody body = RequestBody.create("{\n\"private_code\": \"" + privateCode + "\",\n"
+                + "\"label\": \"" + label + "\"\n}", JSON);
+        Request request = new Request.Builder()
+                .url(SERVERURL + (privateCode.replace(" ", "%20")))
+                .patch(body)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            return response.code();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    //asyncly patches updated friend label to server
+    public Future<Integer> patchFriendAsync(String privateCode, String label)
+    {
+        var executor = Executors.newSingleThreadExecutor();
+        var future = executor.submit(() -> patchFriend(privateCode, label));
+
+        return future;
+    }
 
     //patches updated whether friend is public to server
     //should only be called asynchronously

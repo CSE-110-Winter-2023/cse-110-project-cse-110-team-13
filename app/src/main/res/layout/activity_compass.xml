@@ -25,8 +25,59 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
-        android:id="@+id/CompassFace"
+        android:id="@+id/CompassFaceO"
         android:layout_width="323dp"
+        android:layout_height="497dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/the_real_clock_face" />
+
+    <ImageView
+        android:id="@+id/CompassFace4_3"
+        android:layout_width="242dp"
+        android:layout_height="497dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/the_real_clock_face" />
+    <ImageView
+        android:id="@+id/CompassFace4_2"
+        android:layout_width="161.5dp"
+        android:layout_height="497dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/the_real_clock_face" />
+    <ImageView
+        android:id="@+id/CompassFace4_1"
+        android:layout_width="81dp"
+        android:layout_height="497dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/the_real_clock_face" />
+    <ImageView
+        android:id="@+id/CompassFace3_2"
+        android:layout_width="215dp"
+        android:layout_height="497dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/the_real_clock_face" />
+    <ImageView
+        android:id="@+id/CompassFace3_1"
+        android:layout_width="108dp"
         android:layout_height="497dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +92,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/CompassFace"
+        app:layout_constraintBottom_toTopOf="@+id/CompassFaceO"
         app:srcCompat="@drawable/greendot"
         tools:layout_editor_absoluteX="16dp" />
 
@@ -50,19 +101,155 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/CompassFace"
+        app:layout_constraintBottom_toTopOf="@+id/CompassFaceO"
         app:srcCompat="@drawable/reddot"
         tools:layout_editor_absoluteX="16dp" />
+
 
     <TextView
         android:id="@+id/timeLastOnline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="32dp"
         android:layout_marginBottom="40dp"
         android:text="1 hr"
-        app:layout_constraintBottom_toTopOf="@+id/CompassFace"
+        app:layout_constraintBottom_toTopOf="@+id/CompassFaceO"
         app:layout_constraintStart_toStartOf="@+id/redDot" />
 
+    <Button
+        android:id="@+id/zoomIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:onClick="onZoomInClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.775"
+        app:layout_constraintHorizontal_bias="0.9" />
+
+    <Button
+        android:id="@+id/zoomOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:onClick="onZoomOutClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.85"
+        app:layout_constraintHorizontal_bias="0.9"/>
+
+    <TextView
+        android:id="@+id/dist41"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0-1 mi."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.42"/>
+
+    <TextView
+        android:id="@+id/dist42"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1-10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.37"/>
+
+    <TextView
+        android:id="@+id/dist43"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10-500"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.31"/>
+
+    <TextView
+        android:id="@+id/dist44"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="500+"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25"/>
+
+    <TextView
+        android:id="@+id/dist33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10+"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25"/>
+
+    <TextView
+        android:id="@+id/dist32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1-10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.33"/>
+
+    <TextView
+        android:id="@+id/dist31"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0-1 mi."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.41"/>
+
+    <TextView
+        android:id="@+id/dist22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1+"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25"/>
+
+    <TextView
+        android:id="@+id/dist21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0-1 mi."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.37"/>
+
+    <TextView
+        android:id="@+id/dist1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.1 mi."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

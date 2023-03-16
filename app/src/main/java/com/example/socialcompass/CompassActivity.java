@@ -5,13 +5,14 @@ import androidx.lifecycle.LiveData;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.LocationManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.view.SearchEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Button;
+
 
 import java.util.ArrayList;
 
@@ -26,18 +27,20 @@ public class CompassActivity extends AppCompatActivity {
     private Display display;
     private Device device;
     private ServerListener serverListener;
-    private String privateUID = "testTheory";
+    private String privateUID;
     private CurrentState currentState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
-        this.builder = new MarkerBuilder(getApplicationContext());
-
-
-        // fill arrays with data from intents
+        this.builder = new MarkerBuilder();
+        // fill markers with data from shred preferences
         loadFriendsFromUIDs();
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences("thisUserID", MODE_PRIVATE);
+        privateUID = prefs.getString("UUID", "qwerty");
+
+        //calculate intial angle to give to marker builder
         for (int i = 0; i < friends.size(); i++) {
             var currMarker = friends.get(i);
             float angle = 0;
@@ -46,6 +49,7 @@ public class CompassActivity extends AppCompatActivity {
             }
             catch(Exception e) {};
 
+            //create ui element for markers
             builder = builder.addUIElements(i, currMarker, angle, this);
         }
 
@@ -61,10 +65,9 @@ public class CompassActivity extends AppCompatActivity {
         this.serverListener.registerServerObserver(this.currentState);
         this.device.registerDeviceObserver(this.currentState);
 
-        ImageView redDot = findViewById(R.id.redDot);
-        redDot.setVisibility(View.INVISIBLE);
 
-        TextView timeText = findViewById(R.id.timeLastOnline);
+
+
 
 
 
@@ -89,7 +92,36 @@ public class CompassActivity extends AppCompatActivity {
         for(String key: UIDs.keySet()){
             this.friends.add(builder.createMarker(key));
         }
+    }
 
+    public void onZoomInClicked(View view)
+    {
+        Button btn = findViewById(R.id.zoomIn);
+        Button zo = findViewById(R.id.zoomOut);
+        int setting = display.getZoomSetting();
+        if (setting > 1)
+        {
+            display.setZoomSetting(setting - 1);
+            btn.setBackgroundColor(0xFF6200EE);
+            zo.setBackgroundColor(0xFF6200EE);
+        }
+        else
+            btn.setBackgroundColor(0xFF7F7F7F);
+    }
+
+    public void onZoomOutClicked(View view)
+    {
+        Button btn = findViewById(R.id.zoomOut);
+        Button zi = findViewById(R.id.zoomIn);
+        int setting = display.getZoomSetting();
+        if (setting < 4)
+        {
+            display.setZoomSetting(setting + 1);
+            btn.setBackgroundColor(0xFF6200EE);
+            zi.setBackgroundColor(0xFF6200EE);
+        }
+        else
+            btn.setBackgroundColor(0xFF7F7F7F);
     }
 
     public void goHomeClicked(View view) {

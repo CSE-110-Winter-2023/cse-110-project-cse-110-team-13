@@ -46,9 +46,22 @@ public class Display {
         return (int) pixels;
     }
 
-    public void updateSignal(ImageView redDot, TextView timeSinceLastUpdate, long time) {
-        redDot.setVisibility(View.INVISIBLE);
-        timeSinceLastUpdate.setText(Long.toString(time/1000));
+    public void updateNoSignal(ImageView greenDot, ImageView redDot, TextView timeSinceLastUpdate, long time) {
+        this.activity.runOnUiThread(() -> {
+            greenDot.setVisibility(View.INVISIBLE);
+            redDot.setVisibility(View.VISIBLE);
+            timeSinceLastUpdate.setVisibility(View.VISIBLE);
+            timeSinceLastUpdate.setText(Long.toString(time/1000));
+        });
+
+    }
+
+    public void updateHasSignal(ImageView greenDot, ImageView redDot, TextView timeSinceLastUpdate) {
+        this.activity.runOnUiThread(() -> {
+            greenDot.setVisibility(View.VISIBLE);
+            redDot.setVisibility(View.INVISIBLE);
+            timeSinceLastUpdate.setVisibility(View.INVISIBLE);
+        });
 
     }
     // update a marker imageview with a new angle and distance

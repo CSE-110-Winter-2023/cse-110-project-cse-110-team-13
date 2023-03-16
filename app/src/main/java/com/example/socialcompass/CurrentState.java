@@ -198,12 +198,19 @@ public class CurrentState implements DeviceObserver, ServerObserver {
 
     public void signalUpdate(long time) {
         this.oldTime = time;
-        ImageView signal = activity.findViewById(R.id.redDot);
+        ImageView greenDot = activity.findViewById(R.id.greenDot);
+        ImageView redDot = activity.findViewById(R.id.redDot);
         TextView timeSinceLastUpdate = activity.findViewById(R.id.timeLastOnline);
 
-        display.updateSignal(signal, timeSinceLastUpdate, System.currentTimeMillis()-this.oldTime);
+        display.updateNoSignal(greenDot, redDot, timeSinceLastUpdate, System.currentTimeMillis() - this.oldTime);
 
+    }
 
+    public void hasSignal() {
+        ImageView greenDot = activity.findViewById(R.id.greenDot);
+        ImageView redDot = activity.findViewById(R.id.redDot);
+        TextView timeSinceLastUpdate = activity.findViewById(R.id.timeLastOnline);
+        display.updateHasSignal(greenDot, redDot, timeSinceLastUpdate);
     }
 
     //there is something new from the server-side, hence we're updating the UI based on the

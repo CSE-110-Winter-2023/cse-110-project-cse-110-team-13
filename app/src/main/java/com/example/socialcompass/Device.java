@@ -21,6 +21,7 @@ interface DeviceSubject {
 interface DeviceObserver {
     void deviceUpdate(String location, float orientation);
     void signalUpdate(long time);
+    void hasSignal();
 }
 
 public class Device implements  DeviceSubject {
@@ -48,9 +49,6 @@ public class Device implements  DeviceSubject {
         this.obs = obs;
     }
 
-    public long getOldTime() {
-        return this.oldTime;
-    }
 
     public void notifyObserver() {
         Log.d("test6","notifying change");
@@ -60,7 +58,7 @@ public class Device implements  DeviceSubject {
             // when this listener is detecting a changing location, it will use an unupdated but latest version
             // of orientation to pass in this callback. Then it will update the new changing location into oldLocation
             String newLocation = Double.toString(loc.first) + "," + Double.toString(loc.second);
-            lastKnownTime = oldTime;
+            lastKnownTime = System.currentTimeMillis();
             try {
                 if (AngleUtil.markerCalculateDistance(this.oldLocation, newLocation) > 0.0024) {
                     this.oldLocation = newLocation;
@@ -81,7 +79,9 @@ public class Device implements  DeviceSubject {
         this.timeService.getTime().observe((LifecycleOwner) activity, time -> {
             this.oldTime = time;
             if((time - lastKnownTime) > 10000) {
-                obs.signalUpdate(time);
+                obs.signalUpdate(lastKnownTime);
+            } else {
+                obs.hasSignal();
             }
             obs.deviceUpdate(this.oldLocation, this.oldOrientation);
         });

@@ -34,8 +34,7 @@ public class CompassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
         this.builder = new MarkerBuilder(getApplicationContext());
-        ImageView redDot = findViewById(R.id.redDot);
-        redDot.setVisibility(View.INVISIBLE);
+
 
         // fill arrays with data from intents
         loadFriendsFromUIDs();
@@ -62,11 +61,11 @@ public class CompassActivity extends AppCompatActivity {
         this.serverListener.registerServerObserver(this.currentState);
         this.device.registerDeviceObserver(this.currentState);
 
+        ImageView redDot = findViewById(R.id.redDot);
+        redDot.setVisibility(View.INVISIBLE);
+
         TextView timeText = findViewById(R.id.timeLastOnline);
 
-        timeService.getTime().observe(this, time -> {
-            timeText.setText(Long.toString(time));
-        });
 
 
 

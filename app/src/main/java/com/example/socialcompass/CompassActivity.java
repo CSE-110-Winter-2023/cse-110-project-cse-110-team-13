@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
+import android.view.SearchEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -31,10 +33,12 @@ public class CompassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
         this.builder = new MarkerBuilder();
-        // fill arrays with data from intents
+        // fill markers with data from shred preferences
         loadFriendsFromUIDs();
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("thisUserID", MODE_PRIVATE);
         privateUID = prefs.getString("UUID", "qwerty");
+
+        //calculate intial angle to give to marker builder
         for (int i = 0; i < friends.size(); i++) {
             var currMarker = friends.get(i);
             float angle = 0;
@@ -43,6 +47,7 @@ public class CompassActivity extends AppCompatActivity {
             }
             catch(Exception e) {};
 
+            //create ui element for markers
             builder = builder.addUIElements(i, currMarker, angle, this);
         }
 
@@ -56,7 +61,6 @@ public class CompassActivity extends AppCompatActivity {
 
         this.serverListener.registerServerObserver(this.currentState);
         this.device.registerDeviceObserver(this.currentState);
-
 
         initialise();
 

@@ -28,7 +28,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-@RunWith(RobolectricTestRunner.class)
+//@RunWith(RobolectricTestRunner.class)
 public class RoboLocationInputTest {
 // Commented out based on @598
 

@@ -185,130 +185,144 @@ public class Display {
     }
 
     public void updateCompass(ImageView markerLocation, TextView markerLabel, float distance){
-            if (zoomSetting == 1) {
+        if(zoomSetting == 1) {
+            this.activity.runOnUiThread(() -> {
+                allViewInvis();
+                compassViews[0].setVisibility(View.VISIBLE);
+                textViews[9].setVisibility(View.VISIBLE);
+            });
+
+            if(distance > 1) {
                 this.activity.runOnUiThread(() -> {
-                    allViewInvis();
-                    compassViews[0].setVisibility(View.VISIBLE);
-                    textViews[9].setVisibility(View.VISIBLE);
-                });
-
-                if (distance > 1) {
-                    this.activity.runOnUiThread(() -> {
-                        markerLocation.setVisibility(View.VISIBLE);
-                        markerLabel.setVisibility(View.INVISIBLE);
-                    });
-                } else {
-                    this.activity.runOnUiThread(() -> {
-                        markerLocation.setVisibility(View.VISIBLE);
-                    });
-                }
-            }
-            if (zoomSetting == 2) {
-                this.activity.runOnUiThread(() -> {
-                    allViewInvis();
-                    compassViews[0].setVisibility(View.VISIBLE);
-                    compassViews[2].setVisibility(View.VISIBLE);
-                    textViews[7].setVisibility(View.VISIBLE);
-                    textViews[8].setVisibility(View.VISIBLE);
-                });
-
-                if (distance > 10) {
-                    this.activity.runOnUiThread(() -> {
-                        markerLocation.setVisibility(View.VISIBLE);
-                        markerLabel.setVisibility(View.INVISIBLE);
-                    });
-                } else if (distance <= 10 && distance > 1) {
-                    this.activity.runOnUiThread(() -> {
-                        markerLocation.setVisibility(View.VISIBLE);
-                        markerLabel.setVisibility(View.VISIBLE);
-                    });
-
-
-                } else {
-                    this.activity.runOnUiThread(() -> {
-                        markerLocation.setVisibility(View.VISIBLE);
-                        markerLabel.setVisibility(View.VISIBLE);
-                    });
-
-                }
-            }
-            if (zoomSetting == 3) {
-                this.activity.runOnUiThread(() -> {
-                    allViewInvis();
-                    compassViews[0].setVisibility(View.VISIBLE);
-                    compassViews[4].setVisibility(View.VISIBLE);
-                    compassViews[5].setVisibility(View.VISIBLE);
-                    textViews[4].setVisibility(View.VISIBLE);
-                    textViews[5].setVisibility(View.VISIBLE);
-                    textViews[6].setVisibility(View.VISIBLE);
-                });
-
-
-                if (distance > 500) {
-                    this.activity.runOnUiThread(() -> {
-                        markerLocation.setVisibility(View.VISIBLE);
-                        markerLabel.setVisibility(View.INVISIBLE);
-                    });
-                } else if (distance <= 500 && distance > 10) {
-                    this.activity.runOnUiThread(() -> {
-                        markerLocation.setVisibility(View.VISIBLE);
-                        markerLabel.setVisibility(View.VISIBLE);
-                    });
-
-
-                } else if (distance <= 10 && distance > 1) {
-                    this.activity.runOnUiThread(() -> {
-                        markerLocation.setVisibility(View.VISIBLE);
-                        markerLabel.setVisibility(View.VISIBLE);
-                    });
-
-                } else {
-                    this.activity.runOnUiThread(() -> {
-                        markerLocation.setVisibility(View.VISIBLE);
-                        markerLabel.setVisibility(View.VISIBLE);
-                    });
-
-                }
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.INVISIBLE); });
             }
             else {
                 this.activity.runOnUiThread(() -> {
-                    allViewInvis();
-                    compassViews[0].setVisibility(View.VISIBLE);
-                    compassViews[1].setVisibility(View.VISIBLE);
-                    compassViews[2].setVisibility(View.VISIBLE);
-                    compassViews[3].setVisibility(View.VISIBLE);
-                    textViews[0].setVisibility(View.VISIBLE);
-                    textViews[1].setVisibility(View.VISIBLE);
-                    textViews[2].setVisibility(View.VISIBLE);
-                    textViews[3].setVisibility(View.VISIBLE);
+                    markerLocation.setVisibility(View.VISIBLE);
+                });
+            }
+        }
+
+        else if (zoomSetting == 2) {
+            this.activity.runOnUiThread(() -> {
+                allViewInvis();
+                compassViews[0].setVisibility(View.VISIBLE);
+                compassViews[2].setVisibility(View.VISIBLE);
+                textViews[7].setVisibility(View.VISIBLE);
+                textViews[8].setVisibility(View.VISIBLE);
+            });
+
+            if(distance > 10) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.INVISIBLE);
+                });
+            }
+            else if (distance <= 10 && distance > 1) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
                 });
 
-                if (distance > 500) {
-                    this.activity.runOnUiThread(() -> {
-                        markerLocation.setVisibility(View.VISIBLE);
-                        markerLabel.setVisibility(View.VISIBLE);
-                    });
 
-                } else if (distance <= 500 && distance > 10) {
-                    this.activity.runOnUiThread(() -> {
-                        markerLocation.setVisibility(View.VISIBLE);
-                        markerLabel.setVisibility(View.VISIBLE);
-                    });
-
-                } else if (distance <= 10 && distance > 1) {
-                    this.activity.runOnUiThread(() -> {
-                        markerLocation.setVisibility(View.VISIBLE);
-                        markerLabel.setVisibility(View.VISIBLE);
-                    });
-
-                } else {
-                    this.activity.runOnUiThread(() -> {
-                        markerLocation.setVisibility(View.VISIBLE);
-                        markerLabel.setVisibility(View.VISIBLE);
-                    });
-
-                }
             }
+            else {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+            }
+        }
+
+        else if (zoomSetting == 3) {
+
+            this.activity.runOnUiThread(() -> {
+                allViewInvis();
+                compassViews[0].setVisibility(View.VISIBLE);
+                compassViews[4].setVisibility(View.VISIBLE);
+                compassViews[5].setVisibility(View.VISIBLE);
+                textViews[4].setVisibility(View.VISIBLE);
+                textViews[5].setVisibility(View.VISIBLE);
+                textViews[6].setVisibility(View.VISIBLE);
+            });
+
+
+            if(distance > 500) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.INVISIBLE);
+                });
+            }
+            else if (distance <= 500 && distance > 10) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+
+            }
+            else if (distance <= 10 && distance > 1) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+            }
+            else {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+            }
+        }
+
+        else {
+
+            this.activity.runOnUiThread(() -> {
+                allViewInvis();
+                compassViews[0].setVisibility(View.VISIBLE);
+                compassViews[1].setVisibility(View.VISIBLE);
+                compassViews[2].setVisibility(View.VISIBLE);
+                compassViews[3].setVisibility(View.VISIBLE);
+                textViews[0].setVisibility(View.VISIBLE);
+                textViews[1].setVisibility(View.VISIBLE);
+                textViews[2].setVisibility(View.VISIBLE);
+                textViews[3].setVisibility(View.VISIBLE);
+            });
+
+            if(distance > 500) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+            }
+            else if (distance <= 500 && distance > 10) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+            }
+            else if (distance <= 10 && distance > 1) {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+            }
+            else {
+                this.activity.runOnUiThread(() -> {
+                    markerLocation.setVisibility(View.VISIBLE);
+                    markerLabel.setVisibility(View.VISIBLE);
+                });
+
+            }
+        }
+
     }
 
     public int calculateRadius(float distance){

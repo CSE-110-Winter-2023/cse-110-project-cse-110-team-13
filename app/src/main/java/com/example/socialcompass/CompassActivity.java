@@ -13,7 +13,6 @@ import android.view.SearchEvent;
 import android.view.View;
 import android.widget.Button;
 
-
 import java.util.ArrayList;
 
 public class CompassActivity extends AppCompatActivity {
@@ -28,7 +27,7 @@ public class CompassActivity extends AppCompatActivity {
     private Device device;
     private ServerListener serverListener;
     private String privateUID;
-    private CurrentState currentState;
+    public CurrentState currentState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +63,6 @@ public class CompassActivity extends AppCompatActivity {
 
         this.serverListener.registerServerObserver(this.currentState);
         this.device.registerDeviceObserver(this.currentState);
-
-
-
 
 
 

@@ -30,6 +30,7 @@ public class ServerListener implements ServerSubject {
     private ScheduledFuture<?> friendFuture;
     private final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
+    public boolean isMocking = false;
 
     ServerListener(Activity activity, String privateUID) {
         this.activity = activity;

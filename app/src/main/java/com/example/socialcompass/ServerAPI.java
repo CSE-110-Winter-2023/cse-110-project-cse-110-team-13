@@ -178,7 +178,7 @@ public class ServerAPI {
 
     //patches updated friend coordinates to server
     //should only be called asynchronously
-    private int patchFriend(@NonNull String privateCode, float lat, float lon)
+    public int patchFriend(@NonNull String privateCode, float lat, float lon)
     {
         RequestBody body = RequestBody.create("{\n\"private_code\": " + "\""+ privateCode +"\""+ ",\n"
                 + "\"latitude\": " + lat + ",\n"
@@ -201,11 +201,13 @@ public class ServerAPI {
     //asyncly patches updated friend coordinates to server
     public Future<Integer> patchFriendAsync(String privateCode, float lat, float lon)
     {
+        Log.d("test6","in patch async");
         var executor = Executors.newSingleThreadExecutor();
         var future = executor.submit(() -> patchFriend(privateCode, lat, lon));
 
         return future;
     }
+
 
 
     //patches updated friend label to server

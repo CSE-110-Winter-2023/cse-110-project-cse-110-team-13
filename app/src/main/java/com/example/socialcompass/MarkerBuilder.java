@@ -13,29 +13,36 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class MarkerBuilder {
-    Context context;
+
     Marker currMarker;
     ServerAPI server = ServerAPI.provide();
 
-    int MAX_RADIUS_IN_DP = 160;
-
-    public MarkerBuilder(Context context){
-        this.context = context;
+    public MarkerBuilder(){
     }
 
     public Marker createMarker(String UID){
         currMarker = new Marker(UID);
         var futureFriend = server.getFriendAsync(UID);
         Friend friend = null;
+        while(!futureFriend.isDone());
         try{
             friend  = futureFriend.get();
         }
         catch(Exception e){}
 
-        currMarker.setLabel(friend.getLabel());
+
+
+        addLabel(currMarker, friend.getLabel());
         currMarker.setCoordinate( String.valueOf(friend.getLatitude()) + "," + String.valueOf(friend.getLongitude()));
 
         return currMarker;
+    }
+
+    public MarkerBuilder addLabel(Marker marker, String label){
+
+        marker.setLabel(label);
+
+        return this;
     }
 
     public MarkerBuilder addUIElements(int index, Marker marker, float angle, Activity activity){
@@ -48,7 +55,13 @@ public class MarkerBuilder {
 
         ImageView imageView = (ImageView) v.findViewById(R.id.Marker);
 
-        imageView.setImageResource(R.drawable.compass_face);
+        //change size of marker
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
+        params.width = 32;
+        params.height = 32;
+        imageView.setLayoutParams(params);
+
+        imageView.setImageResource(R.drawable.darkbluedot);
 
         // insert into main view
         ViewGroup insertPoint = (ViewGroup) activity.findViewById(R.id.compass);
@@ -59,7 +72,7 @@ public class MarkerBuilder {
         ConstraintLayout.LayoutParams imageLayout = (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
         imageLayout.circleAngle = angle;
         //convert the from dp into pixels
-        float pixels =  MAX_RADIUS_IN_DP * this.context.getResources().getDisplayMetrics().density;
+        float pixels =  160 * activity.getApplicationContext().getResources().getDisplayMetrics().density;
         imageLayout.circleRadius = (int) pixels;
         imageView.setLayoutParams(imageLayout);
         marker.setLabel ((TextView) markerView.getChildAt(1));

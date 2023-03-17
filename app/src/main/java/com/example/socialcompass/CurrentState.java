@@ -141,8 +141,8 @@ import java.util.concurrent.Future;
 // it will also employ a DisplayUpdate which will update the UI accordingly.
 public class CurrentState implements DeviceObserver, ServerObserver {
 
-    private String oldLocation; //oldLocation so that the listeners can use a placeholder value
-    private float oldOrientation; // oldOrientation so that the listeners can use a placeholder value
+    public String oldLocation; //oldLocation so that the listeners can use a placeholder value
+    public float oldOrientation; // oldOrientation so that the listeners can use a placeholder value
     private Activity activity; // activity
     private Display display; // UI updater
     private ServerListener serverListener;

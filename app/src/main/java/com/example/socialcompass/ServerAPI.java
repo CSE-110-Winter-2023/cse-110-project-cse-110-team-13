@@ -139,6 +139,7 @@ public class ServerAPI {
         RequestBody body = RequestBody.create("{\n\"private_code\": \"" + privateCode + "\",\n"
                 + "\"latitude\": " + lat + ",\n"
                 + "\"longitude\": " + lon + "\n}", JSON);
+        System.out.println(privateCode.replace(" ","%20"));
         Request request = new Request.Builder()
                 .url(SERVERURL + (privateCode.replace(" ", "%20")))
                 .patch(body)

@@ -6,15 +6,15 @@ import android.widget.TextView;
 
 interface Location {
     String getCoordinate();
+
     String getMarkerLabel();
+
     Integer getLabelID();
+
     Integer getLocationID();
 }
-interface Observer {
-    void update();
-}
 
-public class Marker implements Location, Observer {
+public class Marker implements Location {
     private String markerCoordinate;
     private String markerLabel;
     private Integer markerLocationID;
@@ -95,7 +95,5 @@ public class Marker implements Location, Observer {
         this.location = location;
     }
 
-    public void update() {
 
-    }
 }

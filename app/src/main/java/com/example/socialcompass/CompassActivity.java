@@ -16,14 +16,14 @@ public class CompassActivity extends AppCompatActivity {
 
     public ArrayList<Marker> friends = new ArrayList<>();
 
-    private LocationService locationService;
-    private OrientationService orientationService;
-    private MarkerBuilder builder;
-    private Display display;
-    private Device device;
-    private ServerListener serverListener;
+    public LocationService locationService;
+    public OrientationService orientationService;
+    public MarkerBuilder builder;
+    public Display display;
+    public Device device;
+    public ServerListener serverListener;
     private String privateUID = "testTheory";
-    private CurrentState currentState;
+    public CurrentState currentState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +54,6 @@ public class CompassActivity extends AppCompatActivity {
 
         this.serverListener.registerServerObserver(this.currentState);
         this.device.registerDeviceObserver(this.currentState);
-
-
 
 
         initialise();

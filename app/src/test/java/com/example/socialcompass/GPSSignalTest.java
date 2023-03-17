@@ -40,7 +40,7 @@ public class GPSSignalTest {
             device = new Device(activity, locationService, orientationService, timeService);
             device.registerDeviceObserver(obs);
 
-            assertEquals(obs.isGPSEnabled(), false);
+            assertEquals(false, obs.isGPSEnabled());
         });
 
     }

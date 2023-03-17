@@ -3,9 +3,11 @@ package com.example.socialcompass;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.provider.ProviderProperties;
 import android.util.Pair;
 import android.Manifest;
 
@@ -39,6 +41,17 @@ public class LocationService implements LocationListener {
         this.activity = activity;
         this.locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
         this.registerLocationListener();
+    }
+
+    protected LocationService(Activity activity, Boolean isMocked) {
+        this.locationValue = new MutableLiveData<>();
+        this.activity = activity;
+        this.locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+        this.locationManager.addTestProvider("MockLocationProvider", false,
+                false, false, false, false,
+                false, false, ProviderProperties.POWER_USAGE_LOW,ProviderProperties.ACCURACY_COARSE);
+        this.locationManager.setTestProviderEnabled("MockLocationProvider", true);
+        //this.registerLocationListener();
     }
 
     private void registerLocationListener() {

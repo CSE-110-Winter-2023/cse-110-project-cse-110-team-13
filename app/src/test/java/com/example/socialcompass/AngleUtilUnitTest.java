@@ -17,14 +17,14 @@ public class AngleUtilUnitTest {
     public void southOfHCMC() throws Exception {
         String HCMC = "10.824159655,106.65386249";
         String userLocation = "9.902758087, 106.65902522";
-        assertEquals(0, AngleUtil.compassCalculateAngle(userLocation, HCMC, 0), 1);
+        assertEquals(0, Utilities.compassCalculateAngle(userLocation, HCMC, 0), 1);
     }
 
     @Test
     public void southOfHCMCOrientatingEast() throws Exception {
         String HCMC = "10.824159655,106.65386249";
         String userLocation = "9.902758087, 106.65902522";
-        assertEquals(-115, AngleUtil.compassCalculateAngle(userLocation, HCMC, 90), 2);
+        assertEquals(-115, Utilities.compassCalculateAngle(userLocation, HCMC, 90), 2);
     }
 
 }

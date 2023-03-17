@@ -1,4 +1,4 @@
-/**
+
 package com.example.socialcompass;
 
 import org.junit.Before;
@@ -66,4 +66,3 @@ public class NameInputTest
         assertEquals(newUID, "EMPTY STRING >:(");
     }
 }
-*/

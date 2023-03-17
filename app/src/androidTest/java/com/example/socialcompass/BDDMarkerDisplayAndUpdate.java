@@ -152,7 +152,7 @@ public class BDDMarkerDisplayAndUpdate {
             float userCurrentOrientation = compass.currentState.oldOrientation;
             float angle = 0;
             try {
-                angle = AngleUtil.compassCalculateAngle(userCurrentLocation,
+                angle = Utilities.compassCalculateAngle(userCurrentLocation,
                         friendCoordinate,
                         userCurrentOrientation);
             } catch (Exception e) {

@@ -1,4 +1,4 @@
-  /**  package com.example.socialcompass;
+    package com.example.socialcompass;
 
     import static org.junit.Assert.assertEquals;
 
@@ -31,4 +31,3 @@
 
 
     }
-   */

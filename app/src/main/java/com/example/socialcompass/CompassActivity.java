@@ -1,10 +1,15 @@
 package com.example.socialcompass;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Pair;
+import android.view.SearchEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,10 +20,15 @@ public class CompassActivity extends AppCompatActivity {
 
     public ArrayList<Marker> friends = new ArrayList<>();
 
+    private LocationService locationService;
+    private OrientationService orientationService;
+    private TimeService timeService;
     private MarkerBuilder builder;
     private Display display;
     private Device device;
     private ServerListener serverListener;
+    private String privateUID;
+    public CurrentState currentState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +38,7 @@ public class CompassActivity extends AppCompatActivity {
         // fill markers with data from shred preferences
         loadFriendsFromUIDs();
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("thisUserID", MODE_PRIVATE);
-        String privateUID = prefs.getString("UUID", "qwerty");
+        privateUID = prefs.getString("UUID", "qwerty");
 
         //calculate intial angle to give to marker builder
         for (int i = 0; i < friends.size(); i++) {
@@ -37,23 +47,23 @@ public class CompassActivity extends AppCompatActivity {
             try {
                 angle = Utilities.compassCalculateAngle("0,0", currMarker.getCoordinate(), 0);
             }
-            catch(Exception ignored) {};
+            catch(Exception e) {};
 
             //create ui element for markers
             builder = builder.addUIElements(i, currMarker, angle, this);
         }
 
 
-        LocationService locationService = new LocationService(this);
-        OrientationService orientationService = new OrientationService(this);
-        TimeService timeService = new TimeService();
+        this.locationService = new LocationService(this);
+        this.orientationService = new OrientationService(this);
+        this.timeService = new TimeService();
         this.display = new Display(this, getApplicationContext());
-        this.device = new Device(this, locationService, orientationService, timeService);
-        this.serverListener = new ServerListener(this, privateUID);
-        CurrentState currentState = new CurrentState(this, this.serverListener, this.device, this.display, this.friends);
+        this.device = new Device(this, this.locationService, this.orientationService, this.timeService);
+        this.serverListener = new ServerListener(this, this.privateUID);
+        this.currentState = new CurrentState(this, this.serverListener, this.device, this.display, this.friends);
 
-        this.serverListener.registerServerObserver(currentState);
-        this.device.registerDeviceObserver(currentState);
+        this.serverListener.registerServerObserver(this.currentState);
+        this.device.registerDeviceObserver(this.currentState);
 
 
 
@@ -92,11 +102,9 @@ public class CompassActivity extends AppCompatActivity {
         if (setting > 1)
         {
             display.setZoomSetting(setting - 1);
-            //emulator purple
             btn.setBackgroundColor(0xFF6200EE);
             zo.setBackgroundColor(0xFF6200EE);
             if (display.getZoomSetting() == 1)
-                //medium gray
                 btn.setBackgroundColor(0xFF7F7F7F);
         }
         else

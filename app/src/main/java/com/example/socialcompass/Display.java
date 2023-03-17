@@ -185,8 +185,7 @@ public class Display {
     }
 
     public void updateCompass(ImageView markerLocation, TextView markerLabel, float distance){
-        switch (zoomSetting) {
-            case 1:
+            if (zoomSetting == 1) {
                 this.activity.runOnUiThread(() -> {
                     allViewInvis();
                     compassViews[0].setVisibility(View.VISIBLE);
@@ -203,8 +202,8 @@ public class Display {
                         markerLocation.setVisibility(View.VISIBLE);
                     });
                 }
-                break;
-            case 2:
+            }
+            if (zoomSetting == 2) {
                 this.activity.runOnUiThread(() -> {
                     allViewInvis();
                     compassViews[0].setVisibility(View.VISIBLE);
@@ -232,8 +231,8 @@ public class Display {
                     });
 
                 }
-            break;
-            case 3:
+            }
+            if (zoomSetting == 3) {
                 this.activity.runOnUiThread(() -> {
                     allViewInvis();
                     compassViews[0].setVisibility(View.VISIBLE);
@@ -270,8 +269,8 @@ public class Display {
                     });
 
                 }
-            break;
-            default:
+            }
+            else {
                 this.activity.runOnUiThread(() -> {
                     allViewInvis();
                     compassViews[0].setVisibility(View.VISIBLE);
@@ -310,11 +309,6 @@ public class Display {
 
                 }
             }
-        }
-
-
-
-
     }
 
     public int calculateRadius(float distance){

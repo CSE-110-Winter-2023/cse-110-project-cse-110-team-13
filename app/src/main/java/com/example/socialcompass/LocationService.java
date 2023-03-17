@@ -17,7 +17,7 @@ import androidx.lifecycle.MutableLiveData;
 public class LocationService implements LocationListener {
     private static LocationService instance;
     private static final int MAX_TIME_SINCE_UPDATE = 1000;
-    private Activity activity;
+    private final Activity activity;
     private long lastLocationUpdateTime = 0;
 
 

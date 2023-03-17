@@ -20,10 +20,8 @@ public class LocationInput extends AppCompatActivity {
     //List of UIds that will be passed to compassActivity to create markers for each
 
     private TextView inputView;
-    private ServerAPI serverAPI = ServerAPI.provide();
-    private ExecutorService backgroundThreadExecutor = Executors.newSingleThreadExecutor();
-    private Future<Boolean> future;
-    private Future<Boolean> boolFuture;
+    private final ServerAPI serverAPI = ServerAPI.provide();
+    private final ExecutorService backgroundThreadExecutor = Executors.newSingleThreadExecutor();
 
 
     @Override
@@ -39,7 +37,7 @@ public class LocationInput extends AppCompatActivity {
     protected boolean empty(String input) {
         boolean empty = false;
         //run in background thread or else it will have async issues.
-        this.future = backgroundThreadExecutor.submit(() -> input.equals(""));
+        Future<Boolean> future = backgroundThreadExecutor.submit(() -> input.equals(""));
 
         //try catch phrase to get java squiggly lines to stfu
         try {

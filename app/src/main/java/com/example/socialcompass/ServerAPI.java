@@ -188,6 +188,7 @@ public class ServerAPI {
                 .patch(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {
+            Log.d("test11",String.valueOf(response.code()));
             return response.code();
         }
         catch (IOException e)
@@ -236,32 +237,5 @@ public class ServerAPI {
         return future;
     }
 
-    //patches updated whether friend is public to server
-    //should only be called asynchronously
-    private int patchFriend(@NonNull String privateCode, boolean isPublic)
-    {
-        RequestBody body = RequestBody.create("{\n\"private_code\": " + privateCode + ",\n"
-                + "\"is_listed_publicly\": \"" + isPublic + "\"\n}", JSON);
-        Request request = new Request.Builder()
-                .url(SERVERURL + (privateCode.replace(" ", "%20")))
-                .patch(body)
-                .build();
-        try (Response response = client.newCall(request).execute()) {
-            return response.code();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        return 0;
-    }
 
-    //asyncly patches updated friend is public to server
-    public Future<Integer> patchFriendAsync(String privateCode, boolean isPublic)
-    {
-        var executor = Executors.newSingleThreadExecutor();
-        var future = executor.submit(() -> patchFriend(privateCode, isPublic));
-
-        return future;
-    }
 }

@@ -16,8 +16,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-public class ServerAPI {
+interface Server{}
+public class ServerAPI implements Server {
 
     //API instance which other classes may access
     private volatile static ServerAPI instance = null;
@@ -178,7 +178,7 @@ public class ServerAPI {
 
     //patches updated friend coordinates to server
     //should only be called asynchronously
-    public int patchFriend(@NonNull String privateCode, float lat, float lon)
+    private int patchFriend(@NonNull String privateCode, float lat, float lon)
     {
         RequestBody body = RequestBody.create("{\n\"private_code\": " + "\""+ privateCode +"\""+ ",\n"
                 + "\"latitude\": " + lat + ",\n"
@@ -201,13 +201,11 @@ public class ServerAPI {
     //asyncly patches updated friend coordinates to server
     public Future<Integer> patchFriendAsync(String privateCode, float lat, float lon)
     {
-        Log.d("test6","in patch async");
         var executor = Executors.newSingleThreadExecutor();
         var future = executor.submit(() -> patchFriend(privateCode, lat, lon));
 
         return future;
     }
-
 
 
     //patches updated friend label to server

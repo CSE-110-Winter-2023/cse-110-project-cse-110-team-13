@@ -27,7 +27,7 @@ public class CompassActivity extends AppCompatActivity {
     private Device device;
     private ServerListener serverListener;
     private String privateUID;
-    private CurrentState currentState;
+    public CurrentState currentState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

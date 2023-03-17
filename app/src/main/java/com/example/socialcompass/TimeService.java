@@ -24,6 +24,22 @@ public class TimeService {
         }, 0, 1000, TimeUnit.MILLISECONDS);
     }
 
+    public void unregisterTimeListener() {
+        this.clockFuture.cancel(true);
+    }
+
+    public void setMockTimeSource(MutableLiveData<Long> mockTimeSource) {
+        unregisterTimeListener();
+        this.timeValue = mockTimeSource;
+    }
+
+    public static TimeService singleton() {
+        if (instance == null) {
+            instance = new TimeService();
+        }
+        return instance;
+    }
+
     public MutableLiveData<Long> getTime() {
         return this.timeValue;
     }

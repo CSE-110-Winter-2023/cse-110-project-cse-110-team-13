@@ -2,17 +2,12 @@ package com.example.socialcompass;
 
 import android.app.Activity;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.lifecycle.LifecycleOwner;
 
-import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 interface DeviceSubject {
     public void notifyObserver();
@@ -25,10 +20,10 @@ interface DeviceObserver {
 }
 
 public class Device implements  DeviceSubject {
-    private Activity activity;
-    private LocationService locationService;
-    private OrientationService orientationService;
-    private TimeService timeService;
+    private final Activity activity;
+    private final LocationService locationService;
+    private final OrientationService orientationService;
+    private final TimeService timeService;
     private String oldLocation = "0,0";
     private float oldOrientation = 0.0F;
     private long oldTime = 0;
@@ -51,7 +46,6 @@ public class Device implements  DeviceSubject {
 
 
     public void notifyObserver() {
-        Log.d("test6","notifying change");
         this.locationService.getLocation().observe((LifecycleOwner) activity, loc -> {
             // since there are two listeners, you cannot update 2 changing values at the same time
             //this is why we have oldLocation and oldOrientation
@@ -60,11 +54,11 @@ public class Device implements  DeviceSubject {
             String newLocation = Double.toString(loc.first) + "," + Double.toString(loc.second);
             lastKnownTime = System.currentTimeMillis();
             try {
-                if (AngleUtil.markerCalculateDistance(this.oldLocation, newLocation) > 0.0024) {
+                if (Utilities.markerCalculateDistance(this.oldLocation, newLocation) > 0.0024) {
                     this.oldLocation = newLocation;
                     obs.deviceUpdate(this.oldLocation, this.oldOrientation);
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
         });

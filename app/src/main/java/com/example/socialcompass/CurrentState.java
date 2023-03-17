@@ -125,15 +125,10 @@ package com.example.socialcompass;
 
 import android.app.Activity;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.lifecycle.LifecycleOwner;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.Future;
 
 
@@ -181,8 +176,8 @@ public class CurrentState implements DeviceObserver, ServerObserver {
         Log.d("test6","updating UI");
         for(int i = 0; i < markerList.size(); i++) {
             try{
-                float angle = AngleUtil.compassCalculateAngle(this.oldLocation, markerList.get(i).getCoordinate(), this.oldOrientation);
-                float distance = AngleUtil.markerCalculateDistance(this.oldLocation, markerList.get(i).getCoordinate());
+                float angle = Utilities.compassCalculateAngle(this.oldLocation, markerList.get(i).getCoordinate(), this.oldOrientation);
+                float distance = Utilities.markerCalculateDistance(this.oldLocation, markerList.get(i).getCoordinate());
                 int finalI = i;
                 this.activity.runOnUiThread(() -> {
                     display.updatePointer(markerList.get(finalI).getLocation(), markerList.get(finalI).getLabel(), angle, distance, markerList.get(finalI).getMarkerLabel());
@@ -225,8 +220,8 @@ public class CurrentState implements DeviceObserver, ServerObserver {
             try {
                 Friend friend = friendFuture.get();
                 markerList.get(i).setCoordinate(friend.getLatitude()+","+friend.getLongitude());
-                float angle = AngleUtil.compassCalculateAngle(this.oldLocation, markerList.get(i).getCoordinate(), this.oldOrientation);
-                float distance = AngleUtil.markerCalculateDistance(this.oldLocation, markerList.get(i).getCoordinate());
+                float angle = Utilities.compassCalculateAngle(this.oldLocation, markerList.get(i).getCoordinate(), this.oldOrientation);
+                float distance = Utilities.markerCalculateDistance(this.oldLocation, markerList.get(i).getCoordinate());
                 int finalI = i;
                 this.activity.runOnUiThread(() -> {
                     display.updatePointer(markerList.get(finalI).getLocation(), markerList.get(finalI).getLabel(), angle, distance, markerList.get(finalI).getMarkerLabel());

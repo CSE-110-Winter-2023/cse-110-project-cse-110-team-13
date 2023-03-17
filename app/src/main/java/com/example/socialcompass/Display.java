@@ -27,8 +27,8 @@ public class Display {
     // zoomSetting == 3: 3 circle, the third one from 10 - 500 mile
     // zoomSetting == 4 : 4 circle, fourth one is just a perimeter with anything outside of the 500 mile
     // range will lie on the perimeter
-    private int zoomSetting = 4;
-    private int MAX_RADIUS_IN_DP = 480;
+    private int zoomSetting = 2;
+    private int MAX_RADIUS_IN_DP = 430;
     private boolean[][] spots;
 
     public Display(Activity activity, Context context) {
@@ -93,40 +93,25 @@ public class Display {
     // update a marker imageview with a new angle and distance
     public void updatePointer(ImageView markerLocation, TextView markerLabel, double angle, float distance, String ogLabel){
 
+        //resets label incase it has been truncated
         markerLabel.setText(ogLabel);
 
+        //marks old spot as unused
         ConstraintLayout.LayoutParams layoutParamsOld = (ConstraintLayout.LayoutParams) markerLocation.getLayoutParams();
-        float oldAngle = layoutParamsOld.circleAngle;
-        float oldRadius = layoutParamsOld.circleRadius;
-        int oldIndexAngle = (int)((oldAngle + 360)%360 /10);
-        int oldIndexRadius = (int)((oldRadius ) /48);
-
-        Log.d("test10",oldIndexAngle + " " + oldIndexRadius);
-
+        int oldIndexAngle = getAngleIndex(layoutParamsOld.circleAngle);
+        int oldIndexRadius = getRadiusIndex(layoutParamsOld.circleRadius);
         spots[oldIndexAngle][oldIndexRadius] = false;
 
         int radiusToBe = calculateRadius(distance);
         //check its new spot to see if it overlapps
-        int indexAngle = (int)((angle + 360)%360 /10);
-        int indexRadius = (int)((radiusToBe) /48);
+        int indexAngle = getAngleIndex(angle);
+        int indexRadius = getRadiusIndex(radiusToBe);
 
         //check if next to anyone and should truncate label
-        int truncateCheck;
-        if(indexAngle < 35)  truncateCheck = indexAngle + 1;
-        else  truncateCheck = 0;
+        if(truncateCheck(indexAngle,indexRadius)) truncate(markerLabel);
 
-        if (spots[truncateCheck][indexRadius]){
-            String label = (String) markerLabel.getText();
-            if(label.length() > 10){
-                label = label.substring(0,5) + "...";
-            }
-            markerLabel.setText(label);
-        }
-
-
-
-
-        if(spots[indexAngle][indexRadius]){
+        //If its already at the center can't push it down any farther
+        if(spots[indexAngle][indexRadius] && indexRadius != 0){
             updatePointer(markerLocation,markerLabel,angle,(float)(distance * 0.5),ogLabel);
         }
         else{
@@ -145,9 +130,37 @@ public class Display {
             });
 
             }
+    }
 
+    public boolean truncateCheck(int indexAngle, int indexRadius){
+        int truncateCheck;
+        if(indexAngle < 35)  truncateCheck = indexAngle + 1;
+        else  truncateCheck = 0;
 
+        return spots[truncateCheck][indexRadius];
+    }
 
+    public void truncate(TextView markerLabel){
+        String label = (String) markerLabel.getText();
+        if(label.length() > 10){
+            label = label.substring(0,5) + "...";
+        }
+        markerLabel.setText(label);
+
+    }
+
+    public int getRadiusIndex(float radius){
+        int index = (int)((radius ) /48);
+
+        if(index > 10){index = 10;}
+        return index;
+    }
+
+    public int getAngleIndex(double angle){
+        int index = (int)((angle + 360)%360 /10);
+
+        if(index > 35){index = 35;}
+        return index;
     }
 
     public void updateCompass(ImageView markerLocation, TextView markerLabel, float distance){

@@ -59,7 +59,6 @@ public class ServerListener implements ServerSubject {
 
     public void updateLocationOnServer(String location) {
         this.oldLocation = location;
-        Log.d("Current location: ", location);
         String[] latlon = this.oldLocation.split(",");
         float lat = Float.parseFloat(latlon[0]);
         float lon = Float.parseFloat(latlon[1]);

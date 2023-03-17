@@ -94,6 +94,8 @@ public class CompassActivity extends AppCompatActivity {
             display.setZoomSetting(setting - 1);
             btn.setBackgroundColor(0xFF6200EE);
             zo.setBackgroundColor(0xFF6200EE);
+            if (display.getZoomSetting() == 1)
+                btn.setBackgroundColor(0xFF7F7F7F);
         }
         else
             btn.setBackgroundColor(0xFF7F7F7F);
@@ -109,6 +111,8 @@ public class CompassActivity extends AppCompatActivity {
             display.setZoomSetting(setting + 1);
             btn.setBackgroundColor(0xFF6200EE);
             zi.setBackgroundColor(0xFF6200EE);
+            if (display.getZoomSetting() == 4)
+                btn.setBackgroundColor(0xFF7F7F7F);
         }
         else
             btn.setBackgroundColor(0xFF7F7F7F);

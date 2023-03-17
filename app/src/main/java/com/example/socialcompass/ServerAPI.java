@@ -180,7 +180,7 @@ public class ServerAPI {
     //should only be called asynchronously
     private int patchFriend(@NonNull String privateCode, float lat, float lon)
     {
-        RequestBody body = RequestBody.create("{\n\"private_code\": " + privateCode + ",\n"
+        RequestBody body = RequestBody.create("{\n\"private_code\": " + "\""+ privateCode +"\""+ ",\n"
                 + "\"latitude\": " + lat + ",\n"
                 + "\"longitude\": " + lon + "\n}", JSON);
         Request request = new Request.Builder()

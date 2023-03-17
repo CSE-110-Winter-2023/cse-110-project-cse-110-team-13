@@ -183,7 +183,10 @@ public class CurrentState implements DeviceObserver, ServerObserver {
             try{
                 float angle = AngleUtil.compassCalculateAngle(this.oldLocation, markerList.get(i).getCoordinate(), this.oldOrientation);
                 float distance = AngleUtil.markerCalculateDistance(this.oldLocation, markerList.get(i).getCoordinate());
-                display.updatePointer(markerList.get(i).getLocation(), markerList.get(i).getLabel(), angle, distance,markerList.get(i).getMarkerLabel());
+                int finalI = i;
+                this.activity.runOnUiThread(() -> {
+                    display.updatePointer(markerList.get(finalI).getLocation(), markerList.get(finalI).getLabel(), angle, distance, markerList.get(finalI).getMarkerLabel());
+                });
             }
             catch(Exception e) {
                 continue;
@@ -224,7 +227,10 @@ public class CurrentState implements DeviceObserver, ServerObserver {
                 markerList.get(i).setCoordinate(friend.getLatitude()+","+friend.getLongitude());
                 float angle = AngleUtil.compassCalculateAngle(this.oldLocation, markerList.get(i).getCoordinate(), this.oldOrientation);
                 float distance = AngleUtil.markerCalculateDistance(this.oldLocation, markerList.get(i).getCoordinate());
-                display.updatePointer(markerList.get(i).getLocation(), markerList.get(i).getLabel(), angle, distance,markerList.get(i).getMarkerLabel());
+                int finalI = i;
+                this.activity.runOnUiThread(() -> {
+                    display.updatePointer(markerList.get(finalI).getLocation(), markerList.get(finalI).getLabel(), angle, distance, markerList.get(finalI).getMarkerLabel());
+                });
             }
             catch(Exception e) {
                 continue;

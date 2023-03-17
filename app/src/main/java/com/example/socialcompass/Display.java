@@ -30,7 +30,7 @@ public class Display {
     // zoomSetting == 4 : 4 circle, fourth one is just a perimeter with anything outside of the 500 mile
     // range will lie on the perimeter
     private int zoomSetting = 2;
-    private int MAX_RADIUS_IN_DP = 430;
+    private int MAX_RADIUS_IN_DP = 160;
     private boolean[][] spots;
 
     public Display(Activity activity, Context context) {
@@ -336,7 +336,7 @@ public class Display {
         if(zoomSetting == 1) {
 
             if(distance > 1) {
-                radiusToBe = MAX_RADIUS_IN_DP;
+                radiusToBe = convertDpToPixel(MAX_RADIUS_IN_DP);
                 Log.d("test8","At zoom level 1 the radis to be is " + radiusToBe);
 
 
@@ -346,8 +346,8 @@ public class Display {
                 //interpolation: get dp distance on compass using interpolation
                 float radiusOnCompass = distance*(MAX_RADIUS_IN_DP/2.0f);
                 int radius = convertDpToPixel(radiusOnCompass);
-                if(radius > MAX_RADIUS_IN_DP) {
-                    radius = MAX_RADIUS_IN_DP;
+                if(radius > convertDpToPixel(MAX_RADIUS_IN_DP)) {
+                    radius = convertDpToPixel(MAX_RADIUS_IN_DP);
                 }
                 radiusToBe = radius;
                 Log.d("test8","At zoom level 1 the radis to be is BAD " + radiusToBe);
@@ -358,14 +358,16 @@ public class Display {
 
             if(distance > 10) {
 
-                radiusToBe = MAX_RADIUS_IN_DP;
+                radiusToBe = convertDpToPixel(MAX_RADIUS_IN_DP);
 
             }
             else if (distance <= 10 && distance > 1) {
 
+                Log.d("test12",""+distance);
+
                 //interpolation: get dp distance on compass using interpolation
                 float radiusOnCompass = ((distance - 1)/9) * (MAX_RADIUS_IN_DP/2);
-                int radius = convertDpToPixel(radiusOnCompass) + (int) MAX_RADIUS_IN_DP/2;
+                int radius = convertDpToPixel(radiusOnCompass) + convertDpToPixel(MAX_RADIUS_IN_DP/2);
                 radiusToBe = radius;
             }
             else {
@@ -380,14 +382,14 @@ public class Display {
         else if (zoomSetting == 3) {
 
             if(distance > 500) {
-                radiusToBe = MAX_RADIUS_IN_DP;
+                radiusToBe = convertDpToPixel(MAX_RADIUS_IN_DP);
 
             }
             else if (distance <= 500 && distance > 10) {
 
                 //interpolation: get dp distance on compass using interpolation
                 float radiusOnCompass = ((distance - 10)/490) * (MAX_RADIUS_IN_DP/3);
-                int radius = convertDpToPixel(radiusOnCompass) + (int) 2 * MAX_RADIUS_IN_DP/3;
+                int radius = convertDpToPixel(radiusOnCompass) + convertDpToPixel( 2 * MAX_RADIUS_IN_DP/3);
                 radiusToBe = radius;
 
             }
@@ -395,7 +397,7 @@ public class Display {
 
                 //interpolation: get dp distance on compass using interpolation
                 float radiusOnCompass = ((distance - 1)/9) * (MAX_RADIUS_IN_DP/3);
-                int radius = convertDpToPixel(radiusOnCompass) + (int) MAX_RADIUS_IN_DP/3;
+                int radius = convertDpToPixel(radiusOnCompass) + convertDpToPixel(MAX_RADIUS_IN_DP/3);
                 radiusToBe = radius;
             }
             else {
@@ -411,21 +413,17 @@ public class Display {
 
 
             if(distance > 500) {
-                int radius = 8 * MAX_RADIUS_IN_DP / 10;
-                if(radius > MAX_RADIUS_IN_DP) {
-                    radius = MAX_RADIUS_IN_DP;
-                }
-                radiusToBe = radius;
+                radiusToBe = convertDpToPixel(MAX_RADIUS_IN_DP);
             }
             else if (distance <= 500 && distance > 10) {
 
 
                 //interpolation: get dp distance on compass using interpolation
                 float radiusOnCompass = ((distance - 10)/490) * (MAX_RADIUS_IN_DP/4);
-                int radius = convertDpToPixel(radiusOnCompass) + (int) (2*MAX_RADIUS_IN_DP/4);
+                int radius = convertDpToPixel(radiusOnCompass) + convertDpToPixel(2*MAX_RADIUS_IN_DP/4);
 
-                if(radius > MAX_RADIUS_IN_DP) {
-                    radius = MAX_RADIUS_IN_DP;
+                if(radius > convertDpToPixel(MAX_RADIUS_IN_DP)) {
+                    radius = convertDpToPixel(MAX_RADIUS_IN_DP);
                 }
 
                 radiusToBe = radius;
@@ -434,7 +432,7 @@ public class Display {
 
                 //interpolation: get dp distance on compass using interpolation
                 float radiusOnCompass = ((distance - 1)/9) * (MAX_RADIUS_IN_DP/4);
-                int radius = convertDpToPixel(radiusOnCompass) + (int) MAX_RADIUS_IN_DP/4;
+                int radius = convertDpToPixel(radiusOnCompass) + convertDpToPixel(MAX_RADIUS_IN_DP/4);
                 radiusToBe = radius;
             }
             else {

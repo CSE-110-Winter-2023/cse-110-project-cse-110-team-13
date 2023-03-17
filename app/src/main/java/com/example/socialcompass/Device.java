@@ -83,7 +83,7 @@ public class Device implements  DeviceSubject {
             } else {
                 obs.hasSignal();
             }
-            obs.deviceUpdate(this.oldLocation, this.oldOrientation);
+
         });
 
     }

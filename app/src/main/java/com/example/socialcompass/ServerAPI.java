@@ -16,8 +16,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-public class ServerAPI {
+interface Server{}
+public class ServerAPI implements Server {
 
     //API instance which other classes may access
     private volatile static ServerAPI instance = null;

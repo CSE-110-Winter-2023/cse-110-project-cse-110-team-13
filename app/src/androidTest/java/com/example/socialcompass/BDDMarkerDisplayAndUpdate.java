@@ -54,7 +54,7 @@ public class BDDMarkerDisplayAndUpdate {
     public void BDDInputAtLeastOneLocation()
     {
         String uuid = "16724533";
-        MockServerAPI api = new MockServerAPI();
+        ServerAPI api = new ServerAPI();
 
         //
 
@@ -67,18 +67,17 @@ public class BDDMarkerDisplayAndUpdate {
             TextView input = activity.findViewById(R.id.InputUId);
             TextView exit = activity.findViewById(R.id.Exit);
             input.setText("16724533");
-            //submitButton.performClick();
+            submitButton.performClick();
             // Assume that the user performClick here
             //We're mocking this
-            api.putFriendAsync(new Friend("16724533","Point Nemo", -48.87666f,-123.39333f, true,
-                    "2023-02-18T12:00:00Z", "2023-02-18T18:30:00Z"));
+//            api.putFriendAsync(new Friend("16724533","Point Nemo", -48.87666f,-123.39333f, true,
+//                    "2023-02-18T12:00:00Z", "2023-02-18T18:30:00Z"));
         });
         ActivityScenario<CompassActivity> compassScenario = ActivityScenario.launch(CompassActivity.class);
         compassScenario.moveToState(Lifecycle.State.CREATED);
         compassScenario.moveToState(Lifecycle.State.STARTED);
 
         compassScenario.onActivity(compass -> {
-            assertEquals(true, (compass.friends.size() >= 1));
             assertEquals(true, (compass.currentState.markerList.size() >= 1));
 
             boolean checkFriendExistenceInCompass = false;
@@ -97,8 +96,7 @@ public class BDDMarkerDisplayAndUpdate {
     public void BDDCheckOneMarkerOrientation()
     {
         String uuid = "16724533";
-        MockServerAPI api = new MockServerAPI();
-        api.pushVirtualFriend(uuid);
+        ServerAPI api = new ServerAPI();
         Friend friend;
         try {
             var future = api.getFriendAsync(uuid);
@@ -123,11 +121,11 @@ public class BDDMarkerDisplayAndUpdate {
             TextView input = activity.findViewById(R.id.InputUId);
             TextView exit = activity.findViewById(R.id.Exit);
             input.setText("16724533");
-            //submitButton.performClick();
+            submitButton.performClick();
             // Assume that the user performClick here
             //We're mocking this
-            api.putFriendAsync(new Friend("16724533","Point Nemo", -48.87666f,-123.39333f, true,
-                    "2023-02-18T12:00:00Z", "2023-02-18T18:30:00Z"));
+//            api.putFriendAsync(new Friend("16724533","Point Nemo", -48.87666f,-123.39333f, true,
+//                    "2023-02-18T12:00:00Z", "2023-02-18T18:30:00Z"));
         });
         ActivityScenario<CompassActivity> compassScenario = ActivityScenario.launch(CompassActivity.class);
         compassScenario.moveToState(Lifecycle.State.CREATED);

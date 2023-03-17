@@ -14,7 +14,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class MockServerAPI {
+public class MockServerAPI implements Server {
     final String SERVERURL = "https://socialcompass.goto.ucsd.edu/location/";
     public ArrayList<Friend> mockFriendServer;
     public MockServerAPI() {

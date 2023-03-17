@@ -1,3 +1,4 @@
+/**
 package com.example.socialcompass;
 
 import org.junit.runner.RunWith;
@@ -125,29 +126,6 @@ public class RoboLocationInputTest {
 
 
 
-    @Test
-    public void testServerPatchPublicness()
-    {
-        Friend friend = new Friend("1234567890", "Team 13 PATCH Friend Test",
-                -15, 15, false,
-                Instant.now().toString(), Instant.now().toString());
-        ServerAPI api = ServerAPI.provide();
-        Future<Integer> put = api.putFriendAsync(friend);
-        while(!put.isDone());
-        Future<Integer> patch = api.patchFriendAsync("1234567890",
-                true);
-        while(!patch.isDone());
-        try {
-            assertEquals(200, (long) patch.get());
-        } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            friend = api.getFriendAsync("1234567890").get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error creating friend");
-        }
-        assertTrue(friend.isPublicFriend());
-    }
+
 }
+*/

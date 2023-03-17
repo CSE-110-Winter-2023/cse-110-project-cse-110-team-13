@@ -22,7 +22,7 @@ public class Utilities {
        long minutes = (time / (1000 * 60)) % 60;
        long hours = (time / (1000 * 60 * 6)) % 24;
 
-        if (hours > 0) {
+        if (hours >= 1) {
             return String.format("%d hr", hours);
         }
         if (minutes > 0) {

@@ -105,14 +105,16 @@
         app:srcCompat="@drawable/reddot"
         tools:layout_editor_absoluteX="16dp" />
 
+
     <TextView
         android:id="@+id/timeLastOnline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="39dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="40dp"
         android:text="1 hr"
-        app:layout_constraintStart_toStartOf="@+id/redDot"
-        tools:layout_editor_absoluteY="30dp" />
+        app:layout_constraintBottom_toTopOf="@+id/CompassFaceO"
+        app:layout_constraintStart_toStartOf="@+id/redDot" />
 
     <Button
         android:id="@+id/zoomIn"

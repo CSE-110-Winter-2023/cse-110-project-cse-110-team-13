@@ -13,6 +13,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import java.util.ArrayList;
 import java.util.concurrent.Future;
 
+import okhttp3.internal.Util;
+
 public class Display {
 
     private Activity activity;
@@ -89,6 +91,25 @@ public class Display {
     public int convertDpToPixel(float dp) {
         float pixels =  dp * this.context.getResources().getDisplayMetrics().density;
         return (int) pixels;
+    }
+
+    public void updateNoSignal(ImageView greenDot, ImageView redDot, TextView timeSinceLastUpdate, long time) {
+        this.activity.runOnUiThread(() -> {
+            greenDot.setVisibility(View.INVISIBLE);
+            redDot.setVisibility(View.VISIBLE);
+            timeSinceLastUpdate.setVisibility(View.VISIBLE);
+            timeSinceLastUpdate.setText(Utilities.formatTime(time));
+        });
+
+    }
+
+    public void updateHasSignal(ImageView greenDot, ImageView redDot, TextView timeSinceLastUpdate) {
+        this.activity.runOnUiThread(() -> {
+            greenDot.setVisibility(View.VISIBLE);
+            redDot.setVisibility(View.INVISIBLE);
+            timeSinceLastUpdate.setVisibility(View.INVISIBLE);
+        });
+
     }
     // update a marker imageview with a new angle and distance
     public void updatePointer(ImageView markerLocation, TextView markerLabel, double angle, float distance, String ogLabel){

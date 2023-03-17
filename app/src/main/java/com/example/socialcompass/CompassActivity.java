@@ -19,22 +19,22 @@ public class CompassActivity extends AppCompatActivity {
 
     public ArrayList<Marker> friends = new ArrayList<>();
 
-    public LocationService locationService;
-    public OrientationService orientationService;
-    public MarkerBuilder builder;
-    public Display display;
-    public Device device;
-    public ServerListener serverListener;
-    private String privateUID = "testTheory";
-    public CurrentState currentState;
+    private LocationService locationService;
+    private OrientationService orientationService;
+    private TimeService timeService;
+    private MarkerBuilder builder;
+    private Display display;
+    private Device device;
+    private ServerListener serverListener;
+    private String privateUID;
+    private CurrentState currentState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
         this.builder = new MarkerBuilder();
-
-        // fill arrays with data from intents
+        // fill markers with data from shred preferences
         loadFriendsFromUIDs();
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("thisUserID", MODE_PRIVATE);
         privateUID = prefs.getString("UUID", "qwerty");
@@ -55,13 +55,17 @@ public class CompassActivity extends AppCompatActivity {
 
         this.locationService = new LocationService(this);
         this.orientationService = new OrientationService(this);
+        this.timeService = new TimeService();
         this.display = new Display(this, getApplicationContext());
-        this.device = new Device(this, this.locationService, this.orientationService);
+        this.device = new Device(this, this.locationService, this.orientationService, this.timeService);
         this.serverListener = new ServerListener(this, this.privateUID);
         this.currentState = new CurrentState(this, this.serverListener, this.device, this.display, this.friends);
 
         this.serverListener.registerServerObserver(this.currentState);
         this.device.registerDeviceObserver(this.currentState);
+
+
+
 
 
         initialise();

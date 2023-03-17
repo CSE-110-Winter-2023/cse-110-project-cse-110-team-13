@@ -36,8 +36,10 @@ public class ServerAPI implements Server {
     //singleton provide method
     public static ServerAPI provide()
     {
+
         if (instance == null)
             instance = new ServerAPI();
+
         return instance;
     }
 

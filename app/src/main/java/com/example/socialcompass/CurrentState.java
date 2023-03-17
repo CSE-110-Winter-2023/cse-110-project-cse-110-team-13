@@ -126,6 +126,8 @@ package com.example.socialcompass;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.lifecycle.LifecycleOwner;
 
@@ -143,6 +145,8 @@ public class CurrentState implements DeviceObserver, ServerObserver {
 
     public String oldLocation; //oldLocation so that the listeners can use a placeholder value
     public float oldOrientation; // oldOrientation so that the listeners can use a placeholder value
+    private long oldTime; //oldTime so that listeners can use a placeholder value
+    private long lastKnownTime;
     private Activity activity; // activity
     private Display display; // UI updater
     private ServerListener serverListener;
@@ -156,6 +160,7 @@ public class CurrentState implements DeviceObserver, ServerObserver {
                         Display display, ArrayList<Marker> markerList) {
         this.oldLocation = "0,0";
         this.oldOrientation = 0;
+        this.oldTime = 0;
         this.activity = activity;
         this.display = display;
         this.serverListener = serverListener;
@@ -189,6 +194,23 @@ public class CurrentState implements DeviceObserver, ServerObserver {
         //Update user's location on the server AFTER the UI has updated to give a smoother experience.
         this.serverListener.updateLocationOnServer(this.oldLocation);
 
+    }
+
+    public void signalUpdate(long time) {
+        this.oldTime = time;
+        ImageView greenDot = activity.findViewById(R.id.greenDot);
+        ImageView redDot = activity.findViewById(R.id.redDot);
+        TextView timeSinceLastUpdate = activity.findViewById(R.id.timeLastOnline);
+
+        display.updateNoSignal(greenDot, redDot, timeSinceLastUpdate, System.currentTimeMillis() - this.oldTime);
+
+    }
+
+    public void hasSignal() {
+        ImageView greenDot = activity.findViewById(R.id.greenDot);
+        ImageView redDot = activity.findViewById(R.id.redDot);
+        TextView timeSinceLastUpdate = activity.findViewById(R.id.timeLastOnline);
+        display.updateHasSignal(greenDot, redDot, timeSinceLastUpdate);
     }
 
     //there is something new from the server-side, hence we're updating the UI based on the
